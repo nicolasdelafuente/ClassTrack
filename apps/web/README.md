@@ -15,3 +15,10 @@ npm run dev:web
 Abrí http://localhost:5173
 
 Opcional: `VITE_API_URL` (default `http://localhost:3001/api`).
+
+## Pantallas
+
+| Ruta | Ticket |
+|------|--------|
+| `/` tablero de grupos | CT-011 |
+| `/courses/:courseId/groups/:groupId` detalle | CT-012 |
