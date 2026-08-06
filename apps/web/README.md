@@ -22,3 +22,4 @@ Opcional: `VITE_API_URL` (default `http://localhost:3001/api`).
 |------|--------|
 | `/` tablero de grupos | CT-011 |
 | `/courses/:courseId/groups/:groupId` detalle | CT-012 |
+| `/courses/:courseId/attendance` asistencia (opcional `?groupId=`) | CT-013 |

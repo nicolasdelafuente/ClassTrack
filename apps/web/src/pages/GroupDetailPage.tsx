@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   fetchGroupDetail,
   patchGroupLinks,
@@ -152,9 +152,12 @@ export function GroupDetailPage() {
 
         <section className="detail__section">
           <h2>Acciones</h2>
-          <button type="button" className="btn btn--ghost" disabled title="CT-013">
-            Tomar asistencia de este grupo (próximo: CT-013)
-          </button>
+          <Link
+            className="btn btn--primary"
+            to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
+          >
+            Tomar asistencia de este grupo
+          </Link>
         </section>
       </article>
     </AppShell>
