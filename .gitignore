@@ -26,6 +26,11 @@ npm-debug.log*
 *.xlsx
 *.xls
 DesAPP*.xlsx
+apps/api/prisma/data/from-excel.json
+
+# Local SQLite databases
+*.db
+*.db-journal
 
 # Local Trello / tokens (nunca commitear)
 .trello-env

@@ -63,7 +63,9 @@ Elegimos stack concreto al armar el esqueleto. El modelo conceptual no cambia.
 
 ## Seed (demo)
 
-Fuente: `DesAPP-PPS 2026-c1- Asistencia.xlsx` (solo import inicial).
+Fuente original: `DesAPP-PPS 2026-c1- Asistencia.xlsx` (solo import local, no versionar).
+
+En el repo: `apps/api/prisma/data/demo.json` (datos anonimizados). Schema SQLite + seed: CT-010.
 
 Prioridad de seed para el primer vertical:
 1. course  
