@@ -32,6 +32,21 @@ type SeedPayload = {
 
 const prisma = new PrismaClient();
 
+/** Demo variety so the board is readable (not all gray). */
+function demoSprintStatus(
+  groupNumber: number,
+  sprintNumber: number,
+): SprintStatusValue {
+  const roll = (groupNumber * 3 + sprintNumber * 5) % 7;
+  if (sprintNumber >= 4 && groupNumber % 3 === 0) {
+    return SprintStatusValue.unknown;
+  }
+  if (roll === 0) return SprintStatusValue.critical;
+  if (roll === 1 || roll === 2) return SprintStatusValue.attention;
+  if (roll === 3) return SprintStatusValue.unknown;
+  return SprintStatusValue.ok;
+}
+
 function loadPayload(): { payload: SeedPayload; source: string } {
   const dataDir = path.join(__dirname, 'data');
   const fromExcel = path.join(dataDir, 'from-excel.json');
@@ -87,7 +102,7 @@ async function main() {
         sprintStatuses: {
           create: [1, 2, 3, 4, 5].map((sprintNumber) => ({
             sprintNumber,
-            status: SprintStatusValue.unknown,
+            status: demoSprintStatus(g.number, sprintNumber),
           })),
         },
         links: {
