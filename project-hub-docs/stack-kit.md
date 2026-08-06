@@ -55,30 +55,34 @@ Browse: https://www.skills.sh/
 
 ### Instalación en bloque
 
+Correr **en la raíz del proyecto** (sin `-g`):
+
 ```bash
 # Frontend / UI
-npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices
-npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
-npx skills add https://github.com/wshobson/agents --skill tailwind-design-system
-npx skills add https://github.com/thebushidocollective/han --skill atomic-design-fundamentals
+npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices -y
+npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines -y
+npx skills add https://github.com/wshobson/agents --skill tailwind-design-system -y
+npx skills add https://github.com/thebushidocollective/han --skill atomic-design-fundamentals -y
 
 # Backend / datos
-npx skills add kadajett/agent-nestjs-skills@nestjs-best-practices
-npx skills add https://github.com/prisma/skills --skill prisma-database-setup
-npx skills add https://github.com/prisma/skills --skill prisma-postgres
+npx skills add kadajett/agent-nestjs-skills@nestjs-best-practices -y
+npx skills add https://github.com/prisma/skills --skill prisma-database-setup -y
+npx skills add https://github.com/prisma/skills --skill prisma-postgres -y
 
 # Repo / monorepo
-npx skills add wshobson/agents@monorepo-management
-npx skills add https://github.com/github/awesome-copilot --skill gh-cli
-npx skills add https://github.com/github/awesome-copilot --skill git-commit
+npx skills add wshobson/agents@monorepo-management -y
+npx skills add https://github.com/github/awesome-copilot --skill git-commit -y
+npx skills add https://github.com/callstackincubator/agent-skills --skill github -y
 
 # Seguridad
-npx skills add https://github.com/addyosmani/agent-skills --skill security-and-hardening
-npx skills add https://github.com/getsentry/skills --skill security-review
+npx skills add https://github.com/addyosmani/agent-skills --skill security-and-hardening -y
+npx skills add https://github.com/getsentry/skills --skill security-review -y
 
 # Trello (tarjetas)
-npx skills add https://github.com/steipete/clawdis --skill trello
+npx skills add https://github.com/steipete/clawdis --skill trello -y
 ```
+
+Las skills quedan en `./.agents/skills/` del proyecto. **No instalar con `-g`** si querés evitar que afecten otros repos.
 
 ### Tabla rápida (nombre → link)
 

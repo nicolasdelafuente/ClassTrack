@@ -77,23 +77,30 @@ npx skills add https://github.com/heygen-com/hyperframes --skill tailwind
 |-------|----------|------|----------|
 | `domain-modeling` | Modelado de dominio | https://skills.sh/mattpocock/skills/domain-modeling | `npx skills add https://github.com/mattpocock/skills --skill domain-modeling` |
 
-### Instalación en bloque (set activo)
+### Instalación en bloque (set activo) — **nivel proyecto**
+
+Correr desde la raíz de ClassTrack (**sin** `-g`):
 
 ```bash
-npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices
-npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines
-npx skills add kadajett/agent-nestjs-skills@nestjs-best-practices
-npx skills add https://github.com/prisma/skills --skill prisma-database-setup
-npx skills add https://github.com/prisma/skills --skill prisma-postgres
-npx skills add wshobson/agents@monorepo-management
-npx skills add https://github.com/thebushidocollective/han --skill atomic-design-fundamentals
-npx skills add https://github.com/wshobson/agents --skill tailwind-design-system
-npx skills add https://github.com/addyosmani/agent-skills --skill security-and-hardening
-npx skills add https://github.com/getsentry/skills --skill security-review
-npx skills add https://github.com/github/awesome-copilot --skill gh-cli
-npx skills add https://github.com/github/awesome-copilot --skill git-commit
-npx skills add https://github.com/steipete/clawdis --skill trello
+npx skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices -y
+npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines -y
+npx skills add kadajett/agent-nestjs-skills@nestjs-best-practices -y
+npx skills add https://github.com/prisma/skills --skill prisma-database-setup -y
+npx skills add https://github.com/prisma/skills --skill prisma-postgres -y
+npx skills add wshobson/agents@monorepo-management -y
+npx skills add https://github.com/thebushidocollective/han --skill atomic-design-fundamentals -y
+npx skills add https://github.com/wshobson/agents --skill tailwind-design-system -y
+npx skills add https://github.com/addyosmani/agent-skills --skill security-and-hardening -y
+npx skills add https://github.com/getsentry/skills --skill security-review -y
+npx skills add https://github.com/github/awesome-copilot --skill git-commit -y
+npx skills add https://github.com/callstackincubator/agent-skills --skill github -y
+npx skills add https://github.com/steipete/clawdis --skill trello -y
+npx skills add https://github.com/claude-office-skills/skills --skill "Trello Automation" -y
 ```
+
+Quedan en: `classTrack/.agents/skills/` (+ `skills-lock.json` si el CLI lo genera).
+
+**Alcance:** solo **proyecto** (sin `-g`). Así no contaminan otros repos. En global solo utilidades de Cursor (`find-skills`, `orca-cli`, `orchestration`, `computer-use`).
 
 ---
 
@@ -116,27 +123,29 @@ React Native, deploy a Vercel/Azure, Lark, video/HyperFrames, marketing, etc.
 
 ## Estado de instalación
 
+**Ubicación:** `./.agents/skills/` (proyecto). **No** en `~/.agents/skills` (global).
+
 | Skill | ¿Instalada? | Fecha / notas |
 |-------|-------------|----------------|
-| vercel-react-best-practices | **Sí** | CT-008 |
-| web-design-guidelines | **Sí** | CT-008 |
-| nestjs-best-practices | **Sí** | CT-008 |
-| prisma-database-setup | **Sí** | CT-008 |
-| prisma-postgres | **Sí** | CT-008 |
-| monorepo-management | **Sí** | CT-008 |
-| atomic-design-fundamentals | **Sí** | CT-008 |
-| tailwind-design-system | **Sí** | CT-008 |
-| security-and-hardening | **Sí** | CT-008 |
-| security-review | **Sí** | CT-008 |
-| git-commit | **Sí** | awesome-copilot |
-| github-issues | **Sí** | awesome-copilot |
-| github | **Sí** | callstackincubator |
-| copilot-pr-autopilot | **Sí** | PRs |
-| create-github-issue-feature-from-specification | **Sí** | Issues desde spec |
-| trello (clawdis) | **Sí** | API Trello |
-| Trello Automation | **Sí** | claude-office-skills |
-| gh-cli | No disponible | Nombre viejo; usar `gh` + skill `github` |
-| create-github-pull-request-from-specification | No disponible | Reemplazo: `copilot-pr-autopilot` |
+| vercel-react-best-practices | **Sí** | Proyecto CT-008 |
+| web-design-guidelines | **Sí** | Proyecto |
+| nestjs-best-practices | **Sí** | Proyecto |
+| prisma-database-setup | **Sí** | Proyecto |
+| prisma-postgres | **Sí** | Proyecto |
+| monorepo-management | **Sí** | Proyecto |
+| atomic-design-fundamentals | **Sí** | Proyecto |
+| tailwind-design-system | **Sí** | Proyecto |
+| security-and-hardening | **Sí** | Proyecto |
+| security-review | **Sí** | Proyecto |
+| git-commit | **Sí** | Proyecto |
+| github-issues | **Sí** | Proyecto |
+| github | **Sí** | Proyecto |
+| copilot-pr-autopilot | **Sí** | Proyecto |
+| create-github-issue-feature-from-specification | **Sí** | Proyecto |
+| trello (clawdis) | **Sí** | Proyecto |
+| Trello Automation | **Sí** | Proyecto |
+| gh-cli | No disponible | Usar `gh` + skill `github` |
+| create-github-pull-request-from-specification | No disponible | Usar `copilot-pr-autopilot` |
 | domain-modeling | Opcional | No instalada |
 | Skills de diseño propias | Pendiente | Esperando al autor |
 | heygen `tailwind` (HyperFrames) | No usar | No aplica a ClassTrack |
