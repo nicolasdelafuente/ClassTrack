@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+dist/
+build/
+coverage/
+.turbo/
+.next/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Data with PII (no subir padrones / Excel de alumnos)
+*.xlsx
+*.xls
+DesAPP*.xlsx
+
+# Local Trello / tokens (nunca commitear)
+.trello-env
+.trello-*.json
+*.token
