@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { fetchCourseGroups, fetchCurrentCourse } from '../api/client'
 import { AppShell } from '../components/AppShell'
 import { GroupCard } from '../components/GroupCard'
@@ -70,10 +71,20 @@ export function BoardPage() {
     <AppShell courseName={course.name} courseCode={course.code}>
       <section className="board">
         <div className="board__intro">
-          <h1 className="board__title">Tablero de grupos</h1>
-          <p className="board__subtitle">
-            {groups.length} grupos · semáforo de sprints de un vistazo
-          </p>
+          <div className="board__intro-row">
+            <div>
+              <h1 className="board__title">Tablero de grupos</h1>
+              <p className="board__subtitle">
+                {groups.length} grupos · semáforo de sprints de un vistazo
+              </p>
+            </div>
+            <Link
+              className="btn btn--primary"
+              to={`/courses/${course.id}/attendance`}
+            >
+              Tomar asistencia
+            </Link>
+          </div>
         </div>
 
         <div className="board__grid">

@@ -1,4 +1,6 @@
 import type {
+  AttendanceMark,
+  AttendanceRoster,
   Course,
   GroupDetail,
   GroupLinks,
@@ -54,5 +56,32 @@ export function patchGroupLinks(groupId: string, links: GroupLinks) {
   return requestJson<GroupLinks>(`/groups/${groupId}/links`, {
     method: 'PATCH',
     body: JSON.stringify(links),
+  })
+}
+
+export function fetchAttendanceRoster(
+  courseId: string,
+  date: string,
+  groupId?: string | null,
+) {
+  const params = new URLSearchParams({ date })
+  if (groupId) params.set('groupId', groupId)
+  return requestJson<AttendanceRoster>(
+    `/courses/${courseId}/attendance?${params.toString()}`,
+  )
+}
+
+export function patchAttendanceMark(
+  courseId: string,
+  payload: {
+    date: string
+    studentId: string
+    present?: boolean
+    participated?: boolean
+  },
+) {
+  return requestJson<AttendanceMark>(`/courses/${courseId}/attendance`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
   })
 }

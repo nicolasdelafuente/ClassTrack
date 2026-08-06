@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
 import './App.css'
@@ -11,6 +12,10 @@ function App() {
         <Route
           path="/courses/:courseId/groups/:groupId"
           element={<GroupDetailPage />}
+        />
+        <Route
+          path="/courses/:courseId/attendance"
+          element={<AttendancePage />}
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

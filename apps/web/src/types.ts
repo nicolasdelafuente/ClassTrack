@@ -71,3 +71,45 @@ export function nextSprintStatus(current: SprintStatus): SprintStatus {
   const idx = SPRINT_STATUS_ORDER.indexOf(current)
   return SPRINT_STATUS_ORDER[(idx + 1) % SPRINT_STATUS_ORDER.length]
 }
+
+export type AttendanceStudent = {
+  id: string
+  fullName: string
+  legajo: string | null
+  email: string | null
+  present: boolean
+  participated: boolean
+}
+
+export type AttendanceGroup = {
+  id: string
+  number: number
+  name: string | null
+  students: AttendanceStudent[]
+}
+
+export type AttendanceRoster = {
+  course: {
+    id: string
+    name: string
+    code: string
+  }
+  date: string
+  groupId: string | null
+  groups: AttendanceGroup[]
+}
+
+export type AttendanceMark = {
+  studentId: string
+  date: string
+  present: boolean
+  participated: boolean
+}
+
+export function todayDateInputValue(): string {
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = String(now.getMonth() + 1).padStart(2, '0')
+  const d = String(now.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
