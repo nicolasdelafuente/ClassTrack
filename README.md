@@ -4,13 +4,22 @@ App web responsive para docentes de **Desarrollo de Aplicaciones** (UNaHur).
 
 Seguimiento de cursada: grupos, semáforo de sprints, asistencia — sin depender del Excel.
 
-## Estado actual
+## Monorepo
 
-Documentación del producto y arquitectura del MVP en [`project-hub-docs/`](./project-hub-docs/).
+| App | Stack | Puerto |
+|-----|--------|--------|
+| [`apps/web`](./apps/web) | React + Vite + TypeScript | 5173 |
+| [`apps/api`](./apps/api) | NestJS + TypeScript | 3001 (`/api`) |
 
-El código del monorepo (`apps/web` + `apps/api`) se agrega en la etapa de esqueleto.
+```bash
+npm install
+npm run dev:api   # terminal 1
+npm run dev:web   # terminal 2
+```
 
-## Docs rápidas
+Detalle: [`apps/README.md`](./apps/README.md)
+
+## Documentación de producto
 
 | Doc | Contenido |
 |-----|-----------|

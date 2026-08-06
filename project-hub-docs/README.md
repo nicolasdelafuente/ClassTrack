@@ -9,7 +9,7 @@ App web responsive para docentes de **Desarrollo de Aplicaciones** (UNaHur).
 | 0 — Alinear | Hecha | Usuario, dolores, plataforma, alcance |
 | 1 — Docs mínimas | Hecha | `vision`, `problema`, `usuarios`, `mvp` |
 | 2 — Flujos y pantallas | Hecha | sitemap, navegación, tablero, pantallas |
-| **3 — Esqueleto + primer vertical** | **En curso** | arquitectura MVP → código (skills de diseño después) |
+| **3 — Esqueleto + primer vertical** | **En curso** | 3a/3b hechas → falta **3c código** |
 | 4+ — Ampliar | Pendiente | Integraciones, alumnos, etc. |
 
 ## Etapa 3 — cómo la partimos
@@ -17,8 +17,8 @@ App web responsive para docentes de **Desarrollo de Aplicaciones** (UNaHur).
 | Sub-etapa | Estado | Qué |
 |-----------|--------|-----|
 | **3a — Arquitectura MVP** | **Hecha** | entidades, modelo, API borrador |
-| **3b — Skills** | Pendiente | instalar skills (diseño cuando las pases) |
-| **3c — Esqueleto + tablero** | Pendiente | código del primer vertical `[B]` |
+| **3b — Skills** | **Hecha** | set en `./.agents/skills/` (no global) |
+| **3c — Esqueleto + tablero** | **Siguiente** | monorepo + primer vertical `[B]` (CT-009 → CT-011) |
 
 ## Producto
 

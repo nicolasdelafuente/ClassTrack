@@ -31,3 +31,6 @@ DesAPP*.xlsx
 .trello-env
 .trello-*.json
 *.token
+
+# Nest / tooling
+*.tsbuildinfo
