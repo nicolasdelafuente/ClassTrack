@@ -28,9 +28,18 @@ npm run dev:api
 npm run dev:web
 ```
 
-- Web: http://localhost:5173  
+- Web: http://localhost:5173 — tablero de grupos (CT-011)  
 - API health: http://localhost:3001/api/health  
+- API cursos: http://localhost:3001/api/courses/current  
+
+## Seed
+
+```bash
+cp apps/api/.env.example apps/api/.env
+npm run prisma:migrate
+npm run seed
+```
 
 ## Trello
 
-CT-009 — Crear monorepo apps/web y apps/api
+CT-009 monorepo · CT-010 seed · CT-011 tablero
