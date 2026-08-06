@@ -118,16 +118,16 @@ React Native, deploy a Vercel/Azure, Lark, video/HyperFrames, marketing, etc.
 
 | Skill | ¿Instalada? | Fecha / notas |
 |-------|-------------|----------------|
-| vercel-react-best-practices | Pendiente | Set técnico ClassTrack |
-| web-design-guidelines | Pendiente | |
-| nestjs-best-practices | Pendiente | |
-| prisma-database-setup | Pendiente | |
-| prisma-postgres | Pendiente | |
-| monorepo-management | Pendiente | |
-| atomic-design-fundamentals | Pendiente | |
-| tailwind-design-system | Pendiente | |
-| security-and-hardening | Pendiente | |
-| security-review | Pendiente | |
+| vercel-react-best-practices | **Sí** | CT-008 |
+| web-design-guidelines | **Sí** | CT-008 |
+| nestjs-best-practices | **Sí** | CT-008 |
+| prisma-database-setup | **Sí** | CT-008 |
+| prisma-postgres | **Sí** | CT-008 |
+| monorepo-management | **Sí** | CT-008 |
+| atomic-design-fundamentals | **Sí** | CT-008 |
+| tailwind-design-system | **Sí** | CT-008 |
+| security-and-hardening | **Sí** | CT-008 |
+| security-review | **Sí** | CT-008 |
 | git-commit | **Sí** | awesome-copilot |
 | github-issues | **Sí** | awesome-copilot |
 | github | **Sí** | callstackincubator |
@@ -137,6 +137,6 @@ React Native, deploy a Vercel/Azure, Lark, video/HyperFrames, marketing, etc.
 | Trello Automation | **Sí** | claude-office-skills |
 | gh-cli | No disponible | Nombre viejo; usar `gh` + skill `github` |
 | create-github-pull-request-from-specification | No disponible | Reemplazo: `copilot-pr-autopilot` |
-| domain-modeling | Opcional | |
+| domain-modeling | Opcional | No instalada |
 | Skills de diseño propias | Pendiente | Esperando al autor |
 | heygen `tailwind` (HyperFrames) | No usar | No aplica a ClassTrack |
