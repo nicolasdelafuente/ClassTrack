@@ -13,6 +13,8 @@
     "build:web": "npm run build -w web",
     "build:api": "npm run build -w api",
     "start:api": "npm run start:prod -w api",
+    "seed": "npm run seed -w api",
+    "prisma:migrate": "npm run prisma:migrate -w api",
     "lint": "npm run lint -w web & npm run lint -w api"
   },
   "engines": {

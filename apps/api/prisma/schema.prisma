@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// SQLite for local demo seed (CT-010). Postgres can replace this in CT-014.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum SprintStatusValue {
+  unknown
+  ok
+  attention
+  critical
+}
+
+model Course {
+  id                 String             @id @default(cuid())
+  name               String
+  code               String             @unique
+  isCurrent          Boolean            @default(false) @map("is_current")
+  groups             Group[]
+  attendanceRecords  AttendanceRecord[]
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+
+  @@map("courses")
+}
+
+model Group {
+  id            String          @id @default(cuid())
+  courseId      String          @map("course_id")
+  course        Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  number        Int
+  name          String?
+  projectTopic  String?         @map("project_topic")
+  teacherName   String?         @map("teacher_name")
+  memberships   Membership[]
+  sprintStatuses SprintStatus[]
+  links         GroupLinks?
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+
+  @@unique([courseId, number])
+  @@map("groups")
+}
+
+model Student {
+  id                String             @id @default(cuid())
+  legajo            String?
+  fullName          String             @map("full_name")
+  email             String?
+  memberships       Membership[]
+  attendanceRecords AttendanceRecord[]
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  @@map("students")
+}
+
+model Membership {
+  id        String   @id @default(cuid())
+  groupId   String   @map("group_id")
+  studentId String   @map("student_id")
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([groupId, studentId])
+  @@map("memberships")
+}
+
+model SprintStatus {
+  id           String            @id @default(cuid())
+  groupId      String            @map("group_id")
+  group        Group             @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sprintNumber Int               @map("sprint_number")
+  status       SprintStatusValue @default(unknown)
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+
+  @@unique([groupId, sprintNumber])
+  @@map("sprint_statuses")
+}
+
+model GroupLinks {
+  groupId   String  @id @map("group_id")
+  group     Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  githubUrl String? @map("github_url")
+  trelloUrl String? @map("trello_url")
+  driveUrl  String? @map("drive_url")
+
+  @@map("group_links")
+}
+
+model AttendanceRecord {
+  id           String   @id @default(cuid())
+  courseId     String   @map("course_id")
+  studentId    String   @map("student_id")
+  course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  date         DateTime
+  present      Boolean  @default(false)
+  participated Boolean  @default(false)
+
+  @@unique([courseId, studentId, date])
+  @@map("attendance_records")
+}

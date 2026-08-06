@@ -13,11 +13,16 @@ Seguimiento de cursada: grupos, semáforo de sprints, asistencia — sin depende
 
 ```bash
 npm install
+cp apps/api/.env.example apps/api/.env
+npm run prisma:migrate
+npm run seed
 npm run dev:api   # terminal 1
 npm run dev:web   # terminal 2
 ```
 
-Detalle: [`apps/README.md`](./apps/README.md)
+Seed demo (anónimo): `apps/api/prisma/data/demo.json`. Detalle: [`apps/api/prisma/README.md`](./apps/api/prisma/README.md).
+
+Detalle apps: [`apps/README.md`](./apps/README.md)
 
 ## Documentación de producto
 

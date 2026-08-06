@@ -1,0 +1,394 @@
+{
+  "course": {
+    "name": "Desarrollo de Aplicaciones 2026-c1",
+    "code": "2026-c1",
+    "isCurrent": true
+  },
+  "groups": [
+    {
+      "number": 1,
+      "name": "Grupo 1",
+      "projectTopic": "App de acompañamiento de estudiantes",
+      "teacherName": "Nicolas",
+      "students": [
+        {
+          "fullName": "Alumno 1-01",
+          "email": "alumno0101@demo.classtrack.local",
+          "legajo": "20260101"
+        },
+        {
+          "fullName": "Alumno 1-02",
+          "email": "alumno0102@demo.classtrack.local",
+          "legajo": "20260102"
+        },
+        {
+          "fullName": "Alumno 1-03",
+          "email": "alumno0103@demo.classtrack.local",
+          "legajo": "20260103"
+        },
+        {
+          "fullName": "Alumno 1-04",
+          "email": "alumno0104@demo.classtrack.local",
+          "legajo": "20260104"
+        },
+        {
+          "fullName": "Alumno 1-05",
+          "email": "alumno0105@demo.classtrack.local",
+          "legajo": "20260105"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-1/DesApp-2026c1-Grupo-1",
+        "trelloUrl": "https://trello.com/w/desapp2026c2grupo1",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 1"
+      }
+    },
+    {
+      "number": 2,
+      "name": "Grupo 2",
+      "projectTopic": "App de gestión de laboratorios",
+      "teacherName": "Cristian",
+      "students": [
+        {
+          "fullName": "Alumno 2-01",
+          "email": "alumno0201@demo.classtrack.local",
+          "legajo": "20260201"
+        },
+        {
+          "fullName": "Alumno 2-02",
+          "email": "alumno0202@demo.classtrack.local",
+          "legajo": "20260202"
+        },
+        {
+          "fullName": "Alumno 2-03",
+          "email": "alumno0203@demo.classtrack.local",
+          "legajo": "20260203"
+        },
+        {
+          "fullName": "Alumno 2-04",
+          "email": "alumno0204@demo.classtrack.local",
+          "legajo": "20260204"
+        },
+        {
+          "fullName": "Alumno 2-05",
+          "email": "alumno0205@demo.classtrack.local",
+          "legajo": "20260205"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-2",
+        "trelloUrl": "https://trello.com/w/desapp2026c1grupo2",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 2"
+      }
+    },
+    {
+      "number": 3,
+      "name": "Grupo 3",
+      "projectTopic": "App de acompañamiento de estudiantes",
+      "teacherName": "Nicolas",
+      "students": [
+        {
+          "fullName": "Alumno 3-01",
+          "email": "alumno0301@demo.classtrack.local",
+          "legajo": "20260301"
+        },
+        {
+          "fullName": "Alumno 3-02",
+          "email": "alumno0302@demo.classtrack.local",
+          "legajo": "20260302"
+        },
+        {
+          "fullName": "Alumno 3-03",
+          "email": "alumno0303@demo.classtrack.local",
+          "legajo": "20260303"
+        },
+        {
+          "fullName": "Alumno 3-04",
+          "email": "alumno0304@demo.classtrack.local",
+          "legajo": "20260304"
+        },
+        {
+          "fullName": "Alumno 3-05",
+          "email": "alumno0305@demo.classtrack.local",
+          "legajo": "20260305"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-3",
+        "trelloUrl": "https://trello.com/w/espaciodetrabajodeuser10277601",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 3"
+      }
+    },
+    {
+      "number": 4,
+      "name": "Grupo 4",
+      "projectTopic": "App de gestión de laboratorios",
+      "teacherName": "Cristian",
+      "students": [
+        {
+          "fullName": "Alumno 4-01",
+          "email": "alumno0401@demo.classtrack.local",
+          "legajo": "20260401"
+        },
+        {
+          "fullName": "Alumno 4-02",
+          "email": "alumno0402@demo.classtrack.local",
+          "legajo": "20260402"
+        },
+        {
+          "fullName": "Alumno 4-03",
+          "email": "alumno0403@demo.classtrack.local",
+          "legajo": "20260403"
+        },
+        {
+          "fullName": "Alumno 4-04",
+          "email": "alumno0404@demo.classtrack.local",
+          "legajo": "20260404"
+        },
+        {
+          "fullName": "Alumno 4-05",
+          "email": "alumno0405@demo.classtrack.local",
+          "legajo": "20260405"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-4",
+        "trelloUrl": "https://trello.com/w/desapp2026c1grupo4",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 4"
+      }
+    },
+    {
+      "number": 5,
+      "name": "Grupo 5",
+      "projectTopic": "App de acompañamiento de estudiantes",
+      "teacherName": "Nicolas",
+      "students": [
+        {
+          "fullName": "Alumno 5-01",
+          "email": "alumno0501@demo.classtrack.local",
+          "legajo": "20260501"
+        },
+        {
+          "fullName": "Alumno 5-02",
+          "email": "alumno0502@demo.classtrack.local",
+          "legajo": "20260502"
+        },
+        {
+          "fullName": "Alumno 5-03",
+          "email": "alumno0503@demo.classtrack.local",
+          "legajo": "20260503"
+        },
+        {
+          "fullName": "Alumno 5-04",
+          "email": "alumno0504@demo.classtrack.local",
+          "legajo": "20260504"
+        },
+        {
+          "fullName": "Alumno 5-05",
+          "email": "alumno0505@demo.classtrack.local",
+          "legajo": "20260505"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-5",
+        "trelloUrl": "https://trello.com/w/desapp2026c1grupo5",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 5"
+      }
+    },
+    {
+      "number": 6,
+      "name": "Grupo 6",
+      "projectTopic": "App de gestión de laboratorios",
+      "teacherName": "Cristian",
+      "students": [
+        {
+          "fullName": "Alumno 6-01",
+          "email": "alumno0601@demo.classtrack.local",
+          "legajo": "20260601"
+        },
+        {
+          "fullName": "Alumno 6-02",
+          "email": "alumno0602@demo.classtrack.local",
+          "legajo": "20260602"
+        },
+        {
+          "fullName": "Alumno 6-03",
+          "email": "alumno0603@demo.classtrack.local",
+          "legajo": "20260603"
+        },
+        {
+          "fullName": "Alumno 6-04",
+          "email": "alumno0604@demo.classtrack.local",
+          "legajo": "20260604"
+        },
+        {
+          "fullName": "Alumno 6-05",
+          "email": "alumno0605@demo.classtrack.local",
+          "legajo": "20260605"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo6",
+        "trelloUrl": "https://trello.com/w/desapp2026c1grupo6",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 6"
+      }
+    },
+    {
+      "number": 7,
+      "name": "Grupo 7",
+      "projectTopic": "App de acompañamiento de estudiantes",
+      "teacherName": "Carlos",
+      "students": [
+        {
+          "fullName": "Alumno 7-01",
+          "email": "alumno0701@demo.classtrack.local",
+          "legajo": "20260701"
+        },
+        {
+          "fullName": "Alumno 7-02",
+          "email": "alumno0702@demo.classtrack.local",
+          "legajo": "20260702"
+        },
+        {
+          "fullName": "Alumno 7-03",
+          "email": "alumno0703@demo.classtrack.local",
+          "legajo": "20260703"
+        },
+        {
+          "fullName": "Alumno 7-04",
+          "email": "alumno0704@demo.classtrack.local",
+          "legajo": "20260704"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-7",
+        "trelloUrl": "https://trello.com/w/desarrollodeaplicaciones",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 7"
+      }
+    },
+    {
+      "number": 8,
+      "name": "Grupo 8",
+      "projectTopic": "App de gestión de laboratorios",
+      "teacherName": "Carlos",
+      "students": [
+        {
+          "fullName": "Alumno 8-01",
+          "email": "alumno0801@demo.classtrack.local",
+          "legajo": "20260801"
+        },
+        {
+          "fullName": "Alumno 8-02",
+          "email": "alumno0802@demo.classtrack.local",
+          "legajo": "20260802"
+        },
+        {
+          "fullName": "Alumno 8-03",
+          "email": "alumno0803@demo.classtrack.local",
+          "legajo": "20260803"
+        },
+        {
+          "fullName": "Alumno 8-04",
+          "email": "alumno0804@demo.classtrack.local",
+          "legajo": "20260804"
+        },
+        {
+          "fullName": "Alumno 8-05",
+          "email": "alumno0805@demo.classtrack.local",
+          "legajo": "20260805"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp2026c1-Grupo-8",
+        "trelloUrl": "https://trello.com/w/desapp2026c1grupo8",
+        "driveUrl": null,
+        "folderName": "DesApp 2026C1 - Grupo8"
+      }
+    },
+    {
+      "number": 9,
+      "name": "Grupo 9",
+      "projectTopic": "App de acompañamiento de estudiantes",
+      "teacherName": "Carlos",
+      "students": [
+        {
+          "fullName": "Alumno 9-01",
+          "email": "alumno0901@demo.classtrack.local",
+          "legajo": "20260901"
+        },
+        {
+          "fullName": "Alumno 9-02",
+          "email": "alumno0902@demo.classtrack.local",
+          "legajo": "20260902"
+        },
+        {
+          "fullName": "Alumno 9-03",
+          "email": "alumno0903@demo.classtrack.local",
+          "legajo": "20260903"
+        },
+        {
+          "fullName": "Alumno 9-04",
+          "email": "alumno0904@demo.classtrack.local",
+          "legajo": "20260904"
+        },
+        {
+          "fullName": "Alumno 9-05",
+          "email": "alumno0905@demo.classtrack.local",
+          "legajo": "20260905"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo-9",
+        "trelloUrl": "https://trello.com/w/desapp2026c1grupo91",
+        "driveUrl": null,
+        "folderName": "DesApp 2026c1 - Grupo 9"
+      }
+    },
+    {
+      "number": 10,
+      "name": "Grupo 10",
+      "projectTopic": "App de gestión de laboratorios",
+      "teacherName": "Carlos",
+      "students": [
+        {
+          "fullName": "Alumno 10-01",
+          "email": "alumno1001@demo.classtrack.local",
+          "legajo": "20261001"
+        },
+        {
+          "fullName": "Alumno 10-02",
+          "email": "alumno1002@demo.classtrack.local",
+          "legajo": "20261002"
+        },
+        {
+          "fullName": "Alumno 10-03",
+          "email": "alumno1003@demo.classtrack.local",
+          "legajo": "20261003"
+        },
+        {
+          "fullName": "Alumno 10-04",
+          "email": "alumno1004@demo.classtrack.local",
+          "legajo": "20261004"
+        },
+        {
+          "fullName": "Alumno 10-05",
+          "email": "alumno1005@demo.classtrack.local",
+          "legajo": "20261005"
+        }
+      ],
+      "links": {
+        "githubUrl": "https://github.com/DesApp-2026c1-Grupo10",
+        "trelloUrl": null,
+        "driveUrl": null,
+        "folderName": "DesApp 2026c2 - Grupo 10"
+      }
+    }
+  ]
+}
