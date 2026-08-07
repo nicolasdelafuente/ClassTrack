@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   fetchGroupDetail,
   patchGroupLinks,
   patchGroupSprint,
 } from '../api/client'
-import { AppShell } from '../components/AppShell'
-import { EditableSprintLights } from '../components/EditableSprintLights'
-import { LinksEditor } from '../components/LinksEditor'
-import { MembersList } from '../components/MembersList'
+import { Badge } from '../components/atoms/Badge'
+import { ButtonLink } from '../components/atoms/ButtonLink'
+import { Panel } from '../components/atoms/Panel'
+import { Heading, Text } from '../components/atoms/Text'
+import { EditableSprintLights } from '../components/molecules/EditableSprintLights'
+import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { LinksEditor } from '../components/organisms/LinksEditor'
+import { MembersList } from '../components/organisms/MembersList'
+import { AppShell } from '../components/templates/AppShell'
 import type { GroupDetail, GroupLinks, SprintStatus } from '../types'
 
 type LoadState =
@@ -85,7 +90,7 @@ export function GroupDetailPage() {
   if (state.status === 'loading') {
     return (
       <AppShell showBack>
-        <p className="state-msg">Cargando grupo…</p>
+        <StateMessage>Cargando grupo…</StateMessage>
       </AppShell>
     )
   }
@@ -93,10 +98,7 @@ export function GroupDetailPage() {
   if (state.status === 'error') {
     return (
       <AppShell showBack>
-        <div className="state-box" role="alert">
-          <h1>No se pudo abrir el grupo</h1>
-          <p>{state.message}</p>
-        </div>
+        <StateBox title="No se pudo abrir el grupo" message={state.message} />
       </AppShell>
     )
   }
@@ -110,55 +112,62 @@ export function GroupDetailPage() {
       courseName={group.course.name}
       courseCode={group.course.code}
     >
-      <article className="detail">
-        <header className="detail__header">
-          <span className="group-card__number">G{group.number}</span>
-          <h1 className="detail__title">{title}</h1>
-          <p className="detail__topic">
+      <article className="grid gap-3 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+        <Panel as="header" className="p-4 lg:col-span-2">
+          <Badge>G{group.number}</Badge>
+          <Heading className="mt-2">{title}</Heading>
+          <Text className="mt-1.5">
             {group.projectTopic?.trim() || 'Sin tema cargado'}
-          </p>
-          <p className="detail__teacher">
+          </Text>
+          <Text className="mt-3" muted={false}>
             Docente a cargo:{' '}
-            <strong>{group.teacherName?.trim() || '—'}</strong>
-          </p>
-        </header>
+            <strong className="font-semibold text-fg">
+              {group.teacherName?.trim() || '—'}
+            </strong>
+          </Text>
+        </Panel>
 
-        <section className="detail__section">
-          <h2>Semáforo</h2>
-          <p className="detail__hint">Tocá un sprint para cambiar el estado.</p>
+        <Panel as="section" className="p-4">
+          <Heading as="h2">Semáforo</Heading>
+          <Text faint className="mb-3 mt-1 text-xs">
+            Tocá un sprint para cambiar el estado.
+          </Text>
           <EditableSprintLights
             sprints={group.sprints}
             disabled={busy}
             onCycle={(n, next) => void handleCycleSprint(n, next)}
           />
-        </section>
+        </Panel>
 
-        <section className="detail__section">
-          <h2>Integrantes ({group.members.length})</h2>
-          <MembersList members={group.members} />
-        </section>
+        <Panel as="section" className="p-4 lg:row-span-2">
+          <Heading as="h2">Integrantes ({group.members.length})</Heading>
+          <div className="mt-3">
+            <MembersList members={group.members} />
+          </div>
+        </Panel>
 
-        <section className="detail__section">
-          <h2>Links</h2>
-          <p className="detail__hint">
+        <Panel as="section" className="p-4">
+          <Heading as="h2">Links</Heading>
+          <Text faint className="mb-3 mt-1 text-xs">
             URLs manuales (sin sync). Guardá después de editar.
-          </p>
+          </Text>
           <LinksEditor
             links={group.links}
             disabled={busy}
             onSave={handleSaveLinks}
           />
-        </section>
+        </Panel>
 
-        <section className="detail__section">
-          <h2>Acciones</h2>
-          <Link
-            className="btn btn--primary"
-            to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
-          >
-            Tomar asistencia de este grupo
-          </Link>
-        </section>
+        <Panel as="section" className="p-4 lg:col-start-2">
+          <Heading as="h2">Acciones</Heading>
+          <div className="mt-3">
+            <ButtonLink
+              to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
+            >
+              Tomar asistencia de este grupo
+            </ButtonLink>
+          </div>
+        </Panel>
       </article>
     </AppShell>
   )

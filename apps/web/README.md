@@ -1,10 +1,21 @@
 # ClassTrack Web
 
-React + Vite + TypeScript. Pantalla principal: **tablero de grupos** (CT-011).
+React + Vite + TypeScript + **Tailwind CSS v4**.
+
+UI organizada con **Atomic Design**:
+
+```text
+src/components/
+  atoms/        # Button, Input, Badge, StatusDot…
+  molecules/    # SprintLights, MemberRow, LinkField…
+  organisms/    # GroupCard, MembersList, LinksEditor…
+  templates/    # AppShell
+pages/          # Board, Detalle, Asistencia
+```
+
+Tokens (quarks) en `src/index.css` (`@theme`).
 
 ## Dev
-
-Desde la raíz del monorepo (con API + seed corriendo):
 
 ```bash
 npm run seed
@@ -12,14 +23,4 @@ npm run dev:api
 npm run dev:web
 ```
 
-Abrí http://localhost:5173
-
-Opcional: `VITE_API_URL` (default `http://localhost:3001/api`).
-
-## Pantallas
-
-| Ruta | Ticket |
-|------|--------|
-| `/` tablero de grupos | CT-011 |
-| `/courses/:courseId/groups/:groupId` detalle | CT-012 |
-| `/courses/:courseId/attendance` asistencia (opcional `?groupId=`) | CT-013 |
+http://localhost:5173

@@ -1,10 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import {
   fetchAttendanceRoster,
   patchAttendanceMark,
 } from '../api/client'
-import { AppShell } from '../components/AppShell'
+import { ButtonLink } from '../components/atoms/ButtonLink'
+import { Input } from '../components/atoms/Input'
+import { Label } from '../components/atoms/Label'
+import { Panel } from '../components/atoms/Panel'
+import { Heading, Text } from '../components/atoms/Text'
+import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { AttendanceGroupBlock } from '../components/organisms/AttendanceGroupBlock'
+import { AppShell } from '../components/templates/AppShell'
 import {
   todayDateInputValue,
   type AttendanceRoster,
@@ -21,9 +28,10 @@ export function AttendancePage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const groupId = searchParams.get('groupId')
   const dateParam = searchParams.get('date')
-  const date = dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)
-    ? dateParam
-    : todayDateInputValue()
+  const date =
+    dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)
+      ? dateParam
+      : todayDateInputValue()
 
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [savingId, setSavingId] = useState<string | null>(null)
@@ -78,7 +86,10 @@ export function AttendancePage() {
   }, [state])
 
   const updateStudent = useCallback(
-    (studentId: string, patch: Partial<Pick<AttendanceStudent, 'present' | 'participated'>>) => {
+    (
+      studentId: string,
+      patch: Partial<Pick<AttendanceStudent, 'present' | 'participated'>>,
+    ) => {
       setState((prev) => {
         if (prev.status !== 'ready') return prev
         return {
@@ -135,7 +146,7 @@ export function AttendancePage() {
   if (state.status === 'loading') {
     return (
       <AppShell showBack>
-        <p className="state-msg">Cargando asistencia…</p>
+        <StateMessage>Cargando asistencia…</StateMessage>
       </AppShell>
     )
   }
@@ -143,10 +154,10 @@ export function AttendancePage() {
   if (state.status === 'error') {
     return (
       <AppShell showBack>
-        <div className="state-box" role="alert">
-          <h1>No se pudo cargar la asistencia</h1>
-          <p>{state.message}</p>
-        </div>
+        <StateBox
+          title="No se pudo cargar la asistencia"
+          message={state.message}
+        />
       </AppShell>
     )
   }
@@ -161,98 +172,57 @@ export function AttendancePage() {
       courseName={roster.course.name}
       courseCode={roster.course.code}
     >
-      <section className="attendance">
-        <header className="attendance__header">
+      <section className="flex flex-col gap-3">
+        <Panel
+          as="header"
+          className="flex flex-wrap items-end justify-between gap-3 p-4"
+        >
           <div>
-            <h1 className="attendance__title">
+            <Heading className="text-lg">
               {scopedGroup
                 ? `Asistencia · Grupo ${scopedGroup.number}`
                 : 'Asistencia de la cursada'}
-            </h1>
-            <p className="attendance__subtitle">
+            </Heading>
+            <Text className="mt-1 text-xs tabular-nums">
               {totals.present}/{totals.students} presentes · guardado al tocar
-            </p>
+            </Text>
           </div>
 
-          <label className="attendance__date">
-            <span>Fecha</span>
-            <input
+          <div>
+            <Label htmlFor="attendance-date">Fecha</Label>
+            <Input
+              id="attendance-date"
               type="date"
               value={date}
               onChange={(e) => onDateChange(e.target.value)}
+              className="w-auto"
             />
-          </label>
-        </header>
+          </div>
+        </Panel>
 
         {scopedGroup ? (
-          <p className="attendance__scope">
+          <Text>
             Vista de un grupo.{' '}
-            <Link to={`/courses/${courseId}/attendance?date=${date}`}>
+            <ButtonLink
+              variant="text"
+              to={`/courses/${courseId}/attendance?date=${date}`}
+            >
               Ver toda la cursada
-            </Link>
-          </p>
+            </ButtonLink>
+          </Text>
         ) : null}
 
-        <div className="attendance__groups">
+        <div className="flex flex-col gap-2">
           {roster.groups.map((group) => (
-            <section key={group.id} className="attendance-group">
-              <header className="attendance-group__head">
-                <h2>
-                  Grupo {group.number}
-                  {group.name ? ` · ${group.name}` : ''}
-                </h2>
-                {!scopedGroup ? (
-                  <Link
-                    className="attendance-group__link"
-                    to={`/courses/${courseId}/attendance?date=${date}&groupId=${group.id}`}
-                  >
-                    Solo este grupo
-                  </Link>
-                ) : null}
-              </header>
-
-              <ul className="attendance-list">
-                {group.students.map((student) => {
-                  const busy = savingId === student.id
-                  return (
-                    <li key={student.id} className="attendance-row">
-                      <div className="attendance-row__info">
-                        <span className="attendance-row__name">
-                          {student.fullName}
-                        </span>
-                        {student.legajo ? (
-                          <span className="attendance-row__meta">
-                            Legajo {student.legajo}
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="attendance-row__toggles">
-                        <button
-                          type="button"
-                          className={`toggle ${student.present ? 'toggle--on' : ''}`}
-                          disabled={busy}
-                          aria-pressed={student.present}
-                          onClick={() => void toggleField(student, 'present')}
-                        >
-                          Presente
-                        </button>
-                        <button
-                          type="button"
-                          className={`toggle ${student.participated ? 'toggle--on' : ''}`}
-                          disabled={busy}
-                          aria-pressed={student.participated}
-                          onClick={() =>
-                            void toggleField(student, 'participated')
-                          }
-                        >
-                          Participó
-                        </button>
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
-            </section>
+            <AttendanceGroupBlock
+              key={group.id}
+              group={group}
+              courseId={courseId}
+              date={date}
+              scoped={Boolean(scopedGroup)}
+              savingId={savingId}
+              onToggle={(student, field) => void toggleField(student, field)}
+            />
           ))}
         </div>
       </section>
