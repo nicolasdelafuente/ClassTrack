@@ -11,6 +11,7 @@ import { Button } from '../atoms/Button'
 import { Input } from '../atoms/Input'
 import { Label } from '../atoms/Label'
 import { Panel } from '../atoms/Panel'
+import { DatePicker } from '../molecules/DatePicker'
 import {
   CLASS_ACTIVITY_TYPE_LABELS,
   type ActivityTypeDefault,
@@ -231,13 +232,15 @@ export function ScheduleSessionEditor({
         <div className="flex flex-col gap-4">
           <div>
             <Label htmlFor="session-date">Fecha</Label>
-            <Input
-              id="session-date"
-              type="date"
-              value={date}
-              disabled={saving}
-              onChange={(e) => setDate(e.target.value)}
-            />
+            <div className="mt-1">
+              <DatePicker
+                id="session-date"
+                value={date}
+                disabled={saving}
+                alwaysOpen
+                onChange={setDate}
+              />
+            </div>
           </div>
 
           <div>
