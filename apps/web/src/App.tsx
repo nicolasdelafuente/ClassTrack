@@ -3,6 +3,7 @@ import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
 import { SchedulePage } from './pages/SchedulePage'
+import { ScheduleSessionPage } from './pages/ScheduleSessionPage'
 
 function App() {
   return (
@@ -18,6 +19,14 @@ function App() {
           element={<AttendancePage />}
         />
         <Route path="/courses/:courseId/schedule" element={<SchedulePage />} />
+        <Route
+          path="/courses/:courseId/schedule/sessions/new"
+          element={<ScheduleSessionPage />}
+        />
+        <Route
+          path="/courses/:courseId/schedule/sessions/:sessionId"
+          element={<ScheduleSessionPage />}
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

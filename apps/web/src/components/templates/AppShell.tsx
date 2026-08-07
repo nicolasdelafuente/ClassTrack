@@ -6,6 +6,9 @@ type AppShellProps = {
   courseCode?: string
   children: ReactNode
   showBack?: boolean
+  /** Destination for the back link (default: board `/`). */
+  backTo?: string
+  backLabel?: string
 }
 
 /** Template: chrome de producto (header + main). */
@@ -14,6 +17,8 @@ export function AppShell({
   courseCode,
   children,
   showBack = false,
+  backTo = '/',
+  backLabel = '← Tablero',
 }: AppShellProps) {
   return (
     <div className="mx-auto w-full max-w-[1120px] min-w-0 px-4 pb-12">
@@ -28,9 +33,9 @@ export function AppShell({
           {showBack ? (
             <Link
               className="text-[13px] font-medium text-fg-muted no-underline transition-colors duration-200 hover:text-fg"
-              to="/"
+              to={backTo}
             >
-              ← Tablero
+              {backLabel}
             </Link>
           ) : (
             <span
