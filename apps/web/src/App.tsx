@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
-import './App.css'
 
 function App() {
   return (

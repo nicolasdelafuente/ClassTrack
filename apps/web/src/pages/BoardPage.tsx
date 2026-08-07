@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { fetchCourseGroups, fetchCurrentCourse } from '../api/client'
-import { AppShell } from '../components/AppShell'
-import { GroupCard } from '../components/GroupCard'
+import { ButtonLink } from '../components/atoms/ButtonLink'
+import { Heading, Text } from '../components/atoms/Text'
+import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { GroupCard } from '../components/organisms/GroupCard'
+import { AppShell } from '../components/templates/AppShell'
 import type { Course, GroupSummary } from '../types'
 
 type LoadState =
@@ -45,7 +47,7 @@ export function BoardPage() {
   if (state.status === 'loading') {
     return (
       <AppShell>
-        <p className="state-msg">Cargando tablero…</p>
+        <StateMessage>Cargando tablero…</StateMessage>
       </AppShell>
     )
   }
@@ -53,14 +55,16 @@ export function BoardPage() {
   if (state.status === 'error') {
     return (
       <AppShell>
-        <div className="state-box" role="alert">
-          <h1>No hay cursada demo</h1>
-          <p>{state.message}</p>
-          <p className="state-box__hint">
-            En la raíz del repo: <code>npm run seed</code> y{' '}
-            <code>npm run dev:api</code>
-          </p>
-        </div>
+        <StateBox
+          title="No hay cursada demo"
+          message={state.message}
+          hint={
+            <>
+              En la raíz del repo: <code>npm run seed</code> y{' '}
+              <code>npm run dev:api</code>
+            </>
+          }
+        />
       </AppShell>
     )
   }
@@ -69,25 +73,20 @@ export function BoardPage() {
 
   return (
     <AppShell courseName={course.name} courseCode={course.code}>
-      <section className="board">
-        <div className="board__intro">
-          <div className="board__intro-row">
-            <div>
-              <h1 className="board__title">Tablero de grupos</h1>
-              <p className="board__subtitle">
-                {groups.length} grupos · semáforo de sprints de un vistazo
-              </p>
-            </div>
-            <Link
-              className="btn btn--primary"
-              to={`/courses/${course.id}/attendance`}
-            >
-              Tomar asistencia
-            </Link>
+      <section>
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <Heading>Tablero de grupos</Heading>
+            <Text className="mt-1">
+              {groups.length} grupos · semáforo de sprints de un vistazo
+            </Text>
           </div>
+          <ButtonLink to={`/courses/${course.id}/attendance`}>
+            Tomar asistencia
+          </ButtonLink>
         </div>
 
-        <div className="board__grid">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
           {groups.map((group) => (
             <GroupCard key={group.id} group={group} courseId={course.id} />
           ))}

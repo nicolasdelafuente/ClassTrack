@@ -40,4 +40,6 @@ Tipografía: **Inter** (como Linear). Radio: **6–8px**. Espaciado en grilla de
 
 ## Continuidad
 
-Nuevas pantallas deben reutilizar variables de `apps/web/src/App.css` (`:root`) y el mismo lenguaje visual.
+Nuevas pantallas: **Tailwind v4** + **Atomic Design** (`atoms` → `molecules` → `organisms` → `templates` → `pages`).
+
+Tokens en `apps/web/src/index.css` (`@theme`). No agregar CSS suelto tipo BEM; preferí clases Tailwind y componentes reutilizables.
