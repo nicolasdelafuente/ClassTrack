@@ -8,6 +8,8 @@ Abrí el `SKILL.md` que corresponda (`.cursor/rules/skills-activation.mdc`).
 
 UI web: **siempre** `.agents/skills/classtrack-ui/SKILL.md` primero.
 
+**Sin modales** salvo confirmación/alerta: preferí rutas nuevas o UI inline (`.cursor/rules/no-modales.mdc`).
+
 ## 2. Stack
 
 | App | Stack |
