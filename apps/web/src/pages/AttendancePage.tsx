@@ -7,6 +7,7 @@ import {
 } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Label } from '../components/atoms/Label'
+import { MandatoryChip } from '../components/atoms/MandatoryChip'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { Text } from '../components/atoms/Text'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
@@ -19,6 +20,7 @@ import type {
   ScheduleSession,
   SprintStatus,
 } from '../types'
+import { CLASS_ACTIVITY_TYPE_LABELS } from '../types'
 
 type LoadState =
   | { status: 'loading' }
@@ -259,6 +261,9 @@ export function AttendancePage() {
   const presentRatio =
     totals.students === 0 ? 0 : totals.present / totals.students
   const session = roster.session
+  const scheduleDay =
+    attendanceDates.find((s) => s.date === date) ?? null
+  const dayActivities = scheduleDay?.items ?? []
 
   return (
     <AppShell
@@ -282,7 +287,7 @@ export function AttendancePage() {
           badge={
             <div className="flex flex-wrap gap-2">
               <StatusBadge
-                status={session.isMandatory ? 'attention' : 'ok'}
+                status={session.isMandatory ? 'ok' : 'unknown'}
                 label={session.isMandatory ? 'Obligatoria' : 'Optativa'}
               />
               <StatusBadge
@@ -318,38 +323,64 @@ export function AttendancePage() {
             },
           ]}
           actions={
-            <div className="flex flex-wrap items-end gap-3">
-              <div>
-                <Label htmlFor="attendance-date">Fecha del cronograma</Label>
-                <select
-                  id="attendance-date"
-                  value={date}
-                  onChange={(e) => onDateChange(e.target.value)}
-                  className="mt-1 min-h-10 min-w-[14rem] rounded-md border border-border bg-surface-1 px-2.5 text-[13px] text-fg shadow-panel"
-                >
-                  {attendanceDates.map((s) => (
-                    <option key={s.id} value={s.date}>
-                      {s.date}
-                      {s.isMandatory ? ' · obligatoria' : ' · optativa'}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-10"
-                to={`/courses/${courseId}/schedule`}
-              >
-                Ver cronograma
-              </ButtonLink>
-              {scopedGroup ? (
+            <div className="flex w-full flex-col gap-3">
+              <div className="flex flex-wrap items-end gap-3">
+                <div>
+                  <Label htmlFor="attendance-date">Fecha del cronograma</Label>
+                  <select
+                    id="attendance-date"
+                    value={date}
+                    onChange={(e) => onDateChange(e.target.value)}
+                    className="mt-1 min-h-10 min-w-[14rem] rounded-md border border-border bg-surface-1 px-2.5 text-[13px] text-fg shadow-panel"
+                  >
+                    {attendanceDates.map((s) => (
+                      <option key={s.id} value={s.date}>
+                        {s.date}
+                        {s.isMandatory ? ' · obligatoria' : ' · optativa'}
+                        {s.items[0] ? ` · ${s.items[0].title}` : ''}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <ButtonLink
                   variant="ghost"
                   className="min-h-10"
-                  to={`/courses/${courseId}/groups/${scopedGroup.id}`}
+                  to={`/courses/${courseId}/schedule`}
                 >
-                  Abrir workspace
+                  Ver cronograma
                 </ButtonLink>
+                {scopedGroup ? (
+                  <ButtonLink
+                    variant="ghost"
+                    className="min-h-10"
+                    to={`/courses/${courseId}/groups/${scopedGroup.id}`}
+                  >
+                    Abrir workspace
+                  </ButtonLink>
+                ) : null}
+              </div>
+
+              {dayActivities.length > 0 ? (
+                <div className="rounded-md border border-border bg-surface-2/70 px-3 py-2.5">
+                  <p className="m-0 text-[11px] font-semibold uppercase tracking-wide text-fg-faint">
+                    Actividades del día
+                  </p>
+                  <ul className="mt-1.5 m-0 flex list-none flex-col gap-1 p-0">
+                    {dayActivities.map((item) => (
+                      <li key={item.id} className="min-w-0">
+                        <span className="block text-[14px] font-medium text-fg">
+                          {item.title}
+                        </span>
+                        <div className="mt-1 flex flex-wrap items-center gap-2">
+                          <span className="text-[12px] text-fg-faint">
+                            {CLASS_ACTIVITY_TYPE_LABELS[item.activityType]}
+                          </span>
+                          <MandatoryChip mandatory={item.isMandatory} />
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ) : null}
             </div>
           }

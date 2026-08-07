@@ -16,7 +16,7 @@ export function AppShell({
   showBack = false,
 }: AppShellProps) {
   return (
-    <div className="mx-auto max-w-[1120px] px-4 pb-12">
+    <div className="mx-auto w-full max-w-[1120px] min-w-0 px-4 pb-12">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-[13px] focus:font-medium focus:text-white"
