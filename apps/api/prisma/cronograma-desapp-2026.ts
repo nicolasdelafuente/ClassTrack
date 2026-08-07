@@ -185,8 +185,8 @@ export const CRONOGRAMA_DESAPP_2026: CronogramaSeedDay[] = [
   },
 ]
 
-/** Parse YYYY-MM-DD as UTC midnight for stable unique dates. */
+/** Parse YYYY-MM-DD as UTC noon (same as attendance dates). */
 export function parseSeedDate(isoDate: string): Date {
   const [y, m, d] = isoDate.split('-').map(Number)
-  return new Date(Date.UTC(y, m - 1, d))
+  return new Date(Date.UTC(y, m - 1, d, 12, 0, 0))
 }
