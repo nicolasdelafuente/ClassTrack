@@ -20,5 +20,6 @@ Antes de editar, leé:
 - Tailwind v4 (`@theme` en `src/index.css`).
 - `atoms` → `molecules` → `organisms` → `templates` → `pages`.
 - `cn()` en `src/lib/cn.ts`.
+- Campos editables: fondo **blanco** (`surface-1`) + borde visible; gris solo si `disabled` (`.cursor/rules` / `Input` + `Select`).
 - **Sin modales** salvo confirm/alerta → pantalla nueva o UI inline (`.cursor/rules/no-modales.mdc`).
 - Doc: `project-hub-docs/04-ui-ux/direccion-visual-2026.md`.
