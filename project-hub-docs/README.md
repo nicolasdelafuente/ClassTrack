@@ -33,6 +33,7 @@ App web responsive para docentes de **Desarrollo de Aplicaciones** (UNaHur).
 - [04-ui-ux/navegacion.md](./04-ui-ux/navegacion.md)
 - [04-ui-ux/dashboards.md](./04-ui-ux/dashboards.md)
 - [04-ui-ux/pantallas.md](./04-ui-ux/pantallas.md)
+- [04-ui-ux/direccion-visual-2026.md](./04-ui-ux/direccion-visual-2026.md)
 
 ## Arquitectura (MVP)
 

@@ -20,6 +20,9 @@ Lista de skills del ecosistema [skills.sh](https://www.skills.sh/) que usamos o 
 | `tailwind-design-system` | Tailwind v4 para apps web (React) | https://skills.sh/wshobson/agents/tailwind-design-system | `npx skills add https://github.com/wshobson/agents --skill tailwind-design-system` |
 | `security-and-hardening` | Seguridad web general (FE + BE) | https://skills.sh/addyosmani/agent-skills/security-and-hardening | `npx skills add https://github.com/addyosmani/agent-skills --skill security-and-hardening` |
 | `security-review` | Revisión de vulnerabilidades en código | https://skills.sh/getsentry/skills/security-review | `npx skills add https://github.com/getsentry/skills --skill security-review` |
+| `frontend-design` | UI distintiva / anti-slop (redesigns) | https://skills.sh/anthropics/skills/frontend-design | `npx skills add https://github.com/anthropics/skills --skill frontend-design` |
+| `design-taste-frontend` | Gustos de producto moderno | https://skills.sh/leonxlnx/taste-skill/design-taste-frontend | `npx skills add https://github.com/leonxlnx/taste-skill --skill design-taste-frontend` |
+| `linear-ui-skills` | Estética tipo Linear (dark, denso) | https://skills.sh/ihlamury/design-skills/linear-ui-skills | `npx skills add https://github.com/ihlamury/design-skills --skill linear-ui-skills` |
 
 ### Seguridad: por qué estas dos
 
@@ -109,8 +112,7 @@ Quedan en: `classTrack/.agents/skills/` (+ `skills-lock.json` si el CLI lo gener
 | Skill / origen | Cuándo | Link / nota |
 |----------------|--------|-------------|
 | Skills de diseño propias | Cuando las pases | *(pendiente — prioridad sobre genéricas)* |
-| `frontend-design` (Anthropic) | Si no hay skills propias de diseño | https://skills.sh/anthropics/skills/frontend-design |
-| Docker / Compose | Al dockerizar el monorepo | Buscar en https://www.skills.sh/ con buen ranking |
+| Docker / Compose | Al dockerizar el monorepo (CT-014 pospuesto) | Buscar en https://www.skills.sh/ con buen ranking |
 | Turborepo (Vercel) | Solo si adoptamos Turborepo | Ver skills de vercel-labs / turborepo |
 
 ---
@@ -144,6 +146,9 @@ React Native, deploy a Vercel/Azure, Lark, video/HyperFrames, marketing, etc.
 | create-github-issue-feature-from-specification | **Sí** | Proyecto |
 | trello (clawdis) | **Sí** | Proyecto |
 | Trello Automation | **Sí** | Proyecto |
+| frontend-design | **Sí** | Proyecto CT-015 |
+| design-taste-frontend | **Sí** | Proyecto CT-015 |
+| linear-ui-skills | **Sí** | Proyecto CT-015 |
 | gh-cli | No disponible | Usar `gh` + skill `github` |
 | create-github-pull-request-from-specification | No disponible | Usar `copilot-pr-autopilot` |
 | domain-modeling | Opcional | No instalada |
