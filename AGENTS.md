@@ -23,7 +23,13 @@ Docs: `project-hub-docs/`. MVP: tablero, detalle, asistencia. Docker pospuesto.
 
 Trello / commits / PRs en **español**. Código en inglés.
 
-**Trello:** al crear una tarjeta, **siempre** poner labels (`mvp`/`feature`/`chore`/`infra`/`docs`/`épica`). Ver `project-hub-docs/flujo-trello-github.md`.
+**Trello (obligatorio para agentes):**
+
+1. **Labels** en toda tarjeta nueva (`mvp`/`feature`/`chore`/`infra`/`docs`/`épica`).
+2. Toda tarea con `**Épica:** CT-E0X` en la descripción.
+3. Checklist **`Tickets de la épica`** en cada épica: agregar ítem al crear ticket; marcar al pasar a Hecho; si el checklist queda 100% → mover épica a **Hecho**.
+
+Detalle: `project-hub-docs/flujo-trello-github.md`.
 
 ## 5. Datos sensibles
 

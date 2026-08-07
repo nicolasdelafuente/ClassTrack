@@ -10,12 +10,12 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 
 | Lista | Uso |
 |-------|-----|
-| **Épicas** | Agrupa de trabajo grande (varios tickets) |
+| **Épicas** | Agrupa de trabajo grande (varios tickets) — solo épicas **abiertas** |
 | **Backlog** | Ideas / después del MVP |
 | **Por hacer** | Listo para empezar (priorizado) |
 | **En curso** | En desarrollo ahora |
 | **En revisión** | PR abierto / esperando feedback |
-| **Hecho** | Cerrado (con link a PR/commit) |
+| **Hecho** | Cerrado (con link a PR/commit). Incluye épicas con **todos** sus tickets hechos |
 
 ### Numeración
 
@@ -24,7 +24,7 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 
 ### Labels (obligatorias al crear)
 
-**Toda tarjeta nueva debe llevar labels desde el alta** (no dejarlas sin etiquetar).
+**Toda tarjeta nueva (épica o tarea) debe llevar labels desde el alta.** Sin excepciones.
 
 | Label | Color | Uso |
 |-------|-------|-----|
@@ -48,6 +48,21 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 
 API: al crear la card, POST `/cards/{id}/idLabels?value={labelId}` por cada label.
 
+### Épicas ↔ tickets (checklist)
+
+Cada épica **debe** tener un checklist llamado **`Tickets de la épica`** con un ítem por ticket hijo:
+
+```text
+CT-0XX — Título — https://trello.com/c/...
+```
+
+**Reglas para agentes / al cerrar trabajo**
+
+1. Al **crear** un ticket: poner `**Épica:** CT-E0X` en la descripción, labels, y **agregar el ítem** al checklist de la épica (unchecked).
+2. Al **mover un ticket a Hecho**: marcar ese ítem del checklist de la épica como **completo**.
+3. Si **todos** los ítems del checklist están completos → mover la **épica a Hecho**.
+4. Si se reabre un ticket → desmarcar el ítem y, si la épica estaba en Hecho, devolverla a **Épicas**.
+
 ### Asignación
 
 Toda tarjeta activa lleva **miembro asignado** (quién la hace).
@@ -62,14 +77,14 @@ En la descripción o comentarios de cada tarjeta:
 - Commit: https://github.com/nicolasdelafuente/ClassTrack/commit/SHA
 ```
 
-Relación épica ↔ tareas: las tareas mencionan `Épica: CT-E0X` en la descripción.
+Relación épica ↔ tareas: las tareas mencionan `**Épica:** CT-E0X` en la descripción.
 
 ## Git / PRs
 
 - Rama desde `main`: `docs/...`, `feat/...`, `chore/...`
 - Commits en **español** (ver [convencion-idioma.md](./convencion-idioma.md))
 - PR en español; en el body: `Trello: CT-00N` + link a la tarjeta
-- Al mergear: mover tarjeta a **Hecho** y pegar link del PR
+- Al mergear: mover tarjeta a **Hecho**, pegar link del PR, **actualizar checklist de la épica** (y cerrar épica si corresponde)
 
 ## Repo
 
