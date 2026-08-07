@@ -6,6 +6,10 @@ import {
   DEFAULT_ACTIVITY_TYPE_RULES,
   DEFAULT_MAX_ABSENCES_ALLOWED,
 } from '../src/schedule/course-policy-defaults';
+import {
+  CRONOGRAMA_DESAPP_2026,
+  parseSeedDate,
+} from './cronograma-desapp-2026';
 
 type SeedStudent = {
   fullName: string;
@@ -151,6 +155,34 @@ async function main() {
     }
   }
 
+  // Cronograma DesApp 2026 (CT-025) — derived mandatory flags from type defaults
+  for (const day of CRONOGRAMA_DESAPP_2026) {
+    const items = day.items.map((item, index) => {
+      const rule = DEFAULT_ACTIVITY_TYPE_RULES[item.activityType];
+      return {
+        title: item.title,
+        sortOrder: index,
+        activityType: item.activityType,
+        isMandatory: rule.isMandatoryByDefault,
+      };
+    });
+    const allowsAttendance = items.every(
+      (item) => DEFAULT_ACTIVITY_TYPE_RULES[item.activityType].allowsAttendance,
+    );
+    const isMandatory = items.some((item) => item.isMandatory);
+
+    await prisma.classSession.create({
+      data: {
+        courseId: course.id,
+        date: parseSeedDate(day.date),
+        isMandatory,
+        mandatorySource: 'derived',
+        allowsAttendance,
+        items: { create: items },
+      },
+    });
+  }
+
   const counts = {
     courses: await prisma.course.count(),
     groups: await prisma.group.count(),
@@ -158,6 +190,8 @@ async function main() {
     memberships: await prisma.membership.count(),
     sprints: await prisma.sprintStatus.count(),
     activityTypeDefaults: await prisma.courseActivityTypeDefault.count(),
+    classSessions: await prisma.classSession.count(),
+    classSessionItems: await prisma.classSessionItem.count(),
   };
   console.log('Seed OK', counts);
 }
