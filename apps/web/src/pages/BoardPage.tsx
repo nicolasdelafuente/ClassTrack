@@ -105,6 +105,13 @@ export function BoardPage() {
               >
                 Cronograma
               </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
+                to={`/courses/${course.id}/duplicate`}
+              >
+                Duplicar cursada
+              </ButtonLink>
             </>
           }
         />

@@ -240,6 +240,36 @@ export function patchSchedulePolicy(
   })
 }
 
+export type DuplicateCourseResult = {
+  course: Course & { maxAbsencesAllowed?: number }
+  meta: {
+    sourceCourseId: string
+    sessionsCopied: number
+    groupsCopied: number
+    dayOffset: number
+    firstSessionDate: string
+  }
+}
+
+export function duplicateCourse(
+  courseId: string,
+  body: {
+    name: string
+    code: string
+    firstSessionDate: string
+    setAsCurrent?: boolean
+    copyEmptyGroups?: boolean
+  },
+) {
+  return requestJson<DuplicateCourseResult>(
+    `/courses/${courseId}/duplicate`,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+    },
+  )
+}
+
 export function registerUser(body: {
   email: string
   password: string

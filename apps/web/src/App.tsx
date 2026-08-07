@@ -7,6 +7,7 @@ import {
 } from './auth/RequireAuth'
 import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
+import { DuplicateCoursePage } from './pages/DuplicateCoursePage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
@@ -37,6 +38,16 @@ function App() {
               <RequireAuth>
                 <RequireTeacher>
                   <BoardPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/duplicate"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <DuplicateCoursePage />
                 </RequireTeacher>
               </RequireAuth>
             }
