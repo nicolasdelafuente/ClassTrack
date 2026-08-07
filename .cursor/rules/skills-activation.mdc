@@ -1,0 +1,37 @@
+---
+description: Obligar a leer skills de ClassTrack antes de implementar
+alwaysApply: true
+---
+
+# Skills — activación obligatoria
+
+Las skills en `.agents/skills/` **no cuentan** si no se leen. Antes de implementar, el agente **DEBE** abrir con la herramienta Read el `SKILL.md` relevante y seguirlo.
+
+## Matriz (tarea → skill)
+
+| Si trabajás en… | Leé primero |
+|-----------------|-------------|
+| UI / CSS / componentes / Tailwind | `tailwind-design-system`, `atomic-design-fundamentals`, `frontend-design`, `linear-ui-skills`, `web-design-guidelines` |
+| React (hooks, fetch, rendimiento) | `vercel-react-best-practices` |
+| NestJS / `apps/api` | `nestjs-best-practices`, `security-and-hardening` |
+| Prisma / schema / seed / DB | `prisma-database-setup` (+ `prisma-postgres` si hay Postgres) |
+| Auth, inputs, secretos, revisión de riesgos | `security-and-hardening` y/o `security-review` |
+| Monorepo / workspaces | `monorepo-management` |
+| Commits | `git-commit` + `project-hub-docs/convencion-idioma.md` |
+| PRs / GitHub | skill `github` + `gh` CLI |
+| Trello | API/flujo documentado; skills `trello` si aplica |
+
+## Ritual mínimo
+
+1. Identificar la fila de la matriz.
+2. `Read` el/los `SKILL.md` (no improvisar de memoria).
+3. Aplicar checklist del skill en el cambio.
+4. Si hay conflicto entre skills, gana: **seguridad > docs del hub > skill de diseño > preferencia del chat**.
+
+## No hacer
+
+- Instalar skills y no abrirlas.
+- Inventar CSS BEM nuevo: usar Tailwind + Atomic Design (`atoms` → `pages`).
+- Commits/PRs/Trello en inglés (ver `convencion-idioma.md`).
+
+Detalle: `project-hub-docs/skills.md` y `04-ui-ux/direccion-visual-2026.md`.

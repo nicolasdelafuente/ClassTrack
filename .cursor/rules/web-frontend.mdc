@@ -1,0 +1,23 @@
+---
+description: Front web — Tailwind, Atomic Design, Linear, React
+globs: apps/web/**/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# apps/web
+
+Antes de editar, leé:
+
+1. `.agents/skills/tailwind-design-system/SKILL.md`
+2. `.agents/skills/atomic-design-fundamentals/SKILL.md`
+3. `.agents/skills/linear-ui-skills/SKILL.md` (tokens / dark tool)
+4. `.agents/skills/web-design-guidelines/SKILL.md`
+5. Si tocás lógica React: `.agents/skills/vercel-react-best-practices/SKILL.md`
+
+## Convenciones
+
+- Estilos solo con **Tailwind v4** (`@theme` en `src/index.css`).
+- Componentes en `atoms` → `molecules` → `organisms` → `templates`; pantallas en `pages/`.
+- Reutilizar `cn()` de `src/lib/cn.ts`.
+- No recrear `App.css` BEM.
+- Dirección visual: `project-hub-docs/04-ui-ux/direccion-visual-2026.md`.
