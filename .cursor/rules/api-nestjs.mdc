@@ -1,0 +1,21 @@
+---
+description: API Nest — best practices y seguridad básica
+globs: apps/api/**/*.{ts,prisma}
+alwaysApply: false
+---
+
+# apps/api
+
+Antes de editar, leé:
+
+1. `.agents/skills/nestjs-best-practices/SKILL.md`
+2. `.agents/skills/security-and-hardening/SKILL.md`
+3. Si tocás Prisma: `.agents/skills/prisma-database-setup/SKILL.md`
+4. Si migrás a Postgres: `.agents/skills/prisma-postgres/SKILL.md`
+
+## Convenciones
+
+- Validar inputs (DTOs / pipes) en endpoints nuevos o que mutan datos.
+- No loguear secretos ni PII de alumnos en claro.
+- Prefijo `/api`; CORS solo orígenes de dev conocidos salvo decisión documentada.
+- Seed: `demo.json` commiteable; `from-excel.json` / xlsx **nunca** al repo.

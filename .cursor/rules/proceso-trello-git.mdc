@@ -1,0 +1,12 @@
+---
+description: Flujo Trello + Git en español para ClassTrack
+globs: "{project-hub-docs/**,.gitignore,README.md,package.json}"
+alwaysApply: false
+---
+
+# Proceso repo / docs
+
+- Idioma: `project-hub-docs/convencion-idioma.md` (Trello, commits, PRs en **español**).
+- Flujo: `project-hub-docs/flujo-trello-github.md`.
+- Commits: leer `.agents/skills/git-commit/SKILL.md` y adaptar mensajes a español.
+- Skills instaladas y matriz: `project-hub-docs/skills.md`.

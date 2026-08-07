@@ -105,6 +105,19 @@ Quedan en: `classTrack/.agents/skills/` (+ `skills-lock.json` si el CLI lo gener
 
 **Alcance:** solo **proyecto** (sin `-g`). Así no contaminan otros repos. En global solo utilidades de Cursor (`find-skills`, `orca-cli`, `orchestration`, `computer-use`).
 
+## Cómo hacer que el agente las use de verdad
+
+Instalar ≠ aplicar. Activación forzada vía:
+
+| Mecanismo | Qué hace |
+|-----------|----------|
+| `.cursor/rules/skills-activation.mdc` | `alwaysApply` — matriz tarea → skill |
+| `.cursor/rules/web-frontend.mdc` | Al tocar `apps/web/**` |
+| `.cursor/rules/api-nestjs.mdc` | Al tocar `apps/api/**` |
+| `AGENTS.md` | Resumen para cualquier agente |
+
+Si el agente no abre el `SKILL.md` con Read, **está incumpliendo** las rules del repo.
+
 ---
 
 ## Más adelante
