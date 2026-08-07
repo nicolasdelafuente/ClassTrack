@@ -5,6 +5,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { AuthUser } from '../types'
+import { normalizeAuthUser } from './roles'
 
 const STORAGE_KEY = 'classtrack.auth.user'
 
@@ -21,22 +22,10 @@ function readStoredUser(): AuthUser | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
-    const parsed = JSON.parse(raw) as AuthUser
-    if (
-      typeof parsed?.id === 'string' &&
-      typeof parsed?.email === 'string'
-    ) {
-      return {
-        id: parsed.id,
-        email: parsed.email,
-        displayName:
-          typeof parsed.displayName === 'string' ? parsed.displayName : null,
-      }
-    }
+    return normalizeAuthUser(JSON.parse(raw))
   } catch {
-    // corrupt storage — treat as logged out
+    return null
   }
-  return null
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {

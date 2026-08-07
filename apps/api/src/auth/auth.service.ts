@@ -3,18 +3,20 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { UserRole } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { LoginDto, RegisterDto } from './dto/auth.dto';
+import { LoginDto, RegisterDto, UserRoleValue } from './dto/auth.dto';
 
 /** Public shape returned to the client (never includes password). */
 export type AuthUserResponse = {
   id: string;
   email: string;
   displayName: string | null;
+  role: UserRoleValue;
 };
 
 /**
- * DEMO auth for MVP (CT-038).
+ * DEMO auth for MVP (CT-038 / CT-039).
  * Passwords are compared as plain text — replace before any real deploy.
  */
 @Injectable()
@@ -32,6 +34,7 @@ export class AuthService {
       data: {
         email,
         password: dto.password,
+        role: dto.role as UserRole,
         displayName: dto.displayName?.trim() || null,
       },
     });
@@ -60,10 +63,12 @@ function toAuthUser(user: {
   id: string;
   email: string;
   displayName: string | null;
+  role: UserRole;
 }): AuthUserResponse {
   return {
     id: user.id,
     email: user.email,
     displayName: user.displayName,
+    role: user.role,
   };
 }
