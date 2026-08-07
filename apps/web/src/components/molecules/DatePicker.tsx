@@ -165,10 +165,11 @@ export function DatePicker({
           aria-expanded={open}
           aria-haspopup="dialog"
           className={cn(
-            'flex w-full min-h-10 cursor-pointer items-center justify-between gap-2 rounded-md border border-border bg-surface-2 px-2.5 py-2 text-left text-[13px] text-fg shadow-panel transition-[border-color,background-color,box-shadow] duration-200',
-            'hover:border-border-strong hover:bg-surface-1',
-            'focus:border-accent focus:bg-surface-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
-            disabled && 'cursor-not-allowed opacity-50',
+            'flex w-full min-h-10 cursor-pointer items-center justify-between gap-2 rounded-md border border-border-strong bg-surface-1 px-2.5 py-2 text-left text-[13px] text-fg shadow-panel transition-[border-color,background-color,box-shadow] duration-200',
+            'hover:border-accent/40 hover:bg-surface-1',
+            'focus:border-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
+            disabled &&
+              'cursor-not-allowed border-border bg-surface-2 text-fg-faint shadow-none',
           )}
           onClick={() => {
             if (!alwaysOpen) setOpen((v) => !v)

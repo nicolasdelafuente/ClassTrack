@@ -8,6 +8,7 @@ import {
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Label } from '../components/atoms/Label'
 import { MandatoryChip } from '../components/atoms/MandatoryChip'
+import { Select } from '../components/atoms/Select'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { Text } from '../components/atoms/Text'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
@@ -327,11 +328,11 @@ export function AttendancePage() {
               <div className="flex flex-wrap items-end gap-3">
                 <div>
                   <Label htmlFor="attendance-date">Fecha del cronograma</Label>
-                  <select
+                  <Select
                     id="attendance-date"
                     value={date}
                     onChange={(e) => onDateChange(e.target.value)}
-                    className="mt-1 min-h-10 min-w-[14rem] rounded-md border border-border bg-surface-1 px-2.5 text-[13px] text-fg shadow-panel"
+                    className="mt-1 min-w-[14rem]"
                   >
                     {attendanceDates.map((s) => (
                       <option key={s.id} value={s.date}>
@@ -340,7 +341,7 @@ export function AttendancePage() {
                         {s.items[0] ? ` · ${s.items[0].title}` : ''}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </div>
                 <ButtonLink
                   variant="ghost"

@@ -11,6 +11,7 @@ import { Button } from '../atoms/Button'
 import { Input } from '../atoms/Input'
 import { Label } from '../atoms/Label'
 import { Panel } from '../atoms/Panel'
+import { Select } from '../atoms/Select'
 import { DatePicker, formatDateDisplay } from '../molecules/DatePicker'
 import {
   CLASS_ACTIVITY_TYPE_LABELS,
@@ -76,9 +77,6 @@ function newDraftItem(
     isMandatory: defaultMandatory(type, defaults),
   }
 }
-
-const selectClassName =
-  'mt-1 w-full min-h-10 rounded-md border border-border bg-surface-1 px-2.5 text-[13px] text-fg shadow-panel'
 
 /** Inline form to create/edit a class (full page, not a modal). */
 export function ScheduleSessionEditor({
@@ -345,9 +343,9 @@ export function ScheduleSessionEditor({
 
               <div className="mt-2">
                 <Label htmlFor={`item-type-${item.key}`}>Tipo</Label>
-                <select
+                <Select
                   id={`item-type-${item.key}`}
-                  className={selectClassName}
+                  className="mt-1"
                   value={item.activityType}
                   disabled={saving}
                   onChange={(e) =>
@@ -361,7 +359,7 @@ export function ScheduleSessionEditor({
                       {CLASS_ACTIVITY_TYPE_LABELS[type]}
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
 
               {item.activityType !== 'feriado' ? (

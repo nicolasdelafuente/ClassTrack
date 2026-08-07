@@ -50,6 +50,7 @@ References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome
 - Long entrance choreographies or parallax
 - One-off card markup that bypasses `Panel` / `PageHero` on product pages
 - **Modals / drawers / overlay dialogs for product flows** (create, edit, detail, pickers). Prefer a **new route** or **inline** UI. Only confirmations/alerts may use a dialog (`window.confirm` or equivalent). See `.cursor/rules/no-modales.mdc`.
+- Editable fields with **grey fill that looks disabled** — use white (`surface-1`) + visible border; reserve grey fill for truly `disabled` controls.
 
 ## Hierarchy (workspace screens)
 
