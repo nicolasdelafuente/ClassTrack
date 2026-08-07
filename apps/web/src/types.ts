@@ -96,6 +96,13 @@ export type AttendanceRoster = {
   }
   date: string
   groupId: string | null
+  session: {
+    id: string
+    date: string
+    isMandatory: boolean
+    allowsAttendance: boolean
+    mandatorySource: 'derived' | 'manual'
+  }
   groups: AttendanceGroup[]
 }
 

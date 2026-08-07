@@ -12,6 +12,7 @@ export class AttendanceService {
   async getRoster(courseId: string, dateStr: string, groupId?: string) {
     const course = await this.requireCourse(courseId);
     const date = parseDateOnly(dateStr);
+    const session = await this.requireAttendanceSession(courseId, dateStr);
 
     if (groupId) {
       const group = await this.prisma.group.findFirst({
@@ -65,6 +66,13 @@ export class AttendanceService {
       },
       date: toDateOnlyString(date),
       groupId: groupId ?? null,
+      session: {
+        id: session.id,
+        date: toDateOnlyString(session.date),
+        isMandatory: session.isMandatory,
+        allowsAttendance: session.allowsAttendance,
+        mandatorySource: session.mandatorySource,
+      },
       groups: groups.map((g) => ({
         id: g.id,
         number: g.number,
@@ -100,6 +108,7 @@ export class AttendanceService {
     }
 
     const date = parseDateOnly(body.date);
+    await this.requireAttendanceSession(courseId, body.date);
     const studentId = body.studentId;
 
     const membership = await this.prisma.membership.findFirst({
@@ -150,6 +159,32 @@ export class AttendanceService {
       present: record.present,
       participated: record.participated,
     };
+  }
+
+  private async requireAttendanceSession(courseId: string, dateStr: string) {
+    const dayStart = parseDateOnly(dateStr);
+    dayStart.setUTCHours(0, 0, 0, 0);
+    const dayEnd = new Date(dayStart);
+    dayEnd.setUTCDate(dayEnd.getUTCDate() + 1);
+
+    const session = await this.prisma.classSession.findFirst({
+      where: {
+        courseId,
+        date: { gte: dayStart, lt: dayEnd },
+      },
+    });
+
+    if (!session) {
+      throw new BadRequestException(
+        'La fecha no está en el cronograma de la cursada',
+      );
+    }
+    if (!session.allowsAttendance) {
+      throw new BadRequestException(
+        'Ese día es feriado / sin asistencia: no se toma lista',
+      );
+    }
+    return session;
   }
 
   private async requireCourse(courseId: string) {
