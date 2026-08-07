@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   fetchCourseSchedule,
   patchSchedulePolicy,
@@ -16,7 +16,6 @@ import { ScheduleHeroMeta } from '../components/molecules/ScheduleHeroMeta'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
-import { ScheduleSessionEditor } from '../components/organisms/ScheduleSessionEditor'
 import { AppShell } from '../components/templates/AppShell'
 import {
   CLASS_ACTIVITY_TYPE_LABELS,
@@ -30,9 +29,6 @@ type LoadState =
   | { status: 'error'; message: string }
   | { status: 'ready'; schedule: CourseSchedule }
 
-/** null = closed; 'new' = create; string = edit session id */
-type EditorState = null | 'new' | string
-
 function formatDate(iso: string) {
   const [y, m, d] = iso.split('-')
   return `${d}/${m}/${y}`
@@ -40,13 +36,13 @@ function formatDate(iso: string) {
 
 export function SchedulePage() {
   const { courseId = '' } = useParams()
+  const navigate = useNavigate()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [busyId, setBusyId] = useState<string | null>(null)
   const [showPolicy, setShowPolicy] = useState(false)
   const [maxAbsences, setMaxAbsences] = useState(4)
   const [defaultsDraft, setDefaultsDraft] = useState<ActivityTypeDefault[]>([])
   const [policyMessage, setPolicyMessage] = useState<string | null>(null)
-  const [editor, setEditor] = useState<EditorState>(null)
 
   useEffect(() => {
     if (!courseId) {
@@ -107,32 +103,6 @@ export function SchedulePage() {
         schedule: {
           ...prev.schedule,
           sessions,
-        },
-      }
-    })
-  }
-
-  function addSession(created: ScheduleSession) {
-    setState((prev) => {
-      if (prev.status !== 'ready') return prev
-      const sessions = [...prev.schedule.sessions, created].sort((a, b) =>
-        a.date.localeCompare(b.date),
-      )
-      return {
-        status: 'ready',
-        schedule: { ...prev.schedule, sessions },
-      }
-    })
-  }
-
-  function removeSession(sessionId: string) {
-    setState((prev) => {
-      if (prev.status !== 'ready') return prev
-      return {
-        status: 'ready',
-        schedule: {
-          ...prev.schedule,
-          sessions: prev.schedule.sessions.filter((s) => s.id !== sessionId),
         },
       }
     })
@@ -200,10 +170,6 @@ export function SchedulePage() {
   }
 
   const { schedule } = state
-  const editingSession =
-    editor && editor !== 'new'
-      ? (schedule.sessions.find((s) => s.id === editor) ?? null)
-      : null
 
   return (
     <AppShell
@@ -341,7 +307,9 @@ export function SchedulePage() {
             <Button
               variant="ghost"
               className="min-h-9 text-[12px]"
-              onClick={() => setEditor('new')}
+              onClick={() =>
+                navigate(`/courses/${courseId}/schedule/sessions/new`)
+              }
             >
               Nueva clase
             </Button>
@@ -352,21 +320,15 @@ export function SchedulePage() {
               return (
                 <li
                   key={session.id}
-                  className="cursor-pointer border-b border-border px-3 py-3 last:border-b-0 hover:bg-surface-interactive sm:px-4"
-                  onClick={() => setEditor(session.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      setEditor(session.id)
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
+                  className="border-b border-border last:border-b-0 hover:bg-surface-interactive"
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="m-0 min-w-0 tabular-nums text-[14px] font-semibold text-fg">
+                  <div className="flex items-center justify-between gap-3 px-3 pt-3 sm:px-4">
+                    <Link
+                      to={`/courses/${courseId}/schedule/sessions/${session.id}`}
+                      className="min-w-0 flex-1 text-[14px] font-semibold tabular-nums text-fg no-underline"
+                    >
                       {formatDate(session.date)}
-                    </p>
+                    </Link>
                     {!session.allowsAttendance ? (
                       <span className="inline-flex h-9 w-[7.5rem] shrink-0 items-center justify-center text-[13px] font-medium text-fg-faint">
                         Feriado
@@ -382,51 +344,41 @@ export function SchedulePage() {
                             ? 'h-9 min-h-9 w-[7.5rem] shrink-0 text-[12px]'
                             : 'h-9 min-h-9 w-[7.5rem] shrink-0 border-border-strong text-[12px]'
                         }
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          void toggleMandatory(session)
-                        }}
+                        onClick={() => void toggleMandatory(session)}
                       >
                         {session.isMandatory ? 'Obligatoria' : 'Optativa'}
                       </Button>
                     )}
                   </div>
 
-                  <ul className="mt-2.5 m-0 flex min-w-0 list-none flex-col gap-2 p-0">
-                    {session.items.map((item) => (
-                      <li key={item.id} className="min-w-0">
-                        <span className="block break-words text-[14px] text-fg text-pretty">
-                          {item.title}
-                        </span>
-                        <div className="mt-1 flex flex-wrap items-center gap-2">
-                          <span className="text-[12px] text-fg-faint">
-                            {CLASS_ACTIVITY_TYPE_LABELS[item.activityType]}
+                  <Link
+                    to={`/courses/${courseId}/schedule/sessions/${session.id}`}
+                    className="block px-3 pb-3 pt-2.5 text-fg no-underline sm:px-4"
+                  >
+                    <ul className="m-0 flex min-w-0 list-none flex-col gap-2 p-0">
+                      {session.items.map((item) => (
+                        <li key={item.id} className="min-w-0">
+                          <span className="block break-words text-[14px] text-fg text-pretty">
+                            {item.title}
                           </span>
-                          {session.allowsAttendance ? (
-                            <MandatoryChip mandatory={item.isMandatory} />
-                          ) : null}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                          <div className="mt-1 flex flex-wrap items-center gap-2">
+                            <span className="text-[12px] text-fg-faint">
+                              {CLASS_ACTIVITY_TYPE_LABELS[item.activityType]}
+                            </span>
+                            {session.allowsAttendance ? (
+                              <MandatoryChip mandatory={item.isMandatory} />
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </Link>
                 </li>
               )
             })}
           </ul>
         </Panel>
       </section>
-
-      {editor !== null && (editor === 'new' || editingSession) ? (
-        <ScheduleSessionEditor
-          courseId={courseId}
-          session={editor === 'new' ? null : editingSession}
-          activityTypeDefaults={schedule.activityTypeDefaults}
-          onClose={() => setEditor(null)}
-          onSaved={replaceSession}
-          onCreated={addSession}
-          onDeleted={removeSession}
-        />
-      ) : null}
     </AppShell>
   )
 }
