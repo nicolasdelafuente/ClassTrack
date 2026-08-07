@@ -11,7 +11,7 @@ import { Button } from '../atoms/Button'
 import { Input } from '../atoms/Input'
 import { Label } from '../atoms/Label'
 import { Panel } from '../atoms/Panel'
-import { DatePicker } from '../molecules/DatePicker'
+import { DatePicker, formatDateDisplay } from '../molecules/DatePicker'
 import {
   CLASS_ACTIVITY_TYPE_LABELS,
   type ActivityTypeDefault,
@@ -228,57 +228,70 @@ export function ScheduleSessionEditor({
 
   return (
     <div className="flex flex-col gap-3">
-      <Panel tone="default" className="p-4 sm:p-5">
-        <div className="flex flex-col gap-4">
-          <div>
+      <Panel tone="default" className="overflow-hidden p-0">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(240px,300px)]">
+          <div className="border-b border-border p-4 sm:p-5 lg:border-b-0 lg:border-r">
             <Label htmlFor="session-date">Fecha</Label>
-            <div className="mt-1">
+            <div className="mt-2">
               <DatePicker
                 id="session-date"
                 value={date}
                 disabled={saving}
                 alwaysOpen
+                showTrigger={false}
+                embedded
                 onChange={setDate}
               />
             </div>
           </div>
 
-          <div>
-            <p className="m-0 mb-1.5 text-[12px] font-medium text-fg-muted">
-              Estado del día
-            </p>
-            {looksLikeHoliday ? (
-              <p className="m-0 text-[13px] text-fg-faint">
-                Feriado / sin lista (por el tipo de actividad)
+          <aside className="flex flex-col gap-4 bg-surface-2/50 p-4 sm:p-5">
+            <div>
+              <p className="m-0 text-[11px] font-semibold uppercase tracking-wide text-fg-faint">
+                Seleccionada
               </p>
-            ) : (
-              <div className="flex gap-2">
-                <Button
-                  variant={isMandatory ? 'toggleOn' : 'toggle'}
-                  disabled={saving}
-                  className={cn(
-                    'h-9 min-h-9 flex-1 text-[12px]',
-                    !isMandatory && 'border-border-strong',
-                  )}
-                  onClick={() => setIsMandatory(true)}
-                >
-                  Obligatoria
-                </Button>
-                <Button
-                  variant="toggle"
-                  disabled={saving}
-                  className={cn(
-                    'h-9 min-h-9 flex-1 border-border-strong text-[12px]',
-                    !isMandatory &&
-                      'ring-2 ring-[color-mix(in_srgb,var(--color-fg-muted)_25%,transparent)]',
-                  )}
-                  onClick={() => setIsMandatory(false)}
-                >
-                  Optativa
-                </Button>
-              </div>
-            )}
-          </div>
+              <p className="m-0 mt-1 text-[22px] font-semibold tabular-nums tracking-tight text-fg sm:text-[24px]">
+                {formatDateDisplay(date)}
+              </p>
+            </div>
+
+            <div>
+              <p className="m-0 mb-1.5 text-[12px] font-medium text-fg-muted">
+                Estado del día
+              </p>
+              {looksLikeHoliday ? (
+                <p className="m-0 rounded-md border border-border bg-surface-1 px-3 py-2.5 text-[13px] text-fg-faint">
+                  Feriado / sin lista
+                </p>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Button
+                    variant={isMandatory ? 'toggleOn' : 'toggle'}
+                    disabled={saving}
+                    className={cn(
+                      'h-9 min-h-9 w-full text-[12px]',
+                      !isMandatory && 'border-border-strong',
+                    )}
+                    onClick={() => setIsMandatory(true)}
+                  >
+                    Obligatoria
+                  </Button>
+                  <Button
+                    variant="toggle"
+                    disabled={saving}
+                    className={cn(
+                      'h-9 min-h-9 w-full border-border-strong text-[12px]',
+                      !isMandatory &&
+                        'ring-2 ring-[color-mix(in_srgb,var(--color-fg-muted)_25%,transparent)]',
+                    )}
+                    onClick={() => setIsMandatory(false)}
+                  >
+                    Optativa
+                  </Button>
+                </div>
+              )}
+            </div>
+          </aside>
         </div>
       </Panel>
 

@@ -30,6 +30,10 @@ type DatePickerProps = {
   disabled?: boolean
   /** Keep the month grid always open (good for form pages). Default true. */
   alwaysOpen?: boolean
+  /** Show the compact date button above the grid. Default true. */
+  showTrigger?: boolean
+  /** Drop outer max-width / nested chrome when inside a parent panel. */
+  embedded?: boolean
   className?: string
 }
 
@@ -57,12 +61,16 @@ function toIso(date: Date): string {
   return `${y}-${m}-${d}`
 }
 
-function formatDisplay(iso: string): string {
+export function formatDateDisplay(iso: string): string {
   const date = parseIso(iso)
   if (!date) return 'Elegí una fecha'
   const d = String(date.getUTCDate()).padStart(2, '0')
   const m = String(date.getUTCMonth() + 1).padStart(2, '0')
   return `${d}/${m}/${date.getUTCFullYear()}`
+}
+
+function formatDisplay(iso: string): string {
+  return formatDateDisplay(iso)
 }
 
 function startOfMonthUtc(year: number, monthIndex: number): Date {
@@ -111,6 +119,8 @@ export function DatePicker({
   onChange,
   disabled = false,
   alwaysOpen = true,
+  showTrigger = true,
+  embedded = false,
   className,
 }: DatePickerProps) {
   const labelId = useId()
@@ -145,35 +155,43 @@ export function DatePicker({
   }
 
   return (
-    <div className={cn('w-full max-w-sm', className)}>
-      <button
-        id={id}
-        type="button"
-        disabled={disabled}
-        aria-labelledby={labelId}
-        aria-expanded={open}
-        aria-haspopup="dialog"
-        className={cn(
-          'flex w-full min-h-10 cursor-pointer items-center justify-between gap-2 rounded-md border border-border bg-surface-2 px-2.5 py-2 text-left text-[13px] text-fg shadow-panel transition-[border-color,background-color,box-shadow] duration-200',
-          'hover:border-border-strong hover:bg-surface-1',
-          'focus:border-accent focus:bg-surface-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
-          disabled && 'cursor-not-allowed opacity-50',
-        )}
-        onClick={() => {
-          if (!alwaysOpen) setOpen((v) => !v)
-        }}
-      >
-        <span id={labelId} className="font-medium tabular-nums">
-          {formatDisplay(value)}
-        </span>
-        <IconCalendar className="shrink-0 text-fg-faint" />
-      </button>
+    <div className={cn('w-full', className)}>
+      {showTrigger ? (
+        <button
+          id={id}
+          type="button"
+          disabled={disabled}
+          aria-labelledby={labelId}
+          aria-expanded={open}
+          aria-haspopup="dialog"
+          className={cn(
+            'flex w-full min-h-10 cursor-pointer items-center justify-between gap-2 rounded-md border border-border bg-surface-2 px-2.5 py-2 text-left text-[13px] text-fg shadow-panel transition-[border-color,background-color,box-shadow] duration-200',
+            'hover:border-border-strong hover:bg-surface-1',
+            'focus:border-accent focus:bg-surface-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface',
+            disabled && 'cursor-not-allowed opacity-50',
+          )}
+          onClick={() => {
+            if (!alwaysOpen) setOpen((v) => !v)
+          }}
+        >
+          <span id={labelId} className="font-medium tabular-nums">
+            {formatDisplay(value)}
+          </span>
+          <IconCalendar className="shrink-0 text-fg-faint" />
+        </button>
+      ) : null}
 
       {open ? (
         <div
-          role="dialog"
+          role="group"
           aria-label="Calendario"
-          className="mt-2 rounded-xl border border-border bg-surface-1 p-3 shadow-panel motion-safe:animate-fade-up"
+          className={cn(
+            !embedded &&
+              'rounded-xl border border-border bg-surface-1 p-3 shadow-panel',
+            showTrigger && !embedded && 'mt-2',
+            embedded && 'p-0',
+            !alwaysOpen && 'motion-safe:animate-fade-up',
+          )}
         >
           <div className="mb-2 flex items-center justify-between gap-2">
             <button
@@ -185,7 +203,7 @@ export function DatePicker({
             >
               <IconChevronLeft />
             </button>
-            <p className="m-0 text-[14px] font-semibold text-fg">
+            <p className="m-0 text-[14px] font-semibold text-fg sm:text-[15px]">
               {MONTHS[cursorMonth]} {cursorYear}
             </p>
             <button
@@ -199,7 +217,7 @@ export function DatePicker({
             </button>
           </div>
 
-          <div className="mb-1 grid grid-cols-7 gap-0.5">
+          <div className="mb-1 grid grid-cols-7 gap-1">
             {WEEKDAYS.map((day) => (
               <span
                 key={day}
@@ -210,7 +228,7 @@ export function DatePicker({
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-0.5">
+          <div className="grid grid-cols-7 gap-1">
             {cells.map((cell) => {
               const isSelected = cell.iso === value
               const isToday = cell.iso === todayIso
@@ -222,7 +240,7 @@ export function DatePicker({
                   aria-label={formatDisplay(cell.iso)}
                   aria-current={isSelected ? 'date' : undefined}
                   className={cn(
-                    'inline-flex h-9 w-full cursor-pointer items-center justify-center rounded-md text-[13px] font-medium tabular-nums transition-[background-color,color,transform] duration-150',
+                    'inline-flex h-9 w-full cursor-pointer items-center justify-center rounded-md text-[13px] font-medium tabular-nums transition-[background-color,color,transform] duration-150 sm:h-10 sm:text-[14px]',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1',
                     cell.inMonth ? 'text-fg' : 'text-fg-faint/70',
                     !isSelected &&
