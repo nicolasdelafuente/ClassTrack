@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import type { GroupLinks } from '../../types'
 import { Button } from '../atoms/Button'
 import { IconDrive, IconGithub, IconTrello } from '../atoms/icons'
+import { InlineStatus } from '../atoms/InlineStatus'
 import { Input } from '../atoms/Input'
 import { cn } from '../../lib/cn'
 
@@ -48,12 +49,6 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
   useEffect(() => {
     setDraft(links)
   }, [links])
-
-  useEffect(() => {
-    if (phase !== 'saved') return
-    const t = window.setTimeout(() => setPhase('idle'), 1600)
-    return () => window.clearTimeout(t)
-  }, [phase])
 
   const dirty =
     draft.githubUrl !== links.githubUrl ||
@@ -182,16 +177,10 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
             Editar links
           </Button>
         )}
-        {phase === 'saved' ? (
-          <span className="text-xs font-semibold text-ok" aria-live="polite" role="status">
-            ✓ Guardado
-          </span>
-        ) : null}
-        {phase === 'error' && errorMessage ? (
-          <span className="text-xs font-medium text-critical" role="alert">
-            {errorMessage}
-          </span>
-        ) : null}
+        <InlineStatus
+          phase={phase === 'idle' ? 'idle' : phase}
+          errorMessage={errorMessage}
+        />
       </div>
     </div>
   )
