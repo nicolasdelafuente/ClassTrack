@@ -6,6 +6,7 @@ import {
   DEFAULT_ACTIVITY_TYPE_RULES,
   DEFAULT_MAX_ABSENCES_ALLOWED,
 } from '../src/schedule/course-policy-defaults';
+import { deriveSessionFromItems } from '../src/schedule/mandatory-rules';
 import {
   CRONOGRAMA_DESAPP_2026,
   parseSeedDate,
@@ -155,30 +156,24 @@ async function main() {
     }
   }
 
-  // Cronograma DesApp 2026 (CT-025) — derived mandatory flags from type defaults
+  // Cronograma DesApp 2026 (CT-025) — flags via domain rules (CT-026)
   for (const day of CRONOGRAMA_DESAPP_2026) {
-    const items = day.items.map((item, index) => {
-      const rule = DEFAULT_ACTIVITY_TYPE_RULES[item.activityType];
-      return {
-        title: item.title,
-        sortOrder: index,
-        activityType: item.activityType,
-        isMandatory: rule.isMandatoryByDefault,
-      };
-    });
-    const allowsAttendance = items.every(
-      (item) => DEFAULT_ACTIVITY_TYPE_RULES[item.activityType].allowsAttendance,
-    );
-    const isMandatory = items.some((item) => item.isMandatory);
-
+    const derived = deriveSessionFromItems(day.items);
     await prisma.classSession.create({
       data: {
         courseId: course.id,
         date: parseSeedDate(day.date),
-        isMandatory,
-        mandatorySource: 'derived',
-        allowsAttendance,
-        items: { create: items },
+        isMandatory: derived.isMandatory,
+        mandatorySource: derived.mandatorySource,
+        allowsAttendance: derived.allowsAttendance,
+        items: {
+          create: day.items.map((item, index) => ({
+            title: item.title,
+            sortOrder: index,
+            activityType: item.activityType,
+            isMandatory: derived.items[index].isMandatory,
+          })),
+        },
       },
     });
   }
