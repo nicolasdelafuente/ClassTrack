@@ -14,8 +14,9 @@ import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
 import { ScheduleHeroMeta } from '../components/molecules/ScheduleHeroMeta'
 import { SectionTitle } from '../components/molecules/SectionTitle'
-import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
+import { SchedulePageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import {
   CLASS_ACTIVITY_TYPE_LABELS,
@@ -162,7 +163,7 @@ export function SchedulePage() {
   if (state.status === 'loading') {
     return (
       <AppShell showBack>
-        <StateMessage>Cargando cronograma…</StateMessage>
+        <SchedulePageSkeleton />
       </AppShell>
     )
   }
