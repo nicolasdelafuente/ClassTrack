@@ -183,6 +183,7 @@ export function DatePicker({
 
       {open ? (
         <div
+          id={!showTrigger ? id : undefined}
           role="group"
           aria-label="Calendario"
           className={cn(
