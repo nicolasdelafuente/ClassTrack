@@ -22,6 +22,7 @@ model Course {
   isCurrent          Boolean            @default(false) @map("is_current")
   groups             Group[]
   attendanceRecords  AttendanceRecord[]
+  classSessions      ClassSession[]
   createdAt          DateTime           @default(now()) @map("created_at")
   updatedAt          DateTime           @updatedAt @map("updated_at")
 
@@ -105,4 +106,58 @@ model AttendanceRecord {
 
   @@unique([courseId, studentId, date])
   @@map("attendance_records")
+}
+
+/// One calendar class day for a course (cronograma).
+enum ClassActivityType {
+  feriado
+  sprint_planning
+  sprint_review
+  seguimiento
+  teorica
+  presentacion_medio
+  presentacion_final
+}
+
+/// Whether class.isMandatory was computed from items or set by the teacher.
+enum MandatorySource {
+  derived
+  manual
+}
+
+model ClassSession {
+  id                String           @id @default(cuid())
+  courseId          String           @map("course_id")
+  course            Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  /// Calendar day of the class (store as date-only midnight).
+  date              DateTime
+  /// Effective flag used for absence quota (teacher may override).
+  isMandatory       Boolean          @default(true) @map("is_mandatory")
+  /// `derived` from items; `manual` when the teacher overrides.
+  mandatorySource   MandatorySource  @default(derived) @map("mandatory_source")
+  /// False for holidays — no attendance roster that day.
+  allowsAttendance  Boolean          @default(true) @map("allows_attendance")
+  items             ClassSessionItem[]
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  @@unique([courseId, date])
+  @@index([courseId])
+  @@map("class_sessions")
+}
+
+model ClassSessionItem {
+  id             String            @id @default(cuid())
+  classSessionId String            @map("class_session_id")
+  classSession   ClassSession      @relation(fields: [classSessionId], references: [id], onDelete: Cascade)
+  title          String
+  sortOrder      Int               @default(0) @map("sort_order")
+  activityType   ClassActivityType @map("activity_type")
+  /// Item-level mandatory flag (defaults come from type / course params in CT-024+).
+  isMandatory    Boolean           @default(true) @map("is_mandatory")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+
+  @@index([classSessionId])
+  @@map("class_session_items")
 }
