@@ -1,6 +1,7 @@
 import type {
   AttendanceMark,
   AttendanceRoster,
+  AuthUser,
   ClassActivityType,
   Course,
   CourseSchedule,
@@ -235,6 +236,24 @@ export function patchSchedulePolicy(
     activityTypeDefaults: ActivityTypeDefault[]
   }>(`/courses/${courseId}/schedule/policy`, {
     method: 'PATCH',
+    body: JSON.stringify(body),
+  })
+}
+
+export function registerUser(body: {
+  email: string
+  password: string
+  displayName?: string
+}) {
+  return requestJson<AuthUser>('/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
+export function loginUser(body: { email: string; password: string }) {
+  return requestJson<AuthUser>('/auth/login', {
+    method: 'POST',
     body: JSON.stringify(body),
   })
 }

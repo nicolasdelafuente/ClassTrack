@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../auth/AuthContext'
+import { Button } from '../atoms/Button'
 
 type AppShellProps = {
   courseName?: string
@@ -20,6 +22,14 @@ export function AppShell({
   backTo = '/',
   backLabel = '← Tablero',
 }: AppShellProps) {
+  const { user, logout, isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    logout()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1120px] min-w-0 px-4 pb-12">
       <a
@@ -46,21 +56,38 @@ export function AppShell({
             </span>
           )}
         </div>
-        {(courseName || courseCode) && (
-          <p className="m-0 flex flex-wrap items-center gap-2 text-[13px]">
-            {courseName ? (
-              <span className="font-medium text-fg">{courseName}</span>
-            ) : null}
-            {courseCode ? (
-              <span
-                className="rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-xs tabular-nums text-fg-faint shadow-panel"
-                translate="no"
-              >
-                {courseCode}
+        <div className="flex flex-wrap items-center gap-3">
+          {(courseName || courseCode) && (
+            <p className="m-0 flex flex-wrap items-center gap-2 text-[13px]">
+              {courseName ? (
+                <span className="font-medium text-fg">{courseName}</span>
+              ) : null}
+              {courseCode ? (
+                <span
+                  className="rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-xs tabular-nums text-fg-faint shadow-panel"
+                  translate="no"
+                >
+                  {courseCode}
+                </span>
+              ) : null}
+            </p>
+          )}
+          {isAuthenticated ? (
+            <div className="flex items-center gap-2">
+              <span className="hidden text-[12px] text-fg-faint sm:inline">
+                {user?.displayName || user?.email}
               </span>
-            ) : null}
-          </p>
-        )}
+              <Button
+                type="button"
+                variant="ghost"
+                className="min-h-8 px-2.5 py-1 text-[12px]"
+                onClick={handleLogout}
+              >
+                Salir
+              </Button>
+            </div>
+          ) : null}
+        </div>
       </header>
       <main
         id="main-content"

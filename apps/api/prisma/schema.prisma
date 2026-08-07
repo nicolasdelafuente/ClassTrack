@@ -15,6 +15,21 @@ enum SprintStatusValue {
   critical
 }
 
+/**
+ * Demo teacher account (CT-038).
+ * DEMO ONLY: password stored in plain text — never ship this to production.
+ */
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  displayName String?  @map("display_name")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
 model Course {
   id                   String                       @id @default(cuid())
   name                 String
