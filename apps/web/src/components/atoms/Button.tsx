@@ -30,7 +30,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        'inline-flex items-center justify-center rounded-md border px-3 py-2 text-[13px] font-medium transition active:scale-[0.97] disabled:cursor-not-allowed',
+        'inline-flex touch-manipulation items-center justify-center rounded-md border px-3 py-2 text-[13px] font-medium transition-[background-color,border-color,color,transform,filter] duration-150 motion-safe:active:scale-[0.97] disabled:cursor-not-allowed',
         variants[variant],
         className,
       )}

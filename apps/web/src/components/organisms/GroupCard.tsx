@@ -14,7 +14,7 @@ export function GroupCard({ group, courseId }: GroupCardProps) {
 
   return (
     <Link
-      className="flex flex-col gap-2.5 rounded-lg border border-border bg-surface-1 px-3.5 py-3 no-underline transition hover:border-border-strong hover:bg-surface-hover active:scale-[0.985]"
+      className="flex [content-visibility:auto] [contain-intrinsic-size:auto_160px] flex-col gap-2.5 rounded-lg border border-border bg-surface-1 px-3.5 py-3 no-underline transition-[background-color,border-color,transform] duration-150 hover:border-border-strong hover:bg-surface-hover motion-safe:active:scale-[0.985]"
       to={`/courses/${courseId}/groups/${group.id}`}
       aria-label={`${title}. ${group.projectTopic ?? 'Sin tema'}`}
     >

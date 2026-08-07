@@ -21,5 +21,9 @@ export function StateBox({ title, message, hint }: StateBoxProps) {
 }
 
 export function StateMessage({ children }: { children: ReactNode }) {
-  return <p className="text-fg-muted">{children}</p>
+  return (
+    <p className="text-fg-muted" aria-live="polite">
+      {children}
+    </p>
+  )
 }

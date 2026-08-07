@@ -10,6 +10,11 @@ export class CoursesController {
     return this.coursesService.getCurrent();
   }
 
+  @Get('current/board')
+  getCurrentBoard() {
+    return this.coursesService.getCurrentBoard();
+  }
+
   @Get(':courseId/groups')
   getGroups(@Param('courseId') courseId: string) {
     return this.coursesService.getGroups(courseId);

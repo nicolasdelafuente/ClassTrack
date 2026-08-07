@@ -1,12 +1,10 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
+import {
+  AttendanceQueryDto,
+  CourseIdParamDto,
+  UpsertAttendanceDto,
+} from './dto/attendance.dto';
 
 @Controller('courses/:courseId/attendance')
 export class AttendanceController {
@@ -14,24 +12,21 @@ export class AttendanceController {
 
   @Get()
   getRoster(
-    @Param('courseId') courseId: string,
-    @Query('date') date: string,
-    @Query('groupId') groupId?: string,
+    @Param() params: CourseIdParamDto,
+    @Query() query: AttendanceQueryDto,
   ) {
-    return this.attendanceService.getRoster(courseId, date, groupId);
+    return this.attendanceService.getRoster(
+      params.courseId,
+      query.date,
+      query.groupId,
+    );
   }
 
   @Patch()
   upsertMark(
-    @Param('courseId') courseId: string,
-    @Body()
-    body: {
-      date?: string;
-      studentId?: string;
-      present?: boolean;
-      participated?: boolean;
-    },
+    @Param() params: CourseIdParamDto,
+    @Body() body: UpsertAttendanceDto,
   ) {
-    return this.attendanceService.upsertMark(courseId, body ?? {});
+    return this.attendanceService.upsertMark(params.courseId, body);
   }
 }

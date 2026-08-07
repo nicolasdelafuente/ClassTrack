@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { fetchCourseGroups, fetchCurrentCourse } from '../api/client'
+import { fetchCurrentBoard } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Heading, Text } from '../components/atoms/Text'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
@@ -20,8 +20,8 @@ export function BoardPage() {
 
     async function load() {
       try {
-        const course = await fetchCurrentCourse()
-        const groups = await fetchCourseGroups(course.id)
+        // Single request — avoids course→groups waterfall (React best practices)
+        const { course, groups } = await fetchCurrentBoard()
         if (!cancelled) {
           setState({ status: 'ready', course, groups })
         }
@@ -75,7 +75,7 @@ export function BoardPage() {
     <AppShell courseName={course.name} courseCode={course.code}>
       <section>
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <Heading>Tablero de grupos</Heading>
             <Text className="mt-1">
               {groups.length} grupos · semáforo de sprints de un vistazo

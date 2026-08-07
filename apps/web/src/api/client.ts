@@ -11,6 +11,29 @@ import type {
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'
 
+/** Parse Nest/HTTP error bodies without leaking raw stacks to the UI. */
+function messageFromErrorBody(body: string, status: number, path: string): string {
+  if (!body) return `Error ${status} en ${path}`
+  try {
+    const parsed = JSON.parse(body) as {
+      message?: string | string[]
+      error?: string
+    }
+    if (Array.isArray(parsed.message)) {
+      return parsed.message.join(' · ')
+    }
+    if (typeof parsed.message === 'string' && parsed.message.trim()) {
+      return parsed.message
+    }
+  } catch {
+    // not JSON
+  }
+  if (body.length > 280) {
+    return `Error ${status} en ${path}`
+  }
+  return body
+}
+
 async function requestJson<T>(
   path: string,
   init?: RequestInit,
@@ -24,9 +47,18 @@ async function requestJson<T>(
   })
   if (!res.ok) {
     const body = await res.text()
-    throw new Error(body || `Error ${res.status} en ${path}`)
+    throw new Error(messageFromErrorBody(body, res.status, path))
   }
   return res.json() as Promise<T>
+}
+
+export type CurrentBoard = {
+  course: Course
+  groups: GroupSummary[]
+}
+
+export function fetchCurrentBoard() {
+  return requestJson<CurrentBoard>('/courses/current/board')
 }
 
 export function fetchCurrentCourse() {

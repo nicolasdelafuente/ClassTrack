@@ -17,6 +17,12 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <div className="mx-auto max-w-[1120px] px-4 pb-12">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-[13px] focus:font-medium focus:text-white"
+      >
+        Saltar al contenido
+      </a>
       <header className="sticky top-0 z-20 flex min-h-[52px] flex-wrap items-center justify-between gap-2 border-b border-border bg-surface/90 py-2.5 backdrop-blur-md">
         <div>
           {showBack ? (
@@ -27,7 +33,7 @@ export function AppShell({
               ← Tablero
             </Link>
           ) : (
-            <span className="text-sm font-semibold tracking-tight text-fg">
+            <span className="text-sm font-semibold tracking-tight text-fg" translate="no">
               ClassTrack
             </span>
           )}
@@ -38,14 +44,19 @@ export function AppShell({
               <span className="font-medium text-fg">{courseName}</span>
             ) : null}
             {courseCode ? (
-              <span className="rounded-full border border-border px-2 py-0.5 text-xs tabular-nums text-fg-faint">
+              <span
+                className="rounded-full border border-border px-2 py-0.5 text-xs tabular-nums text-fg-faint"
+                translate="no"
+              >
                 {courseCode}
               </span>
             ) : null}
           </p>
         )}
       </header>
-      <main className="pt-5">{children}</main>
+      <main id="main-content" className="scroll-mt-16 pt-5" tabIndex={-1}>
+        {children}
+      </main>
     </div>
   )
 }

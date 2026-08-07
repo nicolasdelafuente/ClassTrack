@@ -44,10 +44,12 @@
 @layer base {
   html {
     color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
     @apply m-0 min-h-dvh bg-surface font-sans text-sm text-fg-muted antialiased;
+    touch-action: manipulation;
   }
 
   #root {
@@ -60,5 +62,16 @@
 
   :focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-surface;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

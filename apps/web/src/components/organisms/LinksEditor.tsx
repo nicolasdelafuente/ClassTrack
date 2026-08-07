@@ -64,7 +64,9 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
           {saving ? 'Guardando…' : 'Guardar links'}
         </Button>
         {message ? (
-          <span className="text-xs text-fg-muted">{message}</span>
+          <span className="text-xs text-fg-muted" aria-live="polite" role="status">
+            {message}
+          </span>
         ) : null}
       </div>
     </div>
