@@ -3,6 +3,7 @@ import type { AttendanceGroup, AttendanceStudent } from '../../types'
 import { AttendanceToggles } from '../molecules/AttendanceToggles'
 import { Avatar } from '../atoms/Avatar'
 import { Panel } from '../atoms/Panel'
+import { StatusBadge } from '../atoms/StatusBadge'
 import { Heading } from '../atoms/Text'
 import { cn } from '../../lib/cn'
 
@@ -31,6 +32,7 @@ export function AttendanceGroupBlock({
   stagger,
 }: AttendanceGroupBlockProps) {
   const presentCount = group.students.filter((s) => s.present).length
+  const libreCount = group.students.filter((s) => s.isLibre).length
   const total = group.students.length
   const ratio = total === 0 ? 0 : presentCount / total
 
@@ -44,6 +46,7 @@ export function AttendanceGroupBlock({
           </Heading>
           <p className="mt-1 m-0 text-[12px] font-medium tabular-nums text-fg-faint">
             {presentCount}/{total} presentes
+            {libreCount > 0 ? ` · ${libreCount} en libre` : ''}
           </p>
           <div
             className="mt-2 h-1 w-40 max-w-full overflow-hidden rounded-full bg-surface-1"
@@ -102,14 +105,19 @@ export function AttendanceGroupBlock({
                   )}
                 />
                 <div className="min-w-0">
-                  <span className="block truncate text-[14px] font-medium text-fg">
-                    {student.fullName}
-                  </span>
-                  {student.legajo ? (
-                    <span className="mt-0.5 block text-[12px] tabular-nums text-fg-faint">
-                      Legajo {student.legajo}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="truncate text-[14px] font-medium text-fg">
+                      {student.fullName}
                     </span>
-                  ) : null}
+                    {student.isLibre ? (
+                      <StatusBadge status="critical" label="Libre" />
+                    ) : null}
+                  </div>
+                  <span className="mt-0.5 block text-[12px] tabular-nums text-fg-faint">
+                    {student.legajo ? `Legajo ${student.legajo} · ` : ''}
+                    {student.absenceCount}/{student.maxAbsencesAllowed} faltas
+                    {student.isLibre ? ' (excedió el cupo)' : ''}
+                  </span>
                 </div>
               </div>
               <AttendanceToggles

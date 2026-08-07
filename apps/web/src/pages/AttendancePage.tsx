@@ -106,9 +106,9 @@ export function AttendancePage() {
   }, [savedId])
 
   useEffect(() => {
-    const courseIdStr = courseId
-    const dateStr = date
-    if (!courseIdStr || !dateStr) return
+    if (!courseId || !date) return
+    const courseIdStr: string = courseId
+    const dateStr: string = date
 
     let cancelled = false
     async function load() {
@@ -116,7 +116,7 @@ export function AttendancePage() {
       try {
         const roster = await fetchAttendanceRoster(
           courseIdStr,
-          dateStr,
+          dateStr!,
           groupId,
         )
         if (!cancelled) setState({ status: 'ready', roster })
@@ -140,19 +140,31 @@ export function AttendancePage() {
   }, [courseId, date, groupId])
 
   const totals = useMemo(() => {
-    if (state.status !== 'ready') return { students: 0, present: 0, participated: 0 }
+    if (state.status !== 'ready') {
+      return { students: 0, present: 0, participated: 0, libre: 0 }
+    }
     const students = state.roster.groups.flatMap((g) => g.students)
     return {
       students: students.length,
       present: students.filter((s) => s.present).length,
       participated: students.filter((s) => s.participated).length,
+      libre: students.filter((s) => s.isLibre).length,
     }
   }, [state])
 
   const updateStudent = useCallback(
     (
       studentId: string,
-      patch: Partial<Pick<AttendanceStudent, 'present' | 'participated'>>,
+      patch: Partial<
+        Pick<
+          AttendanceStudent,
+          | 'present'
+          | 'participated'
+          | 'absenceCount'
+          | 'maxAbsencesAllowed'
+          | 'isLibre'
+        >
+      >,
     ) => {
       setState((prev) => {
         if (prev.status !== 'ready') return prev
@@ -191,6 +203,9 @@ export function AttendancePage() {
       updateStudent(student.id, {
         present: saved.present,
         participated: saved.participated,
+        absenceCount: saved.absenceCount,
+        maxAbsencesAllowed: saved.maxAbsencesAllowed,
+        isLibre: saved.isLibre,
       })
       setSavedId(student.id)
     } catch (err) {
@@ -261,7 +276,7 @@ export function AttendancePage() {
           }
           description={
             session.isMandatory
-              ? 'Clase obligatoria: las ausencias cuentan para el cupo de faltas.'
+              ? `Clase obligatoria: las ausencias cuentan. Cupo: ${roster.course.maxAbsencesAllowed} faltas (más → libre).`
               : 'Clase optativa: podés tomar lista, pero las ausencias no cuentan para el cupo de faltas.'
           }
           badge={
@@ -275,6 +290,13 @@ export function AttendancePage() {
                 pulseCritical
                 label={`${Math.round(presentRatio * 100)}% presentes`}
               />
+              {totals.libre > 0 ? (
+                <StatusBadge
+                  status="critical"
+                  pulseCritical
+                  label={`${totals.libre} en libre`}
+                />
+              ) : null}
             </div>
           }
           stats={[
@@ -286,8 +308,14 @@ export function AttendancePage() {
               label: 'Participaron',
               value: `${totals.participated}/${totals.students}`,
             },
-            { label: 'Grupos', value: roster.groups.length },
-            { label: 'Fecha', value: date },
+            {
+              label: 'En libre',
+              value: `${totals.libre}`,
+            },
+            {
+              label: 'Cupo faltas',
+              value: String(roster.course.maxAbsencesAllowed),
+            },
           ]}
           actions={
             <div className="flex flex-wrap items-end gap-3">

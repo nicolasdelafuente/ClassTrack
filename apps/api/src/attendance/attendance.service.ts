@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { buildAbsenceStatus } from './absence-status';
 
 @Injectable()
 export class AttendanceService {
@@ -58,11 +59,17 @@ export class AttendanceService {
       ]),
     );
 
+    const absenceCountByStudent = await this.countMandatoryAbsences(
+      courseId,
+      studentIds,
+    );
+
     return {
       course: {
         id: course.id,
         name: course.name,
         code: course.code,
+        maxAbsencesAllowed: course.maxAbsencesAllowed,
       },
       date: toDateOnlyString(date),
       groupId: groupId ?? null,
@@ -79,6 +86,10 @@ export class AttendanceService {
         name: g.name,
         students: g.memberships.map((m) => {
           const mark = byStudent.get(m.studentId);
+          const absence = buildAbsenceStatus(
+            absenceCountByStudent.get(m.studentId) ?? 0,
+            course.maxAbsencesAllowed,
+          );
           return {
             id: m.student.id,
             fullName: m.student.fullName,
@@ -86,10 +97,50 @@ export class AttendanceService {
             email: m.student.email,
             present: mark?.present ?? false,
             participated: mark?.participated ?? false,
+            absenceCount: absence.absenceCount,
+            maxAbsencesAllowed: absence.maxAbsencesAllowed,
+            isLibre: absence.isLibre,
           };
         }),
       })),
     };
+  }
+
+  /**
+   * Count absences that count toward "libre": present === false on
+   * mandatory sessions that allow attendance.
+   */
+  private async countMandatoryAbsences(
+    courseId: string,
+    studentIds: string[],
+  ): Promise<Map<string, number>> {
+    const counts = new Map<string, number>();
+    if (studentIds.length === 0) return counts;
+
+    const mandatorySessions = await this.prisma.classSession.findMany({
+      where: {
+        courseId,
+        isMandatory: true,
+        allowsAttendance: true,
+      },
+      select: { date: true },
+    });
+    if (mandatorySessions.length === 0) return counts;
+
+    const absenceRecords = await this.prisma.attendanceRecord.findMany({
+      where: {
+        courseId,
+        studentId: { in: studentIds },
+        present: false,
+        date: { in: mandatorySessions.map((s) => s.date) },
+      },
+      select: { studentId: true },
+    });
+
+    for (const record of absenceRecords) {
+      counts.set(record.studentId, (counts.get(record.studentId) ?? 0) + 1);
+    }
+    return counts;
   }
 
   async upsertMark(
@@ -101,7 +152,7 @@ export class AttendanceService {
       participated?: boolean;
     },
   ) {
-    await this.requireCourse(courseId);
+    const course = await this.requireCourse(courseId);
 
     if (!body?.date || !body?.studentId) {
       throw new BadRequestException('date y studentId son obligatorios');
@@ -153,11 +204,22 @@ export class AttendanceService {
       },
     });
 
+    const absenceCounts = await this.countMandatoryAbsences(courseId, [
+      studentId,
+    ]);
+    const absence = buildAbsenceStatus(
+      absenceCounts.get(studentId) ?? 0,
+      course.maxAbsencesAllowed,
+    );
+
     return {
       studentId: record.studentId,
       date: toDateOnlyString(record.date),
       present: record.present,
       participated: record.participated,
+      absenceCount: absence.absenceCount,
+      maxAbsencesAllowed: absence.maxAbsencesAllowed,
+      isLibre: absence.isLibre,
     };
   }
 
