@@ -15,10 +15,15 @@ Course (Cursada)
    │
    ├── has many → Teacher (o referencia simple por nombre)
    │
-   └── has many → AttendanceRecord
+   ├── has many → AttendanceRecord
+   │                  │
+   │                  ├── belongs to Student
+   │                  └── fecha + asistencia + participación
+   │
+   └── has many → ClassSession (cronograma)
                       │
-                      ├── belongs to Student
-                      └── fecha + asistencia + participación
+                      ├── date, isMandatory, allowsAttendance
+                      └── has many → ClassSessionItem (actividades del día)
 ```
 
 ## Entidades
@@ -96,9 +101,32 @@ Marca de un alumno en una fecha.
 | present | sí/no |
 | participated | sí/no |
 
+### ClassSession (Clase del cronograma)
+Un día de la cursada. Puede tener varios ítems.
+
+| Campo | Idea |
+|-------|------|
+| courseId | cursada |
+| date | día (único por cursada) |
+| isMandatory | si cuenta para el cupo de faltas |
+| mandatorySource | `derived` (desde ítems) \| `manual` (override docente) |
+| allowsAttendance | `false` en feriados |
+
+### ClassSessionItem
+Actividad dentro de una clase.
+
+| Campo | Idea |
+|-------|------|
+| classSessionId | |
+| title | texto visible |
+| sortOrder | orden |
+| activityType | `feriado` \| `sprint_planning` \| `sprint_review` \| `seguimiento` \| `teorica` \| `presentacion_medio` \| `presentacion_final` |
+| isMandatory | obligatoriedad del ítem |
+
 ## Fuera del modelo MVP
 
 - Sync con APIs externas
 - Notas / actas
 - Usuarios con roles y auth completa
 - Historial de cambios / auditoría
+- Parametría de defaults / umbral de faltas (CT-024)
