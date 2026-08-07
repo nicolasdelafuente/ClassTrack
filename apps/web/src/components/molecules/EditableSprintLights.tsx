@@ -36,7 +36,7 @@ export function EditableSprintLights({
               }
               aria-label={`Sprint ${sprint.sprintNumber}: ${label}. Tocar para cambiar`}
               title="Tocar para cambiar estado"
-              className="flex w-full flex-col items-center gap-1.5 rounded-md border border-border bg-surface-2 px-1 py-2.5 text-fg transition hover:border-border-strong hover:bg-surface-hover active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full flex-col items-center gap-1.5 rounded-md border border-border bg-surface-2 px-1 py-2.5 text-fg shadow-panel transition-[background-color,border-color,transform,box-shadow] duration-200 ease-out hover:border-border-strong hover:bg-surface-hover hover:shadow-lift motion-safe:hover:-translate-y-px motion-safe:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <span className="text-[10px] font-semibold tabular-nums text-fg-faint">
                 S{sprint.sprintNumber}

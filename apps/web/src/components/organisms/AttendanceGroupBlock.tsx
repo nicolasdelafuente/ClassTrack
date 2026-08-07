@@ -24,8 +24,8 @@ export function AttendanceGroupBlock({
   onToggle,
 }: AttendanceGroupBlockProps) {
   return (
-    <section className="overflow-hidden rounded-lg border border-border bg-surface-1">
-      <header className="flex flex-wrap items-center justify-between gap-1.5 border-b border-border bg-surface-2 px-3.5 py-2.5">
+    <section className="overflow-hidden rounded-lg border border-border bg-surface-1 shadow-panel motion-safe:animate-fade-up">
+      <header className="flex flex-wrap items-center justify-between gap-1.5 border-b border-border bg-surface-2/80 px-3.5 py-2.5">
         <Heading as="h2">
           Grupo {group.number}
           {group.name ? ` · ${group.name}` : ''}
