@@ -1,6 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './auth/AuthContext'
-import { RequireAuth } from './auth/RequireAuth'
+import {
+  RequireAuth,
+  RequireStudent,
+  RequireTeacher,
+} from './auth/RequireAuth'
 import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
@@ -8,6 +12,7 @@ import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { ScheduleSessionPage } from './pages/ScheduleSessionPage'
+import { StudentHomePage } from './pages/StudentHomePage'
 
 function App() {
   return (
@@ -17,10 +22,22 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
+            path="/alumno"
+            element={
+              <RequireAuth>
+                <RequireStudent>
+                  <StudentHomePage />
+                </RequireStudent>
+              </RequireAuth>
+            }
+          />
+          <Route
             path="/"
             element={
               <RequireAuth>
-                <BoardPage />
+                <RequireTeacher>
+                  <BoardPage />
+                </RequireTeacher>
               </RequireAuth>
             }
           />
@@ -28,7 +45,9 @@ function App() {
             path="/courses/:courseId/groups/:groupId"
             element={
               <RequireAuth>
-                <GroupDetailPage />
+                <RequireTeacher>
+                  <GroupDetailPage />
+                </RequireTeacher>
               </RequireAuth>
             }
           />
@@ -36,7 +55,9 @@ function App() {
             path="/courses/:courseId/attendance"
             element={
               <RequireAuth>
-                <AttendancePage />
+                <RequireTeacher>
+                  <AttendancePage />
+                </RequireTeacher>
               </RequireAuth>
             }
           />
@@ -44,7 +65,9 @@ function App() {
             path="/courses/:courseId/schedule"
             element={
               <RequireAuth>
-                <SchedulePage />
+                <RequireTeacher>
+                  <SchedulePage />
+                </RequireTeacher>
               </RequireAuth>
             }
           />
@@ -52,7 +75,9 @@ function App() {
             path="/courses/:courseId/schedule/sessions/new"
             element={
               <RequireAuth>
-                <ScheduleSessionPage />
+                <RequireTeacher>
+                  <ScheduleSessionPage />
+                </RequireTeacher>
               </RequireAuth>
             }
           />
@@ -60,7 +85,9 @@ function App() {
             path="/courses/:courseId/schedule/sessions/:sessionId"
             element={
               <RequireAuth>
-                <ScheduleSessionPage />
+                <RequireTeacher>
+                  <ScheduleSessionPage />
+                </RequireTeacher>
               </RequireAuth>
             }
           />

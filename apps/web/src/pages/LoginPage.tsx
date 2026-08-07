@@ -1,28 +1,23 @@
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { loginUser } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import { homePathForRole } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 
 export function LoginPage() {
-  const { isAuthenticated, login } = useAuth()
+  const { isAuthenticated, user, login } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
-  const from =
-    (location.state as { from?: string } | null)?.from &&
-    typeof (location.state as { from?: string }).from === 'string'
-      ? (location.state as { from: string }).from
-      : '/'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
-  if (isAuthenticated) {
-    return <Navigate to="/" replace />
+  if (isAuthenticated && user) {
+    return <Navigate to={homePathForRole(user.role)} replace />
   }
 
   async function onSubmit(event: FormEvent) {
@@ -30,9 +25,9 @@ export function LoginPage() {
     setError(null)
     setSubmitting(true)
     try {
-      const user = await loginUser({ email, password })
-      login(user)
-      navigate(from, { replace: true })
+      const next = await loginUser({ email, password })
+      login(next)
+      navigate(homePathForRole(next.role), { replace: true })
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'No se pudo iniciar sesión',
@@ -52,7 +47,7 @@ export function LoginPage() {
           ClassTrack
         </p>
         <p className="mt-2 text-[14px] text-fg-muted">
-          Ingresá con tu email y contraseña
+          Docentes y alumnos, cada uno en su espacio
         </p>
       </div>
 
@@ -104,8 +99,10 @@ export function LoginPage() {
           Registrate
         </Link>
       </p>
-      <p className="mt-3 text-center text-[12px] text-fg-faint">
-        Demo: docente@classtrack.local / demo123
+      <p className="mt-3 text-center text-[12px] leading-relaxed text-fg-faint">
+        Demo docente: docente@classtrack.local / demo123
+        <br />
+        Demo alumno: alumno@classtrack.local / demo123
       </p>
     </div>
   )

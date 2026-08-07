@@ -1,4 +1,13 @@
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsIn,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
+
+export const USER_ROLES = ['teacher', 'student'] as const;
+export type UserRoleValue = (typeof USER_ROLES)[number];
 
 export class RegisterDto {
   @IsEmail()
@@ -7,6 +16,9 @@ export class RegisterDto {
   @IsString()
   @MinLength(4)
   password!: string;
+
+  @IsIn(USER_ROLES)
+  role!: UserRoleValue;
 
   @IsOptional()
   @IsString()

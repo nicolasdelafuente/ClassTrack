@@ -1,10 +1,14 @@
 export type SprintStatus = 'unknown' | 'ok' | 'attention' | 'critical'
 
-/** Logged-in teacher (MVP auth — CT-038). No token; stored in localStorage. */
+/** teacher = docente, student = alumno (CT-039). */
+export type UserRole = 'teacher' | 'student'
+
+/** Logged-in account (MVP auth). No token; stored in localStorage. */
 export type AuthUser = {
   id: string
   email: string
   displayName: string | null
+  role: UserRole
 }
 
 export type Course = {

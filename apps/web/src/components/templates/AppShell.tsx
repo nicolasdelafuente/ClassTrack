@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
+import { roleLabel } from '../../auth/roles'
 import { Button } from '../atoms/Button'
 
 type AppShellProps = {
@@ -72,10 +73,13 @@ export function AppShell({
               ) : null}
             </p>
           )}
-          {isAuthenticated ? (
+          {isAuthenticated && user ? (
             <div className="flex items-center gap-2">
-              <span className="hidden text-[12px] text-fg-faint sm:inline">
-                {user?.displayName || user?.email}
+              <span className="hidden items-center gap-1.5 text-[12px] text-fg-faint sm:inline-flex">
+                <span className="rounded-full border border-border bg-surface-1 px-2 py-0.5 text-[11px] font-medium text-fg-muted">
+                  {roleLabel(user.role)}
+                </span>
+                <span>{user.displayName || user.email}</span>
               </span>
               <Button
                 type="button"

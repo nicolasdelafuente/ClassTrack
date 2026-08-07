@@ -97,13 +97,22 @@ async function main() {
   await prisma.course.deleteMany();
   await prisma.user.deleteMany();
 
-  // DEMO ONLY: plain-text password for local MVP login (CT-038)
-  await prisma.user.create({
-    data: {
-      email: 'docente@classtrack.local',
-      password: 'demo123',
-      displayName: 'Docente demo',
-    },
+  // DEMO ONLY: plain-text passwords for local MVP (CT-038 / CT-039)
+  await prisma.user.createMany({
+    data: [
+      {
+        email: 'docente@classtrack.local',
+        password: 'demo123',
+        displayName: 'Docente demo',
+        role: 'teacher',
+      },
+      {
+        email: 'alumno@classtrack.local',
+        password: 'demo123',
+        displayName: 'Alumno demo',
+        role: 'student',
+      },
+    ],
   });
 
   const course = await prisma.course.create({
@@ -200,7 +209,8 @@ async function main() {
     classSessionItems: await prisma.classSessionItem.count(),
   };
   console.log('Seed OK', counts);
-  console.log('Demo login: docente@classtrack.local / demo123');
+  console.log('Demo docente: docente@classtrack.local / demo123');
+  console.log('Demo alumno:  alumno@classtrack.local / demo123');
 }
 
 main()

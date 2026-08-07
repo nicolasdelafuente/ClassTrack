@@ -243,6 +243,7 @@ export function patchSchedulePolicy(
 export function registerUser(body: {
   email: string
   password: string
+  role: 'teacher' | 'student'
   displayName?: string
 }) {
   return requestJson<AuthUser>('/auth/register', {
