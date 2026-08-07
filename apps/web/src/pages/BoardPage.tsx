@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { fetchCurrentBoard } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
-import { Heading, Text } from '../components/atoms/Text'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
 import { GroupCard } from '../components/organisms/GroupCard'
+import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
+import { overallSprintStatus } from '../lib/sprintMeta'
 import type { Course, GroupSummary } from '../types'
 
 type LoadState =
@@ -20,7 +21,6 @@ export function BoardPage() {
 
     async function load() {
       try {
-        // Single request — avoids course→groups waterfall (React best practices)
         const { course, groups } = await fetchCurrentBoard()
         if (!cancelled) {
           setState({ status: 'ready', course, groups })
@@ -70,25 +70,51 @@ export function BoardPage() {
   }
 
   const { course, groups } = state
+  const attention = groups.filter((g) => {
+    const s = overallSprintStatus(g.sprints)
+    return s === 'attention' || s === 'critical'
+  }).length
 
   return (
     <AppShell courseName={course.name} courseCode={course.code}>
-      <section>
-        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-          <div className="min-w-0">
-            <Heading>Tablero de grupos</Heading>
-            <Text className="mt-1">
-              {groups.length} grupos · semáforo de sprints de un vistazo
-            </Text>
-          </div>
-          <ButtonLink to={`/courses/${course.id}/attendance`}>
-            Tomar asistencia
-          </ButtonLink>
-        </div>
+      <section className="flex flex-col gap-4">
+        <PageHero
+          eyebrow="Cursada actual"
+          title="Tablero de grupos"
+          description={`${groups.length} grupos · semáforo de sprints de un vistazo`}
+          stats={[
+            { label: 'Grupos', value: groups.length },
+            {
+              label: 'Requieren atención',
+              value: attention,
+            },
+          ]}
+          actions={
+            <ButtonLink
+              className="min-h-11 px-4 text-[14px]"
+              to={`/courses/${course.id}/attendance`}
+            >
+              Tomar asistencia
+            </ButtonLink>
+          }
+        />
 
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {groups.map((group) => (
-            <GroupCard key={group.id} group={group} courseId={course.id} />
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {groups.map((group, index) => (
+            <GroupCard
+              key={group.id}
+              group={group}
+              courseId={course.id}
+              className={
+                index % 4 === 0
+                  ? 'stagger-1'
+                  : index % 4 === 1
+                    ? 'stagger-2'
+                    : index % 4 === 2
+                      ? 'stagger-3'
+                      : 'stagger-4'
+              }
+            />
           ))}
         </div>
       </section>

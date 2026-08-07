@@ -37,24 +37,23 @@ const FIELDS: {
   },
 ]
 
-function hostLabel(url: string | null | undefined) {
-  if (!url?.trim()) return null
-  try {
-    return new URL(url.trim()).host.replace(/^www\./, '')
-  } catch {
-    return url.trim()
-  }
-}
+type SavePhase = 'idle' | 'saving' | 'saved' | 'error'
 
 export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProps) {
   const [draft, setDraft] = useState<GroupLinks>(links)
   const [editing, setEditing] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
+  const [phase, setPhase] = useState<SavePhase>('idle')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     setDraft(links)
   }, [links])
+
+  useEffect(() => {
+    if (phase !== 'saved') return
+    const t = window.setTimeout(() => setPhase('idle'), 1600)
+    return () => window.clearTimeout(t)
+  }, [phase])
 
   const dirty =
     draft.githubUrl !== links.githubUrl ||
@@ -62,16 +61,17 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
     draft.driveUrl !== links.driveUrl
 
   async function handleSave() {
-    setSaving(true)
-    setMessage(null)
+    setPhase('saving')
+    setErrorMessage(null)
     try {
       await onSave(draft)
-      setMessage('Guardado')
+      setPhase('saved')
       setEditing(false)
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : 'No se pudo guardar')
-    } finally {
-      setSaving(false)
+      setPhase('error')
+      setErrorMessage(
+        err instanceof Error ? err.message : 'No se pudo guardar',
+      )
     }
   }
 
@@ -79,22 +79,21 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
     <div className="flex flex-col gap-2">
       {FIELDS.map(({ key, label, icon, placeholder }, index) => {
         const value = draft[key]
-        const host = hostLabel(value)
-        const connected = Boolean(host)
+        const connected = Boolean(value?.trim())
 
         return (
           <div
             key={key}
-            style={{ animationDelay: `${index * 45}ms` }}
+            style={{ animationDelay: `${index * 40}ms` }}
             className={cn(
-              'rounded-xl border border-border bg-surface-1 px-3 py-3 shadow-panel transition-[transform,box-shadow,border-color] duration-200 ease-out motion-safe:animate-fade-up',
+              'group rounded-xl border border-border bg-surface-1 px-3 py-3 shadow-panel transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out motion-safe:animate-fade-up',
               !editing &&
-                'hover:border-border-strong hover:shadow-lift motion-safe:hover:-translate-y-0.5',
+                'hover:border-border-strong hover:bg-surface-hover hover:shadow-lift motion-safe:hover:-translate-y-0.5',
             )}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex items-center gap-3">
               <span
-                className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-base text-fg"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-fg transition-transform duration-200 motion-safe:group-hover:rotate-3"
                 aria-hidden
               >
                 {icon}
@@ -121,28 +120,28 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
                     inputMode="url"
                     placeholder={placeholder}
                     value={value ?? ''}
-                    disabled={disabled || saving}
+                    disabled={disabled || phase === 'saving'}
                     className="mt-2"
                     onChange={(e) =>
                       setDraft((prev) => ({ ...prev, [key]: e.target.value }))
                     }
                   />
-                ) : connected && value ? (
-                  <a
-                    className="group/link mt-1 inline-flex max-w-full items-center gap-1 truncate text-[13px] text-fg-muted no-underline transition-colors hover:text-accent"
-                    href={value.trim()}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span className="truncate">{host}</span>
-                    <span className="transition-transform duration-200 motion-safe:group-hover/link:translate-x-0.5">
-                      Abrir →
-                    </span>
-                  </a>
-                ) : (
-                  <p className="mt-1 text-[13px] text-fg-faint">Sin link</p>
-                )}
+                ) : null}
               </div>
+
+              {!editing && connected && value ? (
+                <a
+                  className="group/open shrink-0 inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-[13px] font-semibold text-accent no-underline transition-colors hover:bg-accent-soft"
+                  href={value.trim()}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Abrir
+                  <span className="transition-transform duration-200 motion-safe:group-hover/open:translate-x-1">
+                    →
+                  </span>
+                </a>
+              ) : null}
             </div>
           </div>
         )
@@ -153,18 +152,19 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
           <>
             <Button
               variant="primary"
-              disabled={!dirty || saving || disabled}
+              disabled={!dirty || phase === 'saving' || disabled}
               onClick={() => void handleSave()}
             >
-              {saving ? 'Guardando…' : 'Guardar'}
+              {phase === 'saving' ? 'Guardando…' : 'Guardar'}
             </Button>
             <Button
               variant="ghost"
-              disabled={saving}
+              disabled={phase === 'saving'}
               onClick={() => {
                 setDraft(links)
                 setEditing(false)
-                setMessage(null)
+                setPhase('idle')
+                setErrorMessage(null)
               }}
             >
               Cancelar
@@ -174,14 +174,22 @@ export function LinksEditor({ links, disabled = false, onSave }: LinksEditorProp
           <Button
             variant="ghost"
             disabled={disabled}
-            onClick={() => setEditing(true)}
+            onClick={() => {
+              setEditing(true)
+              setPhase('idle')
+            }}
           >
             Editar links
           </Button>
         )}
-        {message ? (
-          <span className="text-xs font-medium text-ok" aria-live="polite" role="status">
-            {message === 'Guardado' ? '✓ Guardado' : message}
+        {phase === 'saved' ? (
+          <span className="text-xs font-semibold text-ok" aria-live="polite" role="status">
+            ✓ Guardado
+          </span>
+        ) : null}
+        {phase === 'error' && errorMessage ? (
+          <span className="text-xs font-medium text-critical" role="alert">
+            {errorMessage}
           </span>
         ) : null}
       </div>

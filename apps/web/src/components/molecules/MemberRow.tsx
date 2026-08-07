@@ -7,8 +7,12 @@ type MemberRowProps = {
 
 export function MemberRow({ member }: MemberRowProps) {
   return (
-    <li className="group flex items-center gap-3 rounded-xl px-2.5 py-2 transition-[background-color,transform] duration-200 ease-out hover:bg-surface-hover motion-safe:hover:translate-x-0.5">
-      <Avatar name={member.fullName} size="sm" className="motion-safe:group-hover:scale-105" />
+    <li className="group flex items-center gap-3 rounded-xl px-2 py-1.5 transition-[background-color,transform] duration-200 ease-out hover:bg-surface-interactive motion-safe:hover:translate-x-0.5">
+      <Avatar
+        name={member.fullName}
+        size="sm"
+        className="motion-safe:group-hover:scale-105"
+      />
       <div className="min-w-0 flex-1">
         <span className="block truncate text-[14px] font-medium text-fg">
           {member.fullName}
