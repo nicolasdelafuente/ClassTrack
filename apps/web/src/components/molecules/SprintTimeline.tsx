@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import {
   SPRINT_STATUS_LABELS,
   nextSprintStatus,
@@ -43,7 +44,7 @@ export function SprintTimeline({
     <ul
       className={cn(
         'm-0 flex list-none items-stretch gap-0 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
-        compact ? 'pt-0' : 'snap-x snap-mandatory',
+        compact ? 'w-full pt-0' : 'snap-x snap-mandatory',
         className,
       )}
       aria-label="Semáforo de sprints"
@@ -76,61 +77,69 @@ export function SprintTimeline({
           </>
         )
 
+        const nodeClass = cn(
+          'flex w-full flex-col items-center justify-center gap-0.5 rounded-xl border',
+          compact ? 'min-w-0 px-1 py-1.5' : 'min-w-[4.5rem] px-2.5 py-2.5 sm:min-w-[5.25rem]',
+          nodeTone[sprint.status],
+        )
+
         return (
-          <li
-            key={sprint.sprintNumber}
-            className={cn(
-              'flex min-w-0 shrink-0 items-center',
-              compact ? 'flex-1' : 'snap-start',
-            )}
-          >
-            {editable ? (
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={() =>
-                  onCycle?.(
-                    sprint.sprintNumber,
-                    nextSprintStatus(sprint.status),
-                  )
-                }
-                aria-label={`Sprint ${sprint.sprintNumber}: ${label}. Tocar para cambiar`}
-                title="Tocar para cambiar estado"
-                className={cn(
-                  'flex flex-col items-center justify-center gap-0.5 rounded-xl border transition-[transform,background-color,border-color,box-shadow,color] duration-200 ease-out motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lift motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50',
-                  compact ? 'min-w-0 px-1 py-1.5' : 'min-w-[4.5rem] px-2.5 py-2.5 sm:min-w-[5.25rem]',
-                  nodeTone[sprint.status],
-                )}
-              >
-                {node}
-              </button>
-            ) : (
-              <div
-                className={cn(
-                  'flex flex-col items-center justify-center gap-0.5 rounded-xl border',
-                  compact
-                    ? 'min-w-0 flex-1 px-1 py-1.5'
-                    : 'min-w-[4.5rem] px-2.5 py-2.5',
-                  nodeTone[sprint.status],
-                )}
-                title={`Sprint ${sprint.sprintNumber}: ${label}`}
-                aria-label={`Sprint ${sprint.sprintNumber}: ${label}`}
-              >
-                {node}
-              </div>
-            )}
+          <Fragment key={sprint.sprintNumber}>
+            <li
+              className={cn(
+                'flex min-w-0 items-center',
+                // Equal columns: connectors live as siblings, not inside flex-1
+                compact ? 'flex-1' : 'shrink-0 snap-start',
+              )}
+            >
+              {editable ? (
+                <button
+                  type="button"
+                  disabled={disabled}
+                  onClick={() =>
+                    onCycle?.(
+                      sprint.sprintNumber,
+                      nextSprintStatus(sprint.status),
+                    )
+                  }
+                  aria-label={`Sprint ${sprint.sprintNumber}: ${label}. Tocar para cambiar`}
+                  title="Tocar para cambiar estado"
+                  className={cn(
+                    nodeClass,
+                    'transition-[transform,background-color,border-color,box-shadow,color] duration-200 ease-out motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-lift motion-safe:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50',
+                  )}
+                >
+                  {node}
+                </button>
+              ) : (
+                <div
+                  className={nodeClass}
+                  title={`Sprint ${sprint.sprintNumber}: ${label}`}
+                  aria-label={`Sprint ${sprint.sprintNumber}: ${label}`}
+                >
+                  {node}
+                </div>
+              )}
+            </li>
 
             {!isLast ? (
-              <span
+              <li
                 aria-hidden
                 className={cn(
-                  'mx-1 h-0.5 shrink-0 rounded-full',
-                  compact ? 'w-1.5 min-[400px]:w-2.5' : 'w-3 sm:w-5',
-                  connectorTone[sprint.status],
+                  'flex shrink-0 items-center self-center',
+                  compact ? 'px-0.5' : 'px-1',
                 )}
-              />
+              >
+                <span
+                  className={cn(
+                    'h-0.5 rounded-full',
+                    compact ? 'w-1.5 min-[400px]:w-2' : 'w-3 sm:w-5',
+                    connectorTone[sprint.status],
+                  )}
+                />
+              </li>
             ) : null}
-          </li>
+          </Fragment>
         )
       })}
     </ul>
