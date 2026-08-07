@@ -1,6 +1,7 @@
 import type {
   AttendanceMark,
   AttendanceRoster,
+  ClassActivityType,
   Course,
   CourseSchedule,
   GroupDetail,
@@ -140,6 +141,84 @@ export function patchScheduleSession(
       method: 'PATCH',
       body: JSON.stringify(body),
     },
+  )
+}
+
+export function createScheduleSession(
+  courseId: string,
+  body: {
+    date: string
+    items: Array<{
+      title: string
+      activityType: ClassActivityType
+      isMandatory?: boolean
+    }>
+    isMandatory?: boolean
+  },
+) {
+  return requestJson<ScheduleSession>(
+    `/courses/${courseId}/schedule/sessions`,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+    },
+  )
+}
+
+export function deleteScheduleSession(courseId: string, sessionId: string) {
+  return requestJson<{ ok: boolean }>(
+    `/courses/${courseId}/schedule/sessions/${sessionId}`,
+    { method: 'DELETE' },
+  )
+}
+
+export function createScheduleItem(
+  courseId: string,
+  sessionId: string,
+  body: {
+    title: string
+    activityType: ClassActivityType
+    isMandatory?: boolean
+    sortOrder?: number
+  },
+) {
+  return requestJson<ScheduleSession>(
+    `/courses/${courseId}/schedule/sessions/${sessionId}/items`,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+    },
+  )
+}
+
+export function patchScheduleItem(
+  courseId: string,
+  sessionId: string,
+  itemId: string,
+  body: {
+    title?: string
+    activityType?: ClassActivityType
+    isMandatory?: boolean
+    sortOrder?: number
+  },
+) {
+  return requestJson<ScheduleSession>(
+    `/courses/${courseId}/schedule/sessions/${sessionId}/items/${itemId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    },
+  )
+}
+
+export function deleteScheduleItem(
+  courseId: string,
+  sessionId: string,
+  itemId: string,
+) {
+  return requestJson<ScheduleSession>(
+    `/courses/${courseId}/schedule/sessions/${sessionId}/items/${itemId}`,
+    { method: 'DELETE' },
   )
 }
 

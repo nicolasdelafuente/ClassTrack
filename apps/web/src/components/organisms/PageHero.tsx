@@ -8,9 +8,14 @@ type PageHeroProps = {
   title: ReactNode
   description?: ReactNode
   badge?: ReactNode
+  /** Flat meta row (default). Ignored if `meta` is set. */
   stats?: MetaStatItem[]
+  /** Custom grouped metrics — use when flat stats are not enough. */
+  meta?: ReactNode
   actions?: ReactNode
   footer?: ReactNode
+  /** Tighter padding / type for dense academic screens (e.g. Cronograma). */
+  compact?: boolean
   className?: string
   stagger?: 1 | 2 | 3 | 4
 }
@@ -21,8 +26,10 @@ export function PageHero({
   description,
   badge,
   stats,
+  meta,
   actions,
   footer,
+  compact = false,
   className,
   stagger = 1,
 }: PageHeroProps) {
@@ -31,7 +38,7 @@ export function PageHero({
       as="header"
       tone="elevated"
       className={cn(
-        'p-4 sm:p-5',
+        compact ? 'p-3 sm:p-4' : 'p-4 sm:p-5',
         stagger === 1 && 'stagger-1',
         stagger === 2 && 'stagger-2',
         stagger === 3 && 'stagger-3',
@@ -39,18 +46,30 @@ export function PageHero({
         className,
       )}
     >
-      <div className="flex flex-wrap items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-2 sm:gap-3">
         <div className="min-w-0 flex-1">
           {eyebrow ? (
-            <p className="m-0 text-[12px] font-semibold uppercase tracking-wide text-fg-faint">
+            <p className="m-0 text-[11px] font-semibold uppercase tracking-wide text-fg-faint sm:text-[12px]">
               {eyebrow}
             </p>
           ) : null}
-          <h1 className="mt-1 text-[28px] font-bold tracking-tight text-fg sm:text-[32px]">
+          <h1
+            className={cn(
+              'mt-0.5 font-bold tracking-tight text-fg',
+              compact
+                ? 'text-[24px] sm:text-[28px]'
+                : 'text-[28px] sm:text-[32px]',
+            )}
+          >
             {title}
           </h1>
           {description ? (
-            <div className="mt-1.5 max-w-2xl text-[15px] text-fg-muted text-pretty">
+            <div
+              className={cn(
+                'mt-1 max-w-2xl text-fg-muted text-pretty',
+                compact ? 'text-[13px] sm:text-[14px]' : 'text-[15px]',
+              )}
+            >
               {description}
             </div>
           ) : null}
@@ -58,15 +77,26 @@ export function PageHero({
         {badge ? <div className="shrink-0">{badge}</div> : null}
       </div>
 
-      {stats && stats.length > 0 ? (
-        <MetaStats items={stats} className="mt-3" />
+      {meta ? (
+        <div className={cn(compact ? 'mt-2.5' : 'mt-3')}>{meta}</div>
+      ) : stats && stats.length > 0 ? (
+        <MetaStats items={stats} className={compact ? 'mt-2.5' : 'mt-3'} />
       ) : null}
 
       {actions ? (
-        <div className="mt-4 flex flex-wrap gap-2">{actions}</div>
+        <div
+          className={cn(
+            'flex flex-wrap items-center gap-2',
+            compact ? 'mt-2.5' : 'mt-4',
+          )}
+        >
+          {actions}
+        </div>
       ) : null}
 
-      {footer ? <div className="mt-4">{footer}</div> : null}
+      {footer ? (
+        <div className={compact ? 'mt-2.5' : 'mt-4'}>{footer}</div>
+      ) : null}
     </Panel>
   )
 }

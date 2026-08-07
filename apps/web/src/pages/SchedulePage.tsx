@@ -9,11 +9,14 @@ import { Button } from '../components/atoms/Button'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
+import { MandatoryChip } from '../components/atoms/MandatoryChip'
 import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
+import { ScheduleHeroMeta } from '../components/molecules/ScheduleHeroMeta'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
+import { ScheduleSessionEditor } from '../components/organisms/ScheduleSessionEditor'
 import { AppShell } from '../components/templates/AppShell'
 import {
   CLASS_ACTIVITY_TYPE_LABELS,
@@ -21,12 +24,14 @@ import {
   type CourseSchedule,
   type ScheduleSession,
 } from '../types'
-import { cn } from '../lib/cn'
 
 type LoadState =
   | { status: 'loading' }
   | { status: 'error'; message: string }
   | { status: 'ready'; schedule: CourseSchedule }
+
+/** null = closed; 'new' = create; string = edit session id */
+type EditorState = null | 'new' | string
 
 function formatDate(iso: string) {
   const [y, m, d] = iso.split('-')
@@ -41,6 +46,7 @@ export function SchedulePage() {
   const [maxAbsences, setMaxAbsences] = useState(4)
   const [defaultsDraft, setDefaultsDraft] = useState<ActivityTypeDefault[]>([])
   const [policyMessage, setPolicyMessage] = useState<string | null>(null)
+  const [editor, setEditor] = useState<EditorState>(null)
 
   useEffect(() => {
     if (!courseId) {
@@ -92,13 +98,41 @@ export function SchedulePage() {
   function replaceSession(updated: ScheduleSession) {
     setState((prev) => {
       if (prev.status !== 'ready') return prev
+      const sessions = prev.schedule.sessions.map((s) =>
+        s.id === updated.id ? updated : s,
+      )
+      sessions.sort((a, b) => a.date.localeCompare(b.date))
       return {
         status: 'ready',
         schedule: {
           ...prev.schedule,
-          sessions: prev.schedule.sessions.map((s) =>
-            s.id === updated.id ? updated : s,
-          ),
+          sessions,
+        },
+      }
+    })
+  }
+
+  function addSession(created: ScheduleSession) {
+    setState((prev) => {
+      if (prev.status !== 'ready') return prev
+      const sessions = [...prev.schedule.sessions, created].sort((a, b) =>
+        a.date.localeCompare(b.date),
+      )
+      return {
+        status: 'ready',
+        schedule: { ...prev.schedule, sessions },
+      }
+    })
+  }
+
+  function removeSession(sessionId: string) {
+    setState((prev) => {
+      if (prev.status !== 'ready') return prev
+      return {
+        status: 'ready',
+        schedule: {
+          ...prev.schedule,
+          sessions: prev.schedule.sessions.filter((s) => s.id !== sessionId),
         },
       }
     })
@@ -114,22 +148,6 @@ export function SchedulePage() {
     } catch (err) {
       window.alert(
         err instanceof Error ? err.message : 'No se pudo actualizar la clase',
-      )
-    } finally {
-      setBusyId(null)
-    }
-  }
-
-  async function resetDerived(session: ScheduleSession) {
-    setBusyId(session.id)
-    try {
-      const updated = await patchScheduleSession(courseId, session.id, {
-        useDerivedMandatory: true,
-      })
-      replaceSession(updated)
-    } catch (err) {
-      window.alert(
-        err instanceof Error ? err.message : 'No se pudo restablecer',
       )
     } finally {
       setBusyId(null)
@@ -182,6 +200,10 @@ export function SchedulePage() {
   }
 
   const { schedule } = state
+  const editingSession =
+    editor && editor !== 'new'
+      ? (schedule.sessions.find((s) => s.id === editor) ?? null)
+      : null
 
   return (
     <AppShell
@@ -189,37 +211,37 @@ export function SchedulePage() {
       courseName={schedule.course.name}
       courseCode={schedule.course.code}
     >
-      <section className="flex flex-col gap-4">
+      <section className="flex w-full max-w-full min-w-0 flex-col gap-3 sm:gap-4">
         <PageHero
-          eyebrow="Cursada"
+          compact
+          eyebrow="Agenda"
           title="Cronograma"
-          description="Clases por fecha, obligatoriedad y feriados. Las optativas se pueden tomar lista, pero no cuentan para el cupo de faltas."
-          stats={[
-            { label: 'Clases', value: counts.total },
-            { label: 'Obligatorias', value: counts.mandatory },
-            { label: 'Optativas', value: counts.optional },
-            { label: 'Sin asistencia', value: counts.noAttendance },
-            {
-              label: 'Faltas máx.',
-              value: schedule.course.maxAbsencesAllowed,
-            },
-          ]}
+          description="Planificá la cursada y visualizá rápidamente qué clases son obligatorias, optativas y feriados."
+          meta={
+            <ScheduleHeroMeta
+              classes={counts.total}
+              mandatory={counts.mandatory}
+              optional={counts.optional}
+              noAttendance={counts.noAttendance}
+              maxAbsences={schedule.course.maxAbsencesAllowed}
+            />
+          }
           actions={
             <>
-              <Button
-                variant="ghost"
-                className="min-h-11"
-                onClick={() => setShowPolicy((v) => !v)}
-              >
-                {showPolicy ? 'Ocultar parametría' : 'Parametría del cuatrimestre'}
-              </Button>
               <ButtonLink
-                variant="ghost"
-                className="min-h-11"
+                variant="primary"
+                className="min-h-10"
                 to={`/courses/${courseId}/attendance`}
               >
-                Ir a asistencia
+                Tomar asistencia
               </ButtonLink>
+              <button
+                type="button"
+                className="min-h-10 cursor-pointer px-1 text-[13px] font-medium text-fg-faint transition-colors hover:text-fg"
+                onClick={() => setShowPolicy((v) => !v)}
+              >
+                {showPolicy ? 'Ocultar parametría' : 'Parametría'}
+              </button>
             </>
           }
         />
@@ -252,10 +274,10 @@ export function SchedulePage() {
                   <span className="text-[14px] font-medium text-fg">
                     {CLASS_ACTIVITY_TYPE_LABELS[row.activityType]}
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
                     <Button
                       variant={row.isMandatoryByDefault ? 'toggleOn' : 'toggle'}
-                      className="min-h-9 text-[12px]"
+                      className="min-h-9 w-full text-[12px] sm:w-auto"
                       onClick={() =>
                         setDefaultsDraft((prev) =>
                           prev.map((d) =>
@@ -269,11 +291,13 @@ export function SchedulePage() {
                         )
                       }
                     >
-                      {row.isMandatoryByDefault ? 'Default obligatorio' : 'Default optativo'}
+                      {row.isMandatoryByDefault
+                        ? 'Default obligatorio'
+                        : 'Default optativo'}
                     </Button>
                     <Button
                       variant={row.allowsAttendance ? 'toggleOn' : 'toggle'}
-                      className="min-h-9 text-[12px]"
+                      className="min-h-9 w-full text-[12px] sm:w-auto"
                       onClick={() =>
                         setDefaultsDraft((prev) =>
                           prev.map((d) =>
@@ -307,96 +331,102 @@ export function SchedulePage() {
         ) : null}
 
         <Panel tone="default" stagger={3} className="overflow-hidden">
-          <div className="border-b border-border bg-surface-2/80 px-4 py-3">
+          <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border bg-surface-2/80 px-4 py-3">
             <SectionTitle
               className="mb-0"
-              hint="Tocá Obligatoria/Optativa para override manual."
+              hint="Tocá una clase para editarla. El botón cambia el día."
             >
               Clases
             </SectionTitle>
+            <Button
+              variant="ghost"
+              className="min-h-9 text-[12px]"
+              onClick={() => setEditor('new')}
+            >
+              Nueva clase
+            </Button>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse text-left text-[14px]">
-              <thead>
-                <tr className="border-b border-border text-[12px] font-semibold uppercase tracking-wide text-fg-faint">
-                  <th className="px-4 py-2.5 font-semibold">Fecha</th>
-                  <th className="px-4 py-2.5 font-semibold">Actividades</th>
-                  <th className="px-4 py-2.5 font-semibold">Clase</th>
-                  <th className="px-4 py-2.5 font-semibold">Asistencia</th>
-                </tr>
-              </thead>
-              <tbody>
-                {schedule.sessions.map((session) => {
-                  const busy = busyId === session.id
-                  return (
-                    <tr
-                      key={session.id}
-                      className="border-b border-border last:border-b-0 hover:bg-surface-interactive"
-                    >
-                      <td className="px-4 py-3 align-top tabular-nums font-semibold text-fg">
-                        {formatDate(session.date)}
-                      </td>
-                      <td className="px-4 py-3 align-top">
-                        <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
-                          {session.items.map((item) => (
-                            <li key={item.id} className="min-w-0">
-                              <span className="block text-fg">{item.title}</span>
-                              <span className="text-[12px] text-fg-faint">
-                                {CLASS_ACTIVITY_TYPE_LABELS[item.activityType]}
-                                {item.isMandatory ? ' · ítem obl.' : ' · ítem opt.'}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </td>
-                      <td className="px-4 py-3 align-top">
-                        <div className="flex flex-col gap-1.5">
-                          <Button
-                            variant={session.isMandatory ? 'toggleOn' : 'toggle'}
-                            disabled={busy || !session.allowsAttendance}
-                            className="min-h-9 text-[12px]"
-                            onClick={() => void toggleMandatory(session)}
-                          >
-                            {session.isMandatory ? 'Obligatoria' : 'Optativa'}
-                          </Button>
-                          {session.mandatorySource === 'manual' ? (
-                            <button
-                              type="button"
-                              disabled={busy}
-                              className="text-left text-[11px] font-medium text-accent"
-                              onClick={() => void resetDerived(session)}
-                            >
-                              Volver a default derivado
-                            </button>
-                          ) : (
-                            <span className="text-[11px] text-fg-faint">
-                              Derivada de ítems
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 align-top">
-                        <span
-                          className={cn(
-                            'inline-flex rounded-full px-2.5 py-1 text-[12px] font-semibold',
-                            session.allowsAttendance
-                              ? 'bg-ok-soft text-ok'
-                              : 'bg-surface-2 text-fg-faint',
-                          )}
-                        >
-                          {session.allowsAttendance
-                            ? 'Se puede tomar lista'
-                            : 'Feriado / sin lista'}
+          <ul className="m-0 list-none p-0">
+            {schedule.sessions.map((session) => {
+              const busy = busyId === session.id
+              return (
+                <li
+                  key={session.id}
+                  className="cursor-pointer border-b border-border px-3 py-3 last:border-b-0 hover:bg-surface-interactive sm:px-4"
+                  onClick={() => setEditor(session.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setEditor(session.id)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="m-0 min-w-0 tabular-nums text-[14px] font-semibold text-fg">
+                      {formatDate(session.date)}
+                    </p>
+                    {!session.allowsAttendance ? (
+                      <span className="inline-flex h-9 w-[7.5rem] shrink-0 items-center justify-center text-[13px] font-medium text-fg-faint">
+                        Feriado
+                      </span>
+                    ) : (
+                      <Button
+                        variant={
+                          session.isMandatory ? 'toggleOn' : 'toggle'
+                        }
+                        disabled={busy}
+                        className={
+                          session.isMandatory
+                            ? 'h-9 min-h-9 w-[7.5rem] shrink-0 text-[12px]'
+                            : 'h-9 min-h-9 w-[7.5rem] shrink-0 border-border-strong text-[12px]'
+                        }
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          void toggleMandatory(session)
+                        }}
+                      >
+                        {session.isMandatory ? 'Obligatoria' : 'Optativa'}
+                      </Button>
+                    )}
+                  </div>
+
+                  <ul className="mt-2.5 m-0 flex min-w-0 list-none flex-col gap-2 p-0">
+                    {session.items.map((item) => (
+                      <li key={item.id} className="min-w-0">
+                        <span className="block break-words text-[14px] text-fg text-pretty">
+                          {item.title}
                         </span>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+                        <div className="mt-1 flex flex-wrap items-center gap-2">
+                          <span className="text-[12px] text-fg-faint">
+                            {CLASS_ACTIVITY_TYPE_LABELS[item.activityType]}
+                          </span>
+                          {session.allowsAttendance ? (
+                            <MandatoryChip mandatory={item.isMandatory} />
+                          ) : null}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              )
+            })}
+          </ul>
         </Panel>
       </section>
+
+      {editor !== null && (editor === 'new' || editingSession) ? (
+        <ScheduleSessionEditor
+          courseId={courseId}
+          session={editor === 'new' ? null : editingSession}
+          activityTypeDefaults={schedule.activityTypeDefaults}
+          onClose={() => setEditor(null)}
+          onSaved={replaceSession}
+          onCreated={addSession}
+          onDeleted={removeSession}
+        />
+      ) : null}
     </AppShell>
   )
 }

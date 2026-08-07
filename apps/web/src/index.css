@@ -65,10 +65,11 @@
   html {
     color-scheme: light;
     -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
   }
 
   body {
-    @apply m-0 min-h-dvh bg-surface font-sans text-[15px] text-fg-muted antialiased;
+    @apply m-0 min-h-dvh max-w-[100vw] overflow-x-hidden bg-surface font-sans text-[15px] text-fg-muted antialiased;
     touch-action: manipulation;
     background-image:
       radial-gradient(900px 420px at 0% -10%, rgba(15, 107, 76, 0.06), transparent 55%),
