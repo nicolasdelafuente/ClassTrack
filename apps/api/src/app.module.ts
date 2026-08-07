@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { CoursesModule } from './courses/courses.module';
 import { GroupsModule } from './groups/groups.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AttendanceModule } from './attendance/attendance.module';
     CoursesModule,
     GroupsModule,
     AttendanceModule,
+    ScheduleModule,
   ],
   controllers: [AppController],
   providers: [
