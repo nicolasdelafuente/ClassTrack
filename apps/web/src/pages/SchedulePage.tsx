@@ -249,32 +249,40 @@ export function SchedulePage() {
                     </span>
                     {row.activityType === 'feriado' ? (
                       <span className="mt-0.5 block text-[12px] text-fg-faint">
-                        Sin lista (fijo)
+                        Sin lista · no cuenta para faltas
                       </span>
                     ) : null}
                   </div>
-                  <Button
-                    variant={row.isMandatoryByDefault ? 'toggleOn' : 'toggle'}
-                    className={
-                      row.isMandatoryByDefault
-                        ? 'min-h-9 w-[7.5rem] shrink-0 text-[12px]'
-                        : 'min-h-9 w-[7.5rem] shrink-0 border-border-strong text-[12px]'
-                    }
-                    onClick={() =>
-                      setDefaultsDraft((prev) =>
-                        prev.map((d) =>
-                          d.activityType === row.activityType
-                            ? {
-                                ...d,
-                                isMandatoryByDefault: !d.isMandatoryByDefault,
-                              }
-                            : d,
-                        ),
-                      )
-                    }
-                  >
-                    {row.isMandatoryByDefault ? 'Obligatorio' : 'Optativo'}
-                  </Button>
+                  {row.activityType === 'feriado' ? (
+                    <span className="inline-flex h-9 min-w-[7.5rem] shrink-0 items-center justify-center rounded-md border border-border bg-surface-2 px-2.5 text-[12px] font-medium text-fg-faint">
+                      Feriado
+                    </span>
+                  ) : (
+                    <Button
+                      variant={
+                        row.isMandatoryByDefault ? 'toggleOn' : 'toggle'
+                      }
+                      className={
+                        row.isMandatoryByDefault
+                          ? 'min-h-9 w-[7.5rem] shrink-0 text-[12px]'
+                          : 'min-h-9 w-[7.5rem] shrink-0 border-border-strong text-[12px]'
+                      }
+                      onClick={() =>
+                        setDefaultsDraft((prev) =>
+                          prev.map((d) =>
+                            d.activityType === row.activityType
+                              ? {
+                                  ...d,
+                                  isMandatoryByDefault: !d.isMandatoryByDefault,
+                                }
+                              : d,
+                          ),
+                        )
+                      }
+                    >
+                      {row.isMandatoryByDefault ? 'Obligatorio' : 'Optativo'}
+                    </Button>
+                  )}
                 </li>
               ))}
             </ul>
