@@ -7,10 +7,10 @@ import {
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
-import { Panel } from '../components/atoms/Panel'
-import { Heading, Text } from '../components/atoms/Text'
+import { Text } from '../components/atoms/Text'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
 import { AttendanceGroupBlock } from '../components/organisms/AttendanceGroupBlock'
+import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
 import {
   todayDateInputValue,
@@ -172,36 +172,41 @@ export function AttendancePage() {
       courseName={roster.course.name}
       courseCode={roster.course.code}
     >
-      <section className="flex flex-col gap-3">
-        <Panel
-          as="header"
-          className="flex flex-wrap items-end justify-between gap-3 p-4"
-        >
-          <div>
-            <Heading className="text-lg">
-              {scopedGroup
-                ? `Asistencia · Grupo ${scopedGroup.number}`
-                : 'Asistencia de la cursada'}
-            </Heading>
-            <Text className="mt-1 text-xs tabular-nums">
-              {totals.present}/{totals.students} presentes · guardado al tocar
-            </Text>
-          </div>
-
-          <div>
-            <Label htmlFor="attendance-date">Fecha</Label>
-            <Input
-              id="attendance-date"
-              type="date"
-              value={date}
-              onChange={(e) => onDateChange(e.target.value)}
-              className="w-auto"
-            />
-          </div>
-        </Panel>
+      <section className="flex flex-col gap-4">
+        <PageHero
+          eyebrow="Asistencia"
+          title={
+            scopedGroup
+              ? `Grupo ${scopedGroup.number}`
+              : 'Asistencia de la cursada'
+          }
+          description="Marcá presente y participación — se guarda al tocar."
+          stats={[
+            {
+              label: 'Presentes',
+              value: `${totals.present}/${totals.students}`,
+            },
+            { label: 'Grupos', value: roster.groups.length },
+            { label: 'Fecha', value: date },
+          ]}
+          actions={
+            <div className="flex flex-wrap items-end gap-3">
+              <div>
+                <Label htmlFor="attendance-date">Fecha</Label>
+                <Input
+                  id="attendance-date"
+                  type="date"
+                  value={date}
+                  onChange={(e) => onDateChange(e.target.value)}
+                  className="w-auto"
+                />
+              </div>
+            </div>
+          }
+        />
 
         {scopedGroup ? (
-          <Text>
+          <Text className="text-[13px]">
             Vista de un grupo.{' '}
             <ButtonLink
               variant="text"
@@ -212,8 +217,8 @@ export function AttendancePage() {
           </Text>
         ) : null}
 
-        <div className="flex flex-col gap-2">
-          {roster.groups.map((group) => (
+        <div className="flex flex-col gap-3">
+          {roster.groups.map((group, index) => (
             <AttendanceGroupBlock
               key={group.id}
               group={group}
@@ -221,6 +226,7 @@ export function AttendancePage() {
               date={date}
               scoped={Boolean(scopedGroup)}
               savingId={savingId}
+              stagger={((index % 4) + 1) as 1 | 2 | 3 | 4}
               onToggle={(student, field) => void toggleField(student, field)}
             />
           ))}

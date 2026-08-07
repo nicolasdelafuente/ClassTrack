@@ -15,23 +15,31 @@ description: >-
 
 References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome**, not hero landings.
 
+**Same app rule:** Board, Group detail, and Attendance must share `PageHero`, `Panel` tones, `StatusBadge`, type scale, and motion. If a new screen invents its own card markup, stop and reuse primitives.
+
 ## Dials
 
 - `DESIGN_VARIANCE`: 4 (restrained)
-- `MOTION_INTENSITY`: 5 (noticeable but short; never cinematic)
-- `VISUAL_DENSITY`: 4 (airy; not cockpit-packed)
+- `MOTION_INTENSITY`: 6 (noticeable short motion; never cinematic)
+- `VISUAL_DENSITY`: 5 (heroes denser; less empty air)
 
 ## Must
 
 - **Light theme by default** — near-white page, soft gray panels
 - **Minimal decoration** — no purple gradients, no glow, no neon accents, no heavy glassmorphism
-- **Depth via soft shadow + 1px border**, not multi-layer dramatic shadows
-- **Transitions** on hover/focus/navigation: `transform` + `opacity` + colors only; ≤ 200–250ms; `ease-out`
+- **Depth via surface levels** — not identical white cards:
+  - `canvas` (page) → `surface` / `default` → `elevated` → `interactive` (hover)
+- **Type scale (fixed):**
+  - Display / page title: ~30–34 / 700–600
+  - Section title: ~17–18 / 600
+  - Body: ~14–15 / 400
+  - Meta: ~12–13 / 500
+- **Transitions** on hover/focus: `transform` + `opacity` + colors only; ease-out
 - Honor `prefers-reduced-motion` (disable or near-zero motion)
 - Tailwind v4 tokens in `apps/web/src/index.css` (`@theme`)
 - Atomic Design: `atoms` → `molecules` → `organisms` → `templates` → `pages`
-- Primary accent: quiet teal/green (education / UNaHur-adjacent), used sparingly for actions and focus
-- Typography: clean sans (Inter or system); headings slightly tighter tracking; body readable
+- Primary accent: quiet teal/green (education / UNaHur-adjacent), used sparingly
+- Icons: quiet SVG only — **no emoji clusters**
 
 ## Must not
 
@@ -40,43 +48,51 @@ References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome
 - Marketing hero layouts, big illustrative blobs, emoji clusters
 - `transition: all`
 - Long entrance choreographies or parallax
+- One-off card markup that bypasses `Panel` / `PageHero` on product pages
 
 ## Hierarchy (workspace screens)
 
-Group detail should feel like a **workspace**, not a grid of equal form boxes:
+1. **Hero** (`PageHero` + `Panel tone="elevated"`) — identity, derived meta, primary CTAs  
+2. **Supporting panels** — clear `SectionTitle` + one quiet icon  
+3. **Surface levels** — elevated > default > soft/flat  
+4. **Interactive rows** — hover lift / bg / border  
 
-1. **Hero panel** (`tone="elevated"`) — group identity, meta, primary CTAs first  
-2. **Supporting panels** — semáforo / members / resources with clear section titles + one quiet icon each  
-3. **Surface levels** — elevated > default > soft/flat (not identical white cards)  
-4. **Interactive rows** — links, members, sprint chips respond on hover  
+## Semáforo
+
+- Group detail: **horizontal interactive timeline** (`SprintTimeline`) — compact, scroll-snap on small screens  
+- Board cards: **mini read-only timeline** aligned visually (`SprintLights`)  
+- Status color + label; keyboard / `aria-label`; never color-only  
 
 ## Component language
 
 | Pattern | Guidance |
 |---------|----------|
-| Page | Light canvas; max-width content; generous padding |
-| Panel / list | White/off-white surface, soft shadow, rounded ~10–12px; vary elevation by role |
-| Rows | Hover: slight bg lift or shadow; optional `translateY(-1px)` |
-| Buttons | Solid primary or quiet ghost; clear hover; press scale ≤ 0.98 |
-| Status (semáforo) | Soft-bg chips, clickable, readable — not tiny equal dots only |
+| Page | Light canvas; max-width; shared `PageHero` |
+| Panel | Vary `tone`; soft shadow; rounded ~12px (`rounded-xl`) |
+| Rows / cards | Hover: `translateY(-2px)` + shadow-lift + border-strong ≤ 200ms |
+| Buttons | Primary or ghost; hover lift; press scale ≤ 0.98 |
+| Status | `StatusBadge` shared; soft critical pulse optional |
 | Empty / loading | Calm copy + `aria-live` |
 
 ## Motion budget (allowed)
 
-1. **Hover lift** on interactive cards/rows  
-2. **Fade/slide short** on panel mount (optional, ≤ 200ms)  
-3. **Color/opacity** on buttons and toggles  
+1. Page/panel entrance: opacity + `translateY(8–12px)` ≤ **300ms**  
+2. Panel stagger ~**40ms** between siblings  
+3. Hover lift on interactive surfaces ≤ **200ms**  
+4. Press scale on buttons/nodes  
+5. Sprint status change: color + scale fade ≤ **180ms**  
 
 If unsure, ship **less** motion.
 
 ## Checklist before shipping UI
 
-- [ ] Looks light and calm on desktop and ~375px mobile  
-- [ ] Focus-visible rings present  
-- [ ] Reduced motion respected  
-- [ ] No leftover dark Linear tokens as the default theme  
-- [ ] New pieces reuse atoms/molecules; no one-off BEM CSS files  
+- [ ] Board / Group / Attendance look like the **same app**
+- [ ] Surface levels differ (not one flat white plane)
+- [ ] Focus-visible rings present
+- [ ] Reduced motion respected
+- [ ] Reuses atoms/molecules; no one-off BEM CSS
+- [ ] Desktop + ~375px mobile
 
 ## Conflict resolution
 
-If another skill (e.g. generic `linear-ui-skills` or dark defaults) conflicts: **this skill wins** for ClassTrack `apps/web`.
+If another skill (e.g. generic dark defaults) conflicts: **this skill wins** for ClassTrack `apps/web`.

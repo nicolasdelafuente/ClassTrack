@@ -1,6 +1,6 @@
 # Dirección visual — ClassTrack (2026)
 
-**Reading this as:** app docente **light, minimal**, estilo Notion / Claude / Dropbox (listas y paneles, poca decoración), con **transiciones cortas** y sombras suaves.
+**Reading this as:** app docente **light, minimal**, estilo Notion / Claude / Dropbox (listas y paneles, poca decoración), con **transiciones cortas** y profundidad por niveles de superficie.
 
 Skill dueño: `.agents/skills/classtrack-ui/SKILL.md` (gana sobre skills genéricos de UI).
 
@@ -18,34 +18,52 @@ Skill dueño: `.agents/skills/classtrack-ui/SKILL.md` (gana sobre skills genéri
 ## Dials
 
 - Variance: 4  
-- Motion: 5 (hover lift, fade-up ≤ 250ms)  
-- Density: 4 (aires)
+- Motion: 6 (entrada ≤300ms, stagger ~40ms, hover ≤200ms)  
+- Density: 5 (heroes densos)
 
 ## Tokens (resumen)
 
 | Token | Idea |
 |-------|------|
-| surface | `#f7f7f5` canvas |
+| surface (canvas) | `#f5f5f3` |
 | surface-1 | blanco paneles |
-| surface soft / elevated | niveles de profundidad (no todas las cards iguales) |
-| accent | teal `#0f6b4c` (acciones) |
+| surface-2 / soft | paneles secundarios |
+| surface-hover / interactive | hover y filas |
+| accent | teal `#0f6b4c` |
 | shadow-panel / shadow-lift | profundidad suave |
+
+## Tipografía
+
+| Rol | Tamaño / peso |
+|-----|----------------|
+| Display | ~30–34 / 700 |
+| Section | ~17–18 / 600 |
+| Body | ~14–15 / 400 |
+| Meta | ~12–13 / 500 |
+
+## Patrones de página
+
+Las tres pantallas (Board, Grupo, Asistencia) usan:
+
+1. `PageHero` + meta derivada de datos existentes  
+2. `Panel` con tones distintos  
+3. `StatusBadge` / timeline de sprints compartida  
+4. Mismos botones, listas y motion  
 
 ## Workspace de grupo
 
-La ficha de grupo debe sentirse **workspace**, no grilla de formularios:
-
-1. Hero elevado (identidad + meta + CTA asistencia arriba)  
-2. Semáforo en chips interactivos  
-3. Integrantes con avatar / filas densas  
-4. Recursos tipo lista Notion (estado + abrir)
+1. Hero elevado denso (estado, sprint, integrantes, links, progreso derivado)  
+2. Semáforo = **timeline horizontal** interactiva  
+3. Integrantes con avatar  
+4. Recursos = filas (ícono, nombre, badge, acción)  
 
 ## Qué NO hacer
 
 - Dark cockpit tipo Linear app  
-- Gradientes púrpura / glow  
+- Gradientes púrpura / glow / emoji clusters  
 - Animaciones largas o parallax  
 - Cards idénticas sin jerarquía  
+- Features inventadas sin datos (roles, sync fake, etc.)  
 
 ## Continuidad
 

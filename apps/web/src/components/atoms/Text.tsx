@@ -7,9 +7,9 @@ type HeadingProps = HTMLAttributes<HTMLHeadingElement> & {
 }
 
 const sizes = {
-  h1: 'text-[22px] font-semibold tracking-tight text-fg text-balance',
-  h2: 'text-[13px] font-semibold text-fg',
-  h3: 'text-sm font-semibold text-fg',
+  h1: 'text-[30px] font-bold tracking-tight text-fg text-balance sm:text-[32px]',
+  h2: 'text-[17px] font-semibold tracking-tight text-fg',
+  h3: 'text-[15px] font-semibold text-fg',
 }
 
 export function Heading({
@@ -42,13 +42,28 @@ export function Text({
   return (
     <p
       className={cn(
-        'm-0 text-[13px] text-pretty',
-        faint ? 'text-fg-faint' : muted ? 'text-fg-muted' : 'text-fg',
+        'm-0 text-[15px] text-pretty',
+        faint ? 'text-fg-faint text-[13px]' : muted ? 'text-fg-muted' : 'text-fg',
         className,
       )}
       {...props}
     >
       {children}
     </p>
+  )
+}
+
+type MetaProps = HTMLAttributes<HTMLSpanElement> & {
+  children: ReactNode
+}
+
+export function Meta({ className, children, ...props }: MetaProps) {
+  return (
+    <span
+      className={cn('text-[12px] font-medium text-fg-faint', className)}
+      {...props}
+    >
+      {children}
+    </span>
   )
 }
