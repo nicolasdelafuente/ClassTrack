@@ -81,6 +81,7 @@ References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome
 3. Hover lift on interactive surfaces ≤ **200ms**  
 4. Press scale on buttons/nodes  
 5. Sprint status change: color + scale fade ≤ **180ms**  
+6. **Save feedback** via `InlineStatus`: spinner → check → fade (~1.4s), used in links + attendance  
 
 If unsure, ship **less** motion.
 
