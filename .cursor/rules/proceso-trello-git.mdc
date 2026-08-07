@@ -1,12 +1,22 @@
 ---
 description: Flujo Trello + Git en español para ClassTrack
-globs: "{project-hub-docs/**,.gitignore,README.md,package.json}"
-alwaysApply: false
+globs: "{project-hub-docs/**,.gitignore,README.md,package.json,AGENTS.md}"
+alwaysApply: true
 ---
 
-# Proceso repo / docs
+# Proceso repo / docs / Trello
 
 - Idioma: `project-hub-docs/convencion-idioma.md` (Trello, commits, PRs en **español**).
-- Flujo: `project-hub-docs/flujo-trello-github.md`.
+- Flujo: `project-hub-docs/flujo-trello-github.md` (**leer al tocar Trello**).
 - Commits: leer `.agents/skills/git-commit/SKILL.md` y adaptar mensajes a español.
 - Skills instaladas y matriz: `project-hub-docs/skills.md`.
+
+## Trello — reglas obligatorias
+
+1. **Labels** en toda tarjeta al crearla (`mvp` / `feature` / `chore` / `infra` / `docs` / `épica`).
+2. Toda tarea incluye `**Épica:** CT-E0X` en la descripción.
+3. Cada épica tiene checklist **`Tickets de la épica`**:
+   - al crear ticket → agregar ítem (link a la card);
+   - al pasar ticket a **Hecho** → marcar ítem;
+   - si el checklist queda **100%** → mover la épica a **Hecho**.
+4. Al mergear un PR: actualizar tarjeta + checklist de épica (no solo la tarea).
