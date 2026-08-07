@@ -22,16 +22,31 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 - Épicas: `CT-E01`, `CT-E02`, …
 - Tareas: `CT-001`, `CT-002`, …
 
-### Labels
+### Labels (obligatorias al crear)
+
+**Toda tarjeta nueva debe llevar labels desde el alta** (no dejarlas sin etiquetar).
 
 | Label | Color | Uso |
 |-------|-------|-----|
-| épica | purple | Tarjeta épica |
+| épica | purple | Tarjeta épica (`CT-E0X`) |
 | docs | blue | Documentación |
-| infra | orange | Repo, Docker, CI, skills |
+| infra | orange | Repo, Docker, CI, skills, seed técnico |
 | feature | green | Funcionalidad de producto |
-| mvp | yellow | Dentro del MVP |
-| chore | black | Mantenimiento |
+| mvp | yellow | Dentro del MVP / producto activo |
+| chore | black | Mantenimiento, bugfix UI, alineación |
+| urgente | red | Bloqueante / prioridad alta |
+
+**Combinaciones habituales**
+
+| Tipo de tarjeta | Labels |
+|-----------------|--------|
+| Épica | `épica` + `mvp` (si aplica) |
+| Feature de producto | `mvp` + `feature` |
+| Bugfix / polish técnico | `mvp` + `chore` |
+| Infra / Docker / CI | `infra` (+ `chore` si aplica) |
+| Docs | `docs` (+ `mvp` si es del producto) |
+
+API: al crear la card, POST `/cards/{id}/idLabels?value={labelId}` por cada label.
 
 ### Asignación
 
