@@ -12,7 +12,7 @@ export function MembersList({ members }: MembersListProps) {
   }
 
   return (
-    <ul className="m-0 flex list-none flex-col gap-1 p-0">
+    <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
       {members.map((member) => (
         <MemberRow key={member.id} member={member} />
       ))}

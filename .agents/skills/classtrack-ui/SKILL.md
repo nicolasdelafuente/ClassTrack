@@ -41,15 +41,24 @@ References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome
 - `transition: all`
 - Long entrance choreographies or parallax
 
+## Hierarchy (workspace screens)
+
+Group detail should feel like a **workspace**, not a grid of equal form boxes:
+
+1. **Hero panel** (`tone="elevated"`) — group identity, meta, primary CTAs first  
+2. **Supporting panels** — semáforo / members / resources with clear section titles + one quiet icon each  
+3. **Surface levels** — elevated > default > soft/flat (not identical white cards)  
+4. **Interactive rows** — links, members, sprint chips respond on hover  
+
 ## Component language
 
 | Pattern | Guidance |
 |---------|----------|
 | Page | Light canvas; max-width content; generous padding |
-| Panel / list | White/off-white surface, soft shadow, rounded ~10–12px |
+| Panel / list | White/off-white surface, soft shadow, rounded ~10–12px; vary elevation by role |
 | Rows | Hover: slight bg lift or shadow; optional `translateY(-1px)` |
 | Buttons | Solid primary or quiet ghost; clear hover; press scale ≤ 0.98 |
-| Status (semáforo) | Small dots or subtle chips — readable, not loud |
+| Status (semáforo) | Soft-bg chips, clickable, readable — not tiny equal dots only |
 | Empty / loading | Calm copy + `aria-live` |
 
 ## Motion budget (allowed)

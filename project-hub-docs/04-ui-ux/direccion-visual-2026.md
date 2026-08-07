@@ -18,7 +18,7 @@ Skill dueño: `.agents/skills/classtrack-ui/SKILL.md` (gana sobre skills genéri
 ## Dials
 
 - Variance: 4  
-- Motion: 5 (hover lift, fade-up ≤ 200ms)  
+- Motion: 5 (hover lift, fade-up ≤ 250ms)  
 - Density: 4 (aires)
 
 ## Tokens (resumen)
@@ -27,14 +27,25 @@ Skill dueño: `.agents/skills/classtrack-ui/SKILL.md` (gana sobre skills genéri
 |-------|------|
 | surface | `#f7f7f5` canvas |
 | surface-1 | blanco paneles |
+| surface soft / elevated | niveles de profundidad (no todas las cards iguales) |
 | accent | teal `#0f6b4c` (acciones) |
 | shadow-panel / shadow-lift | profundidad suave |
+
+## Workspace de grupo
+
+La ficha de grupo debe sentirse **workspace**, no grilla de formularios:
+
+1. Hero elevado (identidad + meta + CTA asistencia arriba)  
+2. Semáforo en chips interactivos  
+3. Integrantes con avatar / filas densas  
+4. Recursos tipo lista Notion (estado + abrir)
 
 ## Qué NO hacer
 
 - Dark cockpit tipo Linear app  
 - Gradientes púrpura / glow  
 - Animaciones largas o parallax  
+- Cards idénticas sin jerarquía  
 
 ## Continuidad
 
