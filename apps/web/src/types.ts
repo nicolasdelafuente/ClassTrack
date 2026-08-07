@@ -79,6 +79,11 @@ export type AttendanceStudent = {
   email: string | null
   present: boolean
   participated: boolean
+  /** Absences on mandatory classes only (CT-030). */
+  absenceCount: number
+  maxAbsencesAllowed: number
+  /** true when absenceCount > maxAbsencesAllowed (e.g. 5th falta if max is 4). */
+  isLibre: boolean
 }
 
 export type AttendanceGroup = {
@@ -93,6 +98,7 @@ export type AttendanceRoster = {
     id: string
     name: string
     code: string
+    maxAbsencesAllowed: number
   }
   date: string
   groupId: string | null
@@ -111,6 +117,9 @@ export type AttendanceMark = {
   date: string
   present: boolean
   participated: boolean
+  absenceCount: number
+  maxAbsencesAllowed: number
+  isLibre: boolean
 }
 
 export type ClassActivityType =
