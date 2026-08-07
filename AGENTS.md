@@ -23,6 +23,8 @@ Docs: `project-hub-docs/`. MVP: tablero, detalle, asistencia. Docker pospuesto.
 
 Trello / commits / PRs en **español**. Código en inglés.
 
+**Trello:** al crear una tarjeta, **siempre** poner labels (`mvp`/`feature`/`chore`/`infra`/`docs`/`épica`). Ver `project-hub-docs/flujo-trello-github.md`.
+
 ## 5. Datos sensibles
 
 No commitear Excel ni `from-excel.json`. Solo `demo.json` anonimizado.
