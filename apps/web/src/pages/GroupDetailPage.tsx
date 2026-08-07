@@ -1,25 +1,45 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   fetchGroupDetail,
   patchGroupLinks,
   patchGroupSprint,
 } from '../api/client'
-import { Badge } from '../components/atoms/Badge'
 import { ButtonLink } from '../components/atoms/ButtonLink'
+import { IconLink, IconSignal, IconUsers } from '../components/atoms/icons'
 import { Panel } from '../components/atoms/Panel'
-import { Heading, Text } from '../components/atoms/Text'
 import { EditableSprintLights } from '../components/molecules/EditableSprintLights'
+import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox, StateMessage } from '../components/molecules/StateBox'
 import { LinksEditor } from '../components/organisms/LinksEditor'
 import { MembersList } from '../components/organisms/MembersList'
 import { AppShell } from '../components/templates/AppShell'
-import type { GroupDetail, GroupLinks, SprintStatus } from '../types'
+import {
+  SPRINT_STATUS_LABELS,
+  type GroupDetail,
+  type GroupLinks,
+  type SprintStatus,
+} from '../types'
+import { cn } from '../lib/cn'
 
 type LoadState =
   | { status: 'loading' }
   | { status: 'error'; message: string }
   | { status: 'ready'; group: GroupDetail }
+
+function overallStatus(sprints: GroupDetail['sprints']): SprintStatus {
+  if (sprints.some((s) => s.status === 'critical')) return 'critical'
+  if (sprints.some((s) => s.status === 'attention')) return 'attention'
+  if (sprints.every((s) => s.status === 'ok')) return 'ok'
+  return 'unknown'
+}
+
+const statusTone: Record<SprintStatus, string> = {
+  ok: 'bg-ok-soft text-ok',
+  attention: 'bg-attention-soft text-attention',
+  critical: 'bg-critical-soft text-critical',
+  unknown: 'bg-surface-2 text-fg-muted',
+}
 
 export function GroupDetailPage() {
   const { groupId } = useParams()
@@ -87,6 +107,23 @@ export function GroupDetailPage() {
     })
   }
 
+  const summary = useMemo(() => {
+    if (state.status !== 'ready') return null
+    const { group } = state
+    const linked = [group.links.githubUrl, group.links.trelloUrl, group.links.driveUrl].filter(
+      Boolean,
+    ).length
+    const currentSprint =
+      [...group.sprints].sort((a, b) => b.sprintNumber - a.sprintNumber).find(
+        (s) => s.status !== 'unknown',
+      ) ?? group.sprints[group.sprints.length - 1]
+    return {
+      linked,
+      overall: overallStatus(group.sprints),
+      currentSprint,
+    }
+  }, [state])
+
   if (state.status === 'loading') {
     return (
       <AppShell showBack>
@@ -112,26 +149,107 @@ export function GroupDetailPage() {
       courseName={group.course.name}
       courseCode={group.course.code}
     >
-      <article className="grid gap-3 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-        <Panel as="header" className="p-4 lg:col-span-2">
-          <Badge>G{group.number}</Badge>
-          <Heading className="mt-2">{title}</Heading>
-          <Text className="mt-1.5">
-            {group.projectTopic?.trim() || 'Sin tema cargado'}
-          </Text>
-          <Text className="mt-3" muted={false}>
-            Docente a cargo:{' '}
-            <strong className="font-semibold text-fg">
-              {group.teacherName?.trim() || '—'}
-            </strong>
-          </Text>
+      <article className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+        {/* Hero workspace */}
+        <Panel as="header" tone="elevated" className="p-5 lg:col-span-2 sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="m-0 text-[12px] font-semibold uppercase tracking-wide text-fg-faint">
+                Workspace del grupo
+              </p>
+              <h1 className="mt-1 text-[28px] font-bold tracking-tight text-fg sm:text-[32px]">
+                {title}
+              </h1>
+              <p className="mt-2 max-w-2xl text-[15px] text-fg-muted text-pretty">
+                {group.projectTopic?.trim() || 'Sin tema cargado'}
+              </p>
+            </div>
+            {summary ? (
+              <span
+                className={cn(
+                  'rounded-full px-3 py-1 text-[12px] font-semibold',
+                  statusTone[summary.overall],
+                )}
+              >
+                {SPRINT_STATUS_LABELS[summary.overall]}
+                {summary.currentSprint
+                  ? ` · Sprint ${summary.currentSprint.sprintNumber}`
+                  : ''}
+              </span>
+            ) : null}
+          </div>
+
+          <dl className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[13px] text-fg-muted">
+            <div>
+              <dt className="sr-only">Docente</dt>
+              <dd className="m-0">
+                <span className="text-fg-faint">Docente · </span>
+                <span className="font-medium text-fg">
+                  {group.teacherName?.trim() || '—'}
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt className="sr-only">Integrantes</dt>
+              <dd className="m-0">
+                <span className="text-fg-faint">Integrantes · </span>
+                <span className="font-medium tabular-nums text-fg">
+                  {group.members.length}
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt className="sr-only">Links</dt>
+              <dd className="m-0">
+                <span className="text-fg-faint">Links · </span>
+                <span className="font-medium tabular-nums text-fg">
+                  {summary?.linked ?? 0}/3
+                </span>
+              </dd>
+            </div>
+          </dl>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            <ButtonLink
+              className="min-h-11 px-4 text-[14px]"
+              to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
+            >
+              Tomar asistencia
+            </ButtonLink>
+            {group.links.trelloUrl ? (
+              <ButtonLink
+                external
+                variant="ghost"
+                className="min-h-11"
+                href={group.links.trelloUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ver Trello
+              </ButtonLink>
+            ) : null}
+            {group.links.githubUrl ? (
+              <ButtonLink
+                external
+                variant="ghost"
+                className="min-h-11"
+                href={group.links.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ver GitHub
+              </ButtonLink>
+            ) : null}
+          </div>
         </Panel>
 
-        <Panel as="section" className="p-4">
-          <Heading as="h2">Semáforo</Heading>
-          <Text faint className="mb-3 mt-1 text-xs">
-            Tocá un sprint para cambiar el estado.
-          </Text>
+        <Panel as="section" tone="default" className="p-4 sm:p-5">
+          <SectionTitle
+            icon={<IconSignal className="text-fg-muted" />}
+            hint="Tocá un sprint para cambiar el estado."
+          >
+            Semáforo
+          </SectionTitle>
           <EditableSprintLights
             sprints={group.sprints}
             disabled={busy}
@@ -139,34 +257,28 @@ export function GroupDetailPage() {
           />
         </Panel>
 
-        <Panel as="section" className="p-4 lg:row-span-2">
-          <Heading as="h2">Integrantes ({group.members.length})</Heading>
-          <div className="mt-3">
-            <MembersList members={group.members} />
-          </div>
+        <Panel as="section" tone="default" className="p-4 sm:p-5 lg:row-span-2">
+          <SectionTitle
+            icon={<IconUsers className="text-fg-muted" />}
+            hint={`${group.members.length} personas en el equipo`}
+          >
+            Integrantes
+          </SectionTitle>
+          <MembersList members={group.members} />
         </Panel>
 
-        <Panel as="section" className="p-4">
-          <Heading as="h2">Links</Heading>
-          <Text faint className="mb-3 mt-1 text-xs">
-            URLs manuales (sin sync). Guardá después de editar.
-          </Text>
+        <Panel as="section" tone="soft" className="p-4 sm:p-5">
+          <SectionTitle
+            icon={<IconLink className="text-fg-muted" />}
+            hint="Recursos del equipo (URLs manuales)"
+          >
+            Recursos
+          </SectionTitle>
           <LinksEditor
             links={group.links}
             disabled={busy}
             onSave={handleSaveLinks}
           />
-        </Panel>
-
-        <Panel as="section" className="p-4 lg:col-start-2">
-          <Heading as="h2">Acciones</Heading>
-          <div className="mt-3">
-            <ButtonLink
-              to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
-            >
-              Tomar asistencia de este grupo
-            </ButtonLink>
-          </div>
         </Panel>
       </article>
     </AppShell>
