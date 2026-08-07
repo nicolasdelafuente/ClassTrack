@@ -49,6 +49,7 @@ References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome
 - `transition: all`
 - Long entrance choreographies or parallax
 - One-off card markup that bypasses `Panel` / `PageHero` on product pages
+- **Modals / drawers / overlay dialogs for product flows** (create, edit, detail, pickers). Prefer a **new route** or **inline** UI. Only confirmations/alerts may use a dialog (`window.confirm` or equivalent). See `.cursor/rules/no-modales.mdc`.
 
 ## Hierarchy (workspace screens)
 

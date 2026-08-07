@@ -127,9 +127,14 @@ export function SchedulePage() {
   async function savePolicy() {
     setPolicyMessage(null)
     try {
+      // Attendance is not edited here: feriado = sin lista; resto = con lista.
+      const activityTypeDefaults = defaultsDraft.map((d) => ({
+        ...d,
+        allowsAttendance: d.activityType !== 'feriado',
+      }))
       const saved = await patchSchedulePolicy(courseId, {
         maxAbsencesAllowed: maxAbsences,
-        activityTypeDefaults: defaultsDraft,
+        activityTypeDefaults,
       })
       setState((prev) => {
         if (prev.status !== 'ready') return prev
@@ -145,6 +150,7 @@ export function SchedulePage() {
           },
         }
       })
+      setDefaultsDraft(saved.activityTypeDefaults)
       setPolicyMessage('Parametría guardada')
     } catch (err) {
       setPolicyMessage(
@@ -214,7 +220,7 @@ export function SchedulePage() {
 
         {showPolicy ? (
           <Panel tone="soft" stagger={2} className="p-4 sm:p-5">
-            <SectionTitle hint="Defaults por tipo de ítem y umbral de faltas (libre).">
+            <SectionTitle hint="¿Cada tipo de actividad nace contando para faltas? + cupo de libre.">
               Parametría
             </SectionTitle>
             <div className="mb-4 max-w-xs">
@@ -237,49 +243,38 @@ export function SchedulePage() {
                   key={row.activityType}
                   className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-surface-1 px-3 py-2.5"
                 >
-                  <span className="text-[14px] font-medium text-fg">
-                    {CLASS_ACTIVITY_TYPE_LABELS[row.activityType]}
-                  </span>
-                  <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
-                    <Button
-                      variant={row.isMandatoryByDefault ? 'toggleOn' : 'toggle'}
-                      className="min-h-9 w-full text-[12px] sm:w-auto"
-                      onClick={() =>
-                        setDefaultsDraft((prev) =>
-                          prev.map((d) =>
-                            d.activityType === row.activityType
-                              ? {
-                                  ...d,
-                                  isMandatoryByDefault: !d.isMandatoryByDefault,
-                                }
-                              : d,
-                          ),
-                        )
-                      }
-                    >
-                      {row.isMandatoryByDefault
-                        ? 'Default obligatorio'
-                        : 'Default optativo'}
-                    </Button>
-                    <Button
-                      variant={row.allowsAttendance ? 'toggleOn' : 'toggle'}
-                      className="min-h-9 w-full text-[12px] sm:w-auto"
-                      onClick={() =>
-                        setDefaultsDraft((prev) =>
-                          prev.map((d) =>
-                            d.activityType === row.activityType
-                              ? {
-                                  ...d,
-                                  allowsAttendance: !d.allowsAttendance,
-                                }
-                              : d,
-                          ),
-                        )
-                      }
-                    >
-                      {row.allowsAttendance ? 'Con asistencia' : 'Sin asistencia'}
-                    </Button>
+                  <div className="min-w-0">
+                    <span className="block text-[14px] font-medium text-fg">
+                      {CLASS_ACTIVITY_TYPE_LABELS[row.activityType]}
+                    </span>
+                    {row.activityType === 'feriado' ? (
+                      <span className="mt-0.5 block text-[12px] text-fg-faint">
+                        Sin lista (fijo)
+                      </span>
+                    ) : null}
                   </div>
+                  <Button
+                    variant={row.isMandatoryByDefault ? 'toggleOn' : 'toggle'}
+                    className={
+                      row.isMandatoryByDefault
+                        ? 'min-h-9 w-[7.5rem] shrink-0 text-[12px]'
+                        : 'min-h-9 w-[7.5rem] shrink-0 border-border-strong text-[12px]'
+                    }
+                    onClick={() =>
+                      setDefaultsDraft((prev) =>
+                        prev.map((d) =>
+                          d.activityType === row.activityType
+                            ? {
+                                ...d,
+                                isMandatoryByDefault: !d.isMandatoryByDefault,
+                              }
+                            : d,
+                        ),
+                      )
+                    }
+                  >
+                    {row.isMandatoryByDefault ? 'Obligatorio' : 'Optativo'}
+                  </Button>
                 </li>
               ))}
             </ul>

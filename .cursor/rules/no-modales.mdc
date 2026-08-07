@@ -1,0 +1,38 @@
+---
+description: Sin modales salvo confirmación o alerta — preferir pantallas/navegación
+alwaysApply: true
+---
+
+# UX — sin modales (salvo alerta/confirm)
+
+ClassTrack es **anti-modal** para flujos de producto.
+
+## Regla
+
+- **No** uses modales, drawers a pantalla completa, overlays de edición ni diálogos de formulario.
+- **Sí** permití solo:
+  - `window.confirm` / alerta nativa (o equivalente mínimo) para **confirmación destructiva** o **alerta**
+  - Feedback inline (`InlineStatus`, mensajes en la página)
+
+## Qué hacer en su lugar
+
+| Necesidad | Patrón |
+|-----------|--------|
+| Crear / editar / ver detalle | **Nueva ruta** (como grupo → detalle, clase → editar) |
+| Filtros, pickers, fechas | **Inline** en la página (ej. `DatePicker` abierto en el form) |
+| Acciones secundarias | Link/texto discreto o sección expandible en la misma vista |
+
+## Ejemplos
+
+```tsx
+// ❌ BAD — editar en modal/drawer
+<Modal><ScheduleSessionEditor /></Modal>
+
+// ✅ GOOD — navegar a pantalla
+navigate(`/courses/${courseId}/schedule/sessions/${sessionId}`)
+
+// ✅ GOOD — confirmación destructiva
+window.confirm('¿Eliminar la clase?')
+```
+
+Si una lib o skill sugiere modal por defecto, **esta regla gana** en ClassTrack.
