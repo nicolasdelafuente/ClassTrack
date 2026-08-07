@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { fetchCurrentBoard } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
-import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { StateBox } from '../components/molecules/StateBox'
 import { GroupCard } from '../components/organisms/GroupCard'
+import { BoardPageSkeleton } from '../components/organisms/PageSkeletons'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
 import { overallSprintStatus } from '../lib/sprintMeta'
@@ -47,7 +48,7 @@ export function BoardPage() {
   if (state.status === 'loading') {
     return (
       <AppShell>
-        <StateMessage>Cargando tablero…</StateMessage>
+        <BoardPageSkeleton />
       </AppShell>
     )
   }

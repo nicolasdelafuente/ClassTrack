@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { fetchCourseSchedule } from '../api/client'
+import { StateBox } from '../components/molecules/StateBox'
 import { ScheduleSessionEditor } from '../components/organisms/ScheduleSessionEditor'
 import { PageHero } from '../components/organisms/PageHero'
-import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { ScheduleSessionPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import type { CourseSchedule, ScheduleSession } from '../types'
 
@@ -78,7 +79,7 @@ export function ScheduleSessionPage() {
   if (state.status === 'loading') {
     return (
       <AppShell showBack backTo={schedulePath} backLabel="← Cronograma">
-        <StateMessage>Cargando clase…</StateMessage>
+        <ScheduleSessionPageSkeleton />
       </AppShell>
     )
   }

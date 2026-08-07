@@ -11,9 +11,10 @@ import { Panel } from '../components/atoms/Panel'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { SprintTimeline } from '../components/molecules/SprintTimeline'
-import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { StateBox } from '../components/molecules/StateBox'
 import { LinksEditor } from '../components/organisms/LinksEditor'
 import { MembersList } from '../components/organisms/MembersList'
+import { GroupDetailPageSkeleton } from '../components/organisms/PageSkeletons'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
 import {
@@ -112,7 +113,7 @@ export function GroupDetailPage() {
   if (state.status === 'loading') {
     return (
       <AppShell showBack>
-        <StateMessage>Cargando grupo…</StateMessage>
+        <GroupDetailPageSkeleton />
       </AppShell>
     )
   }

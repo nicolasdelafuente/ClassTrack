@@ -11,8 +11,9 @@ import { MandatoryChip } from '../components/atoms/MandatoryChip'
 import { Select } from '../components/atoms/Select'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { Text } from '../components/atoms/Text'
-import { StateBox, StateMessage } from '../components/molecules/StateBox'
+import { StateBox } from '../components/molecules/StateBox'
 import { AttendanceGroupBlock } from '../components/organisms/AttendanceGroupBlock'
+import { AttendancePageSkeleton } from '../components/organisms/PageSkeletons'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
 import type {
@@ -239,7 +240,7 @@ export function AttendancePage() {
   if (!date || state.status === 'loading') {
     return (
       <AppShell showBack>
-        <StateMessage>Cargando asistencia…</StateMessage>
+        <AttendancePageSkeleton />
       </AppShell>
     )
   }
