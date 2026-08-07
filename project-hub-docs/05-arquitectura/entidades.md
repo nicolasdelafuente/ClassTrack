@@ -38,6 +38,19 @@ Ejemplo: `DesApp 2026-c1`.
 | name | nombre visible |
 | code | opcional, ej. `2026-c1` |
 | isCurrent | si es la cursada “activa” en Home |
+| maxAbsencesAllowed | faltas permitidas en clases **obligatorias** (default 4; con 5 → libre) |
+
+### CourseActivityTypeDefault
+Parametría por cursada: default de obligatoriedad / asistencia por tipo de ítem.
+
+| Campo | Idea |
+|-------|------|
+| courseId | |
+| activityType | mismo enum que `ClassSessionItem` |
+| isMandatoryByDefault | si el ítem nace obligatorio |
+| allowsAttendance | `false` en feriado |
+
+**Recálculo de clase (cuando cambian ítems):** si `mandatorySource === manual` no se pisa; si `derived`, `isMandatory = algún ítem obligatorio`.
 
 ### Teacher (Docente)
 En MVP puede ser solo un **nombre** en el grupo (`teacherName`).  
@@ -129,4 +142,3 @@ Actividad dentro de una clase.
 - Notas / actas
 - Usuarios con roles y auth completa
 - Historial de cambios / auditoría
-- Parametría de defaults / umbral de faltas (CT-024)

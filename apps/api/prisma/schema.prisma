@@ -16,15 +16,18 @@ enum SprintStatusValue {
 }
 
 model Course {
-  id                 String             @id @default(cuid())
-  name               String
-  code               String             @unique
-  isCurrent          Boolean            @default(false) @map("is_current")
-  groups             Group[]
-  attendanceRecords  AttendanceRecord[]
-  classSessions      ClassSession[]
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
+  id                   String                       @id @default(cuid())
+  name                 String
+  code                 String                       @unique
+  isCurrent            Boolean                      @default(false) @map("is_current")
+  /// Absences allowed on mandatory classes before libre (default 4 → 5th absence = libre).
+  maxAbsencesAllowed   Int                          @default(4) @map("max_absences_allowed")
+  groups               Group[]
+  attendanceRecords    AttendanceRecord[]
+  classSessions        ClassSession[]
+  activityTypeDefaults CourseActivityTypeDefault[]
+  createdAt            DateTime                     @default(now()) @map("created_at")
+  updatedAt            DateTime                     @updatedAt @map("updated_at")
 
   @@map("courses")
 }
@@ -160,4 +163,20 @@ model ClassSessionItem {
 
   @@index([classSessionId])
   @@map("class_session_items")
+}
+
+/// Per-course default: is this activity type mandatory / allows attendance.
+model CourseActivityTypeDefault {
+  id                   String            @id @default(cuid())
+  courseId             String            @map("course_id")
+  course               Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  activityType         ClassActivityType @map("activity_type")
+  isMandatoryByDefault Boolean           @default(true) @map("is_mandatory_by_default")
+  allowsAttendance     Boolean           @default(true) @map("allows_attendance")
+  createdAt            DateTime          @default(now()) @map("created_at")
+  updatedAt            DateTime          @updatedAt @map("updated_at")
+
+  @@unique([courseId, activityType])
+  @@index([courseId])
+  @@map("course_activity_type_defaults")
 }

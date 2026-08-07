@@ -1,6 +1,11 @@
 import { PrismaClient, SprintStatusValue } from '@prisma/client';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import {
+  ALL_ACTIVITY_TYPES,
+  DEFAULT_ACTIVITY_TYPE_RULES,
+  DEFAULT_MAX_ABSENCES_ALLOWED,
+} from '../src/schedule/course-policy-defaults';
 
 type SeedStudent = {
   fullName: string;
@@ -76,6 +81,9 @@ async function main() {
 
   // Clean demo tables (order matters for FKs)
   await prisma.attendanceRecord.deleteMany();
+  await prisma.classSessionItem.deleteMany();
+  await prisma.classSession.deleteMany();
+  await prisma.courseActivityTypeDefault.deleteMany();
   await prisma.sprintStatus.deleteMany();
   await prisma.groupLinks.deleteMany();
   await prisma.membership.deleteMany();
@@ -88,6 +96,17 @@ async function main() {
       name: payload.course.name,
       code: payload.course.code,
       isCurrent: payload.course.isCurrent,
+      maxAbsencesAllowed: DEFAULT_MAX_ABSENCES_ALLOWED,
+      activityTypeDefaults: {
+        create: ALL_ACTIVITY_TYPES.map((activityType) => {
+          const rule = DEFAULT_ACTIVITY_TYPE_RULES[activityType];
+          return {
+            activityType,
+            isMandatoryByDefault: rule.isMandatoryByDefault,
+            allowsAttendance: rule.allowsAttendance,
+          };
+        }),
+      },
     },
   });
 
@@ -138,6 +157,7 @@ async function main() {
     students: await prisma.student.count(),
     memberships: await prisma.membership.count(),
     sprints: await prisma.sprintStatus.count(),
+    activityTypeDefaults: await prisma.courseActivityTypeDefault.count(),
   };
   console.log('Seed OK', counts);
 }
