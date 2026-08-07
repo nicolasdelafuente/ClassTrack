@@ -2,11 +2,14 @@ import type {
   AttendanceMark,
   AttendanceRoster,
   Course,
+  CourseSchedule,
   GroupDetail,
   GroupLinks,
   GroupSprint,
   GroupSummary,
+  ScheduleSession,
   SprintStatus,
+  ActivityTypeDefault,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'
@@ -115,5 +118,44 @@ export function patchAttendanceMark(
   return requestJson<AttendanceMark>(`/courses/${courseId}/attendance`, {
     method: 'PATCH',
     body: JSON.stringify(payload),
+  })
+}
+
+export function fetchCourseSchedule(courseId: string) {
+  return requestJson<CourseSchedule>(`/courses/${courseId}/schedule`)
+}
+
+export function patchScheduleSession(
+  courseId: string,
+  sessionId: string,
+  body: {
+    isMandatory?: boolean
+    useDerivedMandatory?: boolean
+    date?: string
+  },
+) {
+  return requestJson<ScheduleSession>(
+    `/courses/${courseId}/schedule/sessions/${sessionId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    },
+  )
+}
+
+export function patchSchedulePolicy(
+  courseId: string,
+  body: {
+    maxAbsencesAllowed?: number
+    activityTypeDefaults?: ActivityTypeDefault[]
+  },
+) {
+  return requestJson<{
+    courseId: string
+    maxAbsencesAllowed: number
+    activityTypeDefaults: ActivityTypeDefault[]
+  }>(`/courses/${courseId}/schedule/policy`, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
   })
 }

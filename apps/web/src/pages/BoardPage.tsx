@@ -90,12 +90,21 @@ export function BoardPage() {
             },
           ]}
           actions={
-            <ButtonLink
-              className="min-h-11 px-4 text-[14px]"
-              to={`/courses/${course.id}/attendance`}
-            >
-              Tomar asistencia
-            </ButtonLink>
+            <>
+              <ButtonLink
+                className="min-h-11 px-4 text-[14px]"
+                to={`/courses/${course.id}/attendance`}
+              >
+                Tomar asistencia
+              </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
+                to={`/courses/${course.id}/schedule`}
+              >
+                Cronograma
+              </ButtonLink>
+            </>
           }
         />
 

@@ -106,6 +106,61 @@ export type AttendanceMark = {
   participated: boolean
 }
 
+export type ClassActivityType =
+  | 'feriado'
+  | 'sprint_planning'
+  | 'sprint_review'
+  | 'seguimiento'
+  | 'teorica'
+  | 'presentacion_medio'
+  | 'presentacion_final'
+
+export type MandatorySource = 'derived' | 'manual'
+
+export type ScheduleItem = {
+  id: string
+  title: string
+  sortOrder: number
+  activityType: ClassActivityType
+  isMandatory: boolean
+}
+
+export type ScheduleSession = {
+  id: string
+  date: string
+  isMandatory: boolean
+  mandatorySource: MandatorySource
+  allowsAttendance: boolean
+  items: ScheduleItem[]
+}
+
+export type ActivityTypeDefault = {
+  activityType: ClassActivityType
+  isMandatoryByDefault: boolean
+  allowsAttendance: boolean
+}
+
+export type CourseSchedule = {
+  course: {
+    id: string
+    name: string
+    code: string
+    maxAbsencesAllowed: number
+  }
+  activityTypeDefaults: ActivityTypeDefault[]
+  sessions: ScheduleSession[]
+}
+
+export const CLASS_ACTIVITY_TYPE_LABELS: Record<ClassActivityType, string> = {
+  feriado: 'Feriado',
+  sprint_planning: 'Sprint planning',
+  sprint_review: 'Sprint review',
+  seguimiento: 'Seguimiento',
+  teorica: 'Teórica',
+  presentacion_medio: 'Presentación medio término',
+  presentacion_final: 'Presentación final',
+}
+
 export function todayDateInputValue(): string {
   const now = new Date()
   const y = now.getFullYear()
