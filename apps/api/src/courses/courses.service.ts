@@ -17,6 +17,13 @@ export class CoursesService {
     return course;
   }
 
+  /** Board payload in one round-trip (avoids client waterfall). */
+  async getCurrentBoard() {
+    const course = await this.getCurrent();
+    const groups = await this.getGroups(course.id);
+    return { course, groups };
+  }
+
   async getGroups(courseId: string) {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
