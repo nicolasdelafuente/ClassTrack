@@ -1,23 +1,23 @@
 # AGENTS.md — ClassTrack
 
-Instrucciones para agentes (Cursor) que trabajen en este repo.
+Instrucciones para agentes (Cursor) en este repo.
 
 ## 1. Skills primero
 
-Antes de código: abrí el `SKILL.md` que corresponda (ver `.cursor/rules/skills-activation.mdc`).
+Abrí el `SKILL.md` que corresponda (`.cursor/rules/skills-activation.mdc`).
 
-Ubicación: `.agents/skills/<nombre>/SKILL.md`
+UI web: **siempre** `.agents/skills/classtrack-ui/SKILL.md` primero.
 
-## 2. Stack actual
+## 2. Stack
 
 | App | Stack |
 |-----|--------|
-| `apps/web` | React + Vite + TS + Tailwind v4 + Atomic Design |
-| `apps/api` | NestJS + Prisma (SQLite local; Postgres más adelante) |
+| `apps/web` | React + Vite + TS + Tailwind v4 + Atomic Design — **light minimal** |
+| `apps/api` | NestJS + Prisma (SQLite local) |
 
 ## 3. Producto
 
-Docs en `project-hub-docs/`. MVP: tablero, detalle de grupo, asistencia. Docker (CT-014) pospuesto.
+Docs: `project-hub-docs/`. MVP: tablero, detalle, asistencia. Docker pospuesto.
 
 ## 4. Idioma
 

@@ -15,7 +15,7 @@ export function Panel({
   return (
     <Tag
       className={cn(
-        'rounded-lg border border-border bg-surface-1',
+        'rounded-lg border border-border bg-surface-1 shadow-panel motion-safe:animate-fade-up',
         className,
       )}
       {...props}

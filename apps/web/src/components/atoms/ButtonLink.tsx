@@ -9,10 +9,10 @@ type ButtonLinkProps = LinkProps & {
 
 const variants: Record<ButtonLinkVariant, string> = {
   primary:
-    'inline-flex touch-manipulation items-center justify-center rounded-md border border-transparent bg-accent px-3 py-2 text-[13px] font-medium text-white transition-[filter,transform] duration-150 hover:brightness-110 motion-safe:active:scale-[0.97]',
+    'inline-flex touch-manipulation items-center justify-center rounded-md border border-transparent bg-accent px-3 py-2 text-[13px] font-medium text-white shadow-panel transition-[filter,transform,box-shadow] duration-200 ease-out hover:brightness-105 hover:shadow-lift motion-safe:active:scale-[0.98]',
   ghost:
-    'inline-flex touch-manipulation items-center justify-center rounded-md border border-border bg-transparent px-3 py-2 text-[13px] font-medium text-fg-muted transition-[background-color,color,transform] duration-150 hover:bg-surface-2 hover:text-fg motion-safe:active:scale-[0.97]',
-  text: 'font-semibold text-accent no-underline hover:underline',
+    'inline-flex touch-manipulation items-center justify-center rounded-md border border-border bg-surface-1 px-3 py-2 text-[13px] font-medium text-fg-muted shadow-panel transition-[background-color,color,transform,box-shadow] duration-200 ease-out hover:bg-surface-hover hover:text-fg hover:shadow-lift motion-safe:active:scale-[0.98]',
+  text: 'font-semibold text-accent no-underline transition-colors duration-200 hover:underline',
 }
 
 export function ButtonLink({

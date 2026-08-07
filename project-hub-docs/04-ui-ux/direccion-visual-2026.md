@@ -1,45 +1,41 @@
 # Dirección visual — ClassTrack (2026)
 
-**Reading this as:** product UI de herramienta docente, lenguaje **Linear-style** (oscuro, denso, preciso), no landing marketing.
+**Reading this as:** app docente **light, minimal**, estilo Notion / Claude / Dropbox (listas y paneles, poca decoración), con **transiciones cortas** y sombras suaves.
 
-## Skills usadas
+Skill dueño: `.agents/skills/classtrack-ui/SKILL.md` (gana sobre skills genéricos de UI).
+
+## Skills
 
 | Skill | Rol |
 |-------|-----|
-| `frontend-design` | Evitar estética genérica / “AI slop” |
-| `design-taste-frontend` | Gustos de producto moderno |
-| `linear-ui-skills` | Tokens / grilla / dark tool UI |
-| `web-design-guidelines` | a11y + interacción |
+| **`classtrack-ui`** | Dirección visual del producto (obligatoria en `apps/web`) |
+| `frontend-design` / `design-taste-frontend` | Apoyo anti-slop |
+| `tailwind-design-system` + `atomic-design-fundamentals` | Tokens + estructura |
+| `web-design-guidelines` | a11y / interacción |
+
+**Removido:** `linear-ui-skills` (dirección dark/tool descartada).
 
 ## Dials
 
-- `DESIGN_VARIANCE`: 5 (contenido, no experimental)
-- `MOTION_INTENSITY`: 3 (micro feedback ≤ 200ms)
-- `VISUAL_DENSITY`: 7 (usable en aula / muchos grupos)
+- Variance: 4  
+- Motion: 5 (hover lift, fade-up ≤ 200ms)  
+- Density: 4 (aires)
 
 ## Tokens (resumen)
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| surface-base | `#08090a` | Fondo |
-| surface-1 | `#111213` | Paneles |
-| border | `#232526` | Separadores 1px |
-| text | `#f7f8f8` | Primario |
-| text-muted | `#8b8f98` | Secundario |
-| accent | `#5e6ad2` | Acciones / focus |
-| ok / attention / critical | verdes / ámbar / rojo | Semáforo |
-
-Tipografía: **Inter** (como Linear). Radio: **6–8px**. Espaciado en grilla de **4px**.
+| Token | Idea |
+|-------|------|
+| surface | `#f7f7f5` canvas |
+| surface-1 | blanco paneles |
+| accent | teal `#0f6b4c` (acciones) |
+| shadow-panel / shadow-lift | profundidad suave |
 
 ## Qué NO hacer
 
-- Gradientes púrpura genéricos
-- Cards con sombra suave “dashboard 2020”
-- Tipografía serif ornamental en producto
-- Animaciones decorativas largas
+- Dark cockpit tipo Linear app  
+- Gradientes púrpura / glow  
+- Animaciones largas o parallax  
 
 ## Continuidad
 
-Nuevas pantallas: **Tailwind v4** + **Atomic Design** (`atoms` → `molecules` → `organisms` → `templates` → `pages`).
-
-Tokens en `apps/web/src/index.css` (`@theme`). No agregar CSS suelto tipo BEM; preferí clases Tailwind y componentes reutilizables.
+Tailwind v4 + Atomic Design. Nuevas pantallas: leer `classtrack-ui` primero.

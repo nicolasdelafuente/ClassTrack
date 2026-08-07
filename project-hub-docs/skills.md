@@ -22,7 +22,7 @@ Lista de skills del ecosistema [skills.sh](https://www.skills.sh/) que usamos o 
 | `security-review` | Revisión de vulnerabilidades en código | https://skills.sh/getsentry/skills/security-review | `npx skills add https://github.com/getsentry/skills --skill security-review` |
 | `frontend-design` | UI distintiva / anti-slop (redesigns) | https://skills.sh/anthropics/skills/frontend-design | `npx skills add https://github.com/anthropics/skills --skill frontend-design` |
 | `design-taste-frontend` | Gustos de producto moderno | https://skills.sh/leonxlnx/taste-skill/design-taste-frontend | `npx skills add https://github.com/leonxlnx/taste-skill --skill design-taste-frontend` |
-| `linear-ui-skills` | Estética tipo Linear (dark, denso) | https://skills.sh/ihlamury/design-skills/linear-ui-skills | `npx skills add https://github.com/ihlamury/design-skills --skill linear-ui-skills` |
+| **`classtrack-ui`** | **Dirección visual propia** (light, minimal, transitions) | `.agents/skills/classtrack-ui` | Skill de proyecto (no skills.sh) |
 
 ### Seguridad: por qué estas dos
 
@@ -161,7 +161,8 @@ React Native, deploy a Vercel/Azure, Lark, video/HyperFrames, marketing, etc.
 | Trello Automation | **Sí** | Proyecto |
 | frontend-design | **Sí** | Proyecto CT-015 |
 | design-taste-frontend | **Sí** | Proyecto CT-015 |
-| linear-ui-skills | **Sí** | Proyecto CT-015 |
+| **classtrack-ui** | **Sí** | Proyecto CT-019 (skill propio) |
+| linear-ui-skills | **Eliminada** | CT-019 — dirección dark descartada |
 | gh-cli | No disponible | Usar `gh` + skill `github` |
 | create-github-pull-request-from-specification | No disponible | Usar `copilot-pr-autopilot` |
 | domain-modeling | Opcional | No instalada |

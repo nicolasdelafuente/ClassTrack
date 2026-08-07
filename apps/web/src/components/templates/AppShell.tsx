@@ -23,17 +23,20 @@ export function AppShell({
       >
         Saltar al contenido
       </a>
-      <header className="sticky top-0 z-20 flex min-h-[52px] flex-wrap items-center justify-between gap-2 border-b border-border bg-surface/90 py-2.5 backdrop-blur-md">
+      <header className="sticky top-0 z-20 flex min-h-[56px] flex-wrap items-center justify-between gap-2 border-b border-border/80 bg-surface/80 py-2.5 backdrop-blur-md transition-[background-color,border-color] duration-200">
         <div>
           {showBack ? (
             <Link
-              className="text-[13px] font-medium text-fg-muted no-underline hover:text-fg"
+              className="text-[13px] font-medium text-fg-muted no-underline transition-colors duration-200 hover:text-fg"
               to="/"
             >
               ← Tablero
             </Link>
           ) : (
-            <span className="text-sm font-semibold tracking-tight text-fg" translate="no">
+            <span
+              className="text-[15px] font-semibold tracking-tight text-fg"
+              translate="no"
+            >
               ClassTrack
             </span>
           )}
@@ -45,7 +48,7 @@ export function AppShell({
             ) : null}
             {courseCode ? (
               <span
-                className="rounded-full border border-border px-2 py-0.5 text-xs tabular-nums text-fg-faint"
+                className="rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-xs tabular-nums text-fg-faint shadow-panel"
                 translate="no"
               >
                 {courseCode}
@@ -54,7 +57,11 @@ export function AppShell({
           </p>
         )}
       </header>
-      <main id="main-content" className="scroll-mt-16 pt-5" tabIndex={-1}>
+      <main
+        id="main-content"
+        className="scroll-mt-16 pt-6 motion-safe:animate-fade-up"
+        tabIndex={-1}
+      >
         {children}
       </main>
     </div>

@@ -55,11 +55,11 @@
       "skillPath": "skills/github-issues/SKILL.md",
       "computedHash": "efa9746a60c4507ad5a7ad60e1e9a704b4eea06c1229befe3c86b3bbcaea67c9"
     },
-    "linear-ui-skills": {
-      "source": "ihlamury/design-skills",
-      "sourceType": "github",
-      "skillPath": "skills/linear/SKILL.md",
-      "computedHash": "1973e2441322916651bd355d2c5096a67d0cde07d9763fd68b52f0beb6ea0e89"
+    "classtrack-ui": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "classtrack-ui/SKILL.md",
+      "computedHash": "local-classtrack-ui-ct019"
     },
     "monorepo-management": {
       "source": "wshobson/agents",
