@@ -271,9 +271,8 @@ export function duplicateCourse(
 }
 
 export function registerUser(body: {
-  email: string
+  token: string
   password: string
-  role: 'teacher' | 'student'
   displayName?: string
 }) {
   return requestJson<AuthUser>('/auth/register', {
@@ -284,6 +283,54 @@ export function registerUser(body: {
 
 export function loginUser(body: { email: string; password: string }) {
   return requestJson<AuthUser>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
+export type InvitePreview = {
+  email: string
+  role: 'teacher' | 'student'
+  expiresAt: string
+  courseName: string | null
+}
+
+export function fetchInvitePreview(token: string) {
+  return requestJson<InvitePreview>(
+    `/auth/invites/${encodeURIComponent(token)}`,
+  )
+}
+
+export type InviteCandidate = {
+  studentId: string
+  fullName: string
+  email: string
+  legajo: string | null
+  group: { id: string; number: number; name: string | null }
+  alreadyRegistered: boolean
+  invitePending: boolean
+}
+
+export function fetchInviteCandidates(courseId: string) {
+  return requestJson<InviteCandidate[]>(
+    `/courses/${courseId}/invite-candidates`,
+  )
+}
+
+export type CreateInviteResult = {
+  inviteId: string
+  email: string
+  role: 'teacher' | 'student'
+  inviteUrl: string
+  emailed: boolean
+  expiresAt: string
+}
+
+export function createInvite(
+  courseId: string,
+  body: { email: string; role: 'teacher' | 'student' },
+) {
+  return requestJson<CreateInviteResult>(`/courses/${courseId}/invites`, {
     method: 'POST',
     body: JSON.stringify(body),
   })

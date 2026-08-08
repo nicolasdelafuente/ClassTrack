@@ -40,6 +40,15 @@ npm run prisma:migrate
 npm run seed
 ```
 
+## Invitaciones por mail (CT-042)
+
+En `apps/api/.env`:
+
+- `MAILJET_API_KEY` / `MAILJET_API_SECRET` / `MAILJET_FROM_EMAIL` — envío real
+- `WEB_APP_URL` — base del link (`http://localhost:5173`)
+
+Sin keys de Mailjet, la API igual crea la invitación y la UI muestra el link para copiar.
+
 ## Trello
 
 CT-009 monorepo · CT-010 seed · CT-011 tablero
