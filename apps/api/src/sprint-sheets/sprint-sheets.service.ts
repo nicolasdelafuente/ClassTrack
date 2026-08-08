@@ -12,6 +12,10 @@ import {
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SheetTaskInputDto } from './dto/sprint-sheets.dto';
+import {
+  normalizeTrelloLinks,
+  readTrelloLinks,
+} from './trello-links';
 
 const MIN_REASON = 5;
 const EDITABLE: SheetStatus[] = [SheetStatus.draft, SheetStatus.needs_changes];
@@ -309,6 +313,7 @@ export class SprintSheetsService {
             completed: null,
             isExtra: false,
             sourceTaskId: t.id,
+            trelloLinks: readTrelloLinks(t.trelloLinks),
             sortOrder: index,
           })),
         },
@@ -376,6 +381,7 @@ export class SprintSheetsService {
               : null,
           sourceTaskId:
             sheet.kind === SheetKind.end ? t.sourceTaskId || null : null,
+          trelloLinks: normalizeTrelloLinks(t.trelloLinks),
           sortOrder: t.sortOrder ?? index,
         })),
       });
@@ -590,6 +596,7 @@ export class SprintSheetsService {
       isExtra: boolean;
       extraReason: string | null;
       sourceTaskId: string | null;
+      trelloLinks: unknown;
       sortOrder: number;
     }[];
     comments: {
@@ -623,6 +630,7 @@ export class SprintSheetsService {
         isExtra: t.isExtra,
         extraReason: t.extraReason,
         sourceTaskId: t.sourceTaskId,
+        trelloLinks: readTrelloLinks(t.trelloLinks),
         sortOrder: t.sortOrder,
       })),
       comments: sheet.comments.map((c) => ({

@@ -221,17 +221,25 @@ async function main() {
                 category: TaskCategory.frontend,
                 title: 'Pantalla de login responsive',
                 description: 'Formulario email/password usable en celular',
+                trelloLinks: [
+                  'https://trello.com/c/5KbT8SJd/ejemplo-login-responsive',
+                ],
                 sortOrder: 0,
               },
               {
                 category: TaskCategory.backend,
                 title: 'Endpoint de autenticación',
                 description: 'POST /auth/login con validación básica',
+                trelloLinks: [
+                  'https://trello.com/c/48YewFQR/ejemplo-auth-api',
+                  'https://trello.com/c/TTryoEYL/ejemplo-links-trello',
+                ],
                 sortOrder: 1,
               },
               {
                 category: TaskCategory.testing,
                 title: 'Prueba manual del flujo alumno',
+                trelloLinks: [],
                 sortOrder: 2,
               },
             ],
@@ -257,6 +265,7 @@ async function main() {
                 index < 2 ? null : 'Quedó pendiente documentar el caso borde',
               isExtra: false,
               sourceTaskId: t.id,
+              trelloLinks: t.trelloLinks ?? [],
               sortOrder: index,
             })),
           },

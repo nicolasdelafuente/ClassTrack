@@ -66,6 +66,11 @@ export class SheetTaskInputDto {
   sourceTaskId?: string | null;
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  trelloLinks?: string[];
+
+  @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(0)

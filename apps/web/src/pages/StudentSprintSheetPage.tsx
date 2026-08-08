@@ -14,6 +14,7 @@ import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
+import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
 import { AppShell } from '../components/templates/AppShell'
 import { cn } from '../lib/cn'
 import {
@@ -36,6 +37,7 @@ type DraftTask = {
   isExtra: boolean
   extraReason: string
   sourceTaskId: string | null
+  trelloLinks: string[]
 }
 
 function toDraft(tasks: SprintSheetTask[]): DraftTask[] {
@@ -49,6 +51,7 @@ function toDraft(tasks: SprintSheetTask[]): DraftTask[] {
     isExtra: t.isExtra,
     extraReason: t.extraReason ?? '',
     sourceTaskId: t.sourceTaskId,
+    trelloLinks: t.trelloLinks ?? [],
   }))
 }
 
@@ -154,6 +157,7 @@ export function StudentSprintSheetPage() {
           isExtra: activeKind === 'end' ? t.isExtra : false,
           extraReason: activeKind === 'end' ? t.extraReason || null : null,
           sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
+          trelloLinks: t.trelloLinks,
           sortOrder: i,
         })),
       )
@@ -183,6 +187,7 @@ export function StudentSprintSheetPage() {
           isExtra: activeKind === 'end' ? t.isExtra : false,
           extraReason: activeKind === 'end' ? t.extraReason || null : null,
           sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
+          trelloLinks: t.trelloLinks,
           sortOrder: i,
         })),
       )
@@ -345,6 +350,7 @@ export function StudentSprintSheetPage() {
                               isExtra: false,
                               extraReason: '',
                               sourceTaskId: null,
+                              trelloLinks: [],
                             },
                           ])
                         }
@@ -387,6 +393,20 @@ export function StudentSprintSheetPage() {
                                   draft.map((d) =>
                                     d.key === task.key
                                       ? { ...d, description: e.target.value }
+                                      : d,
+                                  ),
+                                )
+                              }
+                            />
+                            <TaskTrelloLinks
+                              editable
+                              disabled={busy}
+                              links={task.trelloLinks}
+                              onChange={(trelloLinks) =>
+                                setDraft(
+                                  draft.map((d) =>
+                                    d.key === task.key
+                                      ? { ...d, trelloLinks }
                                       : d,
                                   ),
                                 )
@@ -531,6 +551,7 @@ export function StudentSprintSheetPage() {
                                 {task.description}
                               </p>
                             ) : null}
+                            <TaskTrelloLinks links={task.trelloLinks} />
                             {activeKind === 'end' ? (
                               <p className="mt-1 m-0 text-[12px] text-fg-faint">
                                 {task.isExtra
@@ -587,6 +608,7 @@ export function StudentSprintSheetPage() {
                           isExtra: true,
                           extraReason: '',
                           sourceTaskId: null,
+                          trelloLinks: [],
                         },
                       ])
                     }}
