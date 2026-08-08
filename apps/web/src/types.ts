@@ -59,6 +59,12 @@ export type GroupDetail = {
   name: string | null
   projectTopic: string | null
   teacherName: string | null
+  tutorUserId: string | null
+  tutor: {
+    id: string
+    email: string
+    displayName: string | null
+  } | null
   sprints: GroupSprint[]
   members: GroupMember[]
   links: GroupLinks

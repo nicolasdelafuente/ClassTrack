@@ -25,6 +25,14 @@ export class UpdateLinksDto {
   driveUrl?: string | null;
 }
 
+/** Assign or clear group tutor (CT-044). null = sin tutor. */
+export class UpdateTutorDto {
+  @ValidateIf((_, v) => v !== null && v !== undefined)
+  @IsString()
+  @IsOptional()
+  tutorUserId?: string | null;
+}
+
 export class GroupIdParamDto {
   @IsString()
   groupId!: string;

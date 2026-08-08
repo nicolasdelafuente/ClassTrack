@@ -6,6 +6,11 @@ import { LoginDto, RegisterDto } from './dto/auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Get('teachers')
+  listTeachers() {
+    return this.authService.listTeachers();
+  }
+
   @Get('invites/:token')
   getInvite(@Param('token') token: string) {
     return this.authService.getInvitePreview(token);

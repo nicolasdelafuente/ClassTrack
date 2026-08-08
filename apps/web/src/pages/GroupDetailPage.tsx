@@ -12,6 +12,7 @@ import { StatusBadge } from '../components/atoms/StatusBadge'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { SprintTimeline } from '../components/molecules/SprintTimeline'
 import { StateBox } from '../components/molecules/StateBox'
+import { TutorAssigner } from '../components/molecules/TutorAssigner'
 import { LinksEditor } from '../components/organisms/LinksEditor'
 import { MembersList } from '../components/organisms/MembersList'
 import { GroupDetailPageSkeleton } from '../components/organisms/PageSkeletons'
@@ -149,7 +150,10 @@ export function GroupDetailPage() {
           stats={[
             {
               label: 'Docente',
-              value: group.teacherName?.trim() || '—',
+              value:
+                group.tutor?.displayName?.trim() ||
+                group.teacherName?.trim() ||
+                '—',
             },
             {
               label: 'Integrantes',
@@ -226,6 +230,31 @@ export function GroupDetailPage() {
             ) : null
           }
         />
+
+        <Panel as="section" tone="default" stagger={2} className="p-4 sm:p-5">
+          <SectionTitle
+            hint="Asigná tu tutoría o la de otro docente registrado."
+          >
+            Tutoría
+          </SectionTitle>
+          <TutorAssigner
+            groupId={group.id}
+            tutorUserId={group.tutorUserId}
+            teacherName={group.teacherName}
+            disabled={busy}
+            onSaved={(next) => {
+              setState({
+                status: 'ready',
+                group: {
+                  ...group,
+                  tutorUserId: next.tutorUserId,
+                  teacherName: next.teacherName,
+                  tutor: next.tutor,
+                },
+              })
+            }}
+          />
+        </Panel>
 
         <Panel as="section" tone="default" stagger={2} className="p-4 sm:p-5">
           <SectionTitle

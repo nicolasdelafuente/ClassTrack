@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma, SprintStatusValue } from '@prisma/client';
+import { Prisma, SprintStatusValue, UserRole } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 const SPRINT_VALUES = new Set<string>(Object.values(SprintStatusValue));
@@ -17,6 +17,7 @@ export class GroupsService {
       where: { id: groupId },
       include: {
         course: true,
+        tutor: true,
         sprintStatuses: { orderBy: { sprintNumber: 'asc' } },
         links: true,
         memberships: {
@@ -104,10 +105,56 @@ export class GroupsService {
     };
   }
 
+  /** Assign tutor (teacher User) or clear tutoría (CT-044). */
+  async updateTutor(groupId: string, tutorUserId: string | null) {
+    const group = await this.prisma.group.findUnique({ where: { id: groupId } });
+    if (!group) {
+      throw new NotFoundException('Grupo no encontrado');
+    }
+
+    let teacherName: string | null = null;
+    let tutorId: string | null = null;
+
+    if (tutorUserId) {
+      const tutor = await this.prisma.user.findUnique({
+        where: { id: tutorUserId },
+      });
+      if (!tutor || tutor.role !== UserRole.teacher) {
+        throw new BadRequestException(
+          'El tutor debe ser un usuario con rol docente',
+        );
+      }
+      tutorId = tutor.id;
+      teacherName = tutor.displayName?.trim() || tutor.email;
+    }
+
+    const updated = await this.prisma.group.update({
+      where: { id: groupId },
+      data: {
+        tutorUserId: tutorId,
+        teacherName,
+      },
+      include: { tutor: true },
+    });
+
+    return {
+      tutorUserId: updated.tutorUserId,
+      teacherName: updated.teacherName,
+      tutor: updated.tutor
+        ? {
+            id: updated.tutor.id,
+            email: updated.tutor.email,
+            displayName: updated.tutor.displayName,
+          }
+        : null,
+    };
+  }
+
   private toDetail(
     group: Prisma.GroupGetPayload<{
       include: {
         course: true;
+        tutor: true;
         sprintStatuses: true;
         links: true;
         memberships: { include: { student: true } };
@@ -126,6 +173,14 @@ export class GroupsService {
       name: group.name,
       projectTopic: group.projectTopic,
       teacherName: group.teacherName,
+      tutorUserId: group.tutorUserId,
+      tutor: group.tutor
+        ? {
+            id: group.tutor.id,
+            email: group.tutor.email,
+            displayName: group.tutor.displayName,
+          }
+        : null,
       sprints: group.sprintStatuses.map((s) => ({
         sprintNumber: s.sprintNumber,
         status: s.status,
