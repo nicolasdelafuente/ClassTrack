@@ -1,6 +1,6 @@
 # Etapas del producto — ClassTrack
 
-Cómo organizamos el desarrollo (visión senior / proceso).
+Cómo organizamos el desarrollo (visión senior / alumno).
 
 ## Mapa de etapas
 
@@ -9,43 +9,43 @@ Cómo organizamos el desarrollo (visión senior / proceso).
 | **0–3** | CT-E01…E03 | Hecho | Docs, skills, GitHub/Trello |
 | **MVP clásico** | **CT-E04** | **Cerrada** | Tablero + detalle grupo + asistencia (+ cronograma/faltas) |
 | **Cronograma** | CT-E05 | Hecho | Clases, obligatoriedad, libre |
-| **Post-MVP** | **CT-E06** | **Activa** | Alumno, fichas, notas, seguimiento docente, ops |
+| **Post-MVP / cursada real** | **CT-E06** | **Cerrada** | Alumno, fichas, notas, seguimiento + fotos |
+| **Mejoras continuas** | **CT-E07** | **Activa** | Features e mejoras que vayan surgiendo |
 
-## MVP clásico (cerrado) — criterio
+## Producto usable (hito cerrado)
 
-Un docente, en el celular, en &lt; 1 min:
+El flujo de **cursada real** ya está en `main` y se considera **finalizado para uso**:
 
-1. Abre la cursada actual  
-2. Ve los grupos y el semáforo  
-3. Entra a un grupo y entiende integrantes / sprints / links  
-4. Puede tomar asistencia del día  
+- Docente: tablero, grupos, asistencia, cronograma, fichas, notas, seguimiento con fotos  
+- Alumno: grupo, fichas de sprint  
+- Auth, invites, mails, tutor, formación de grupos  
 
-Detalle: [mvp.md](./mvp.md).
+**Docker (CT-014)** queda en **Backlog**: es infra, **otro momento**. No bloquea el producto.
 
-## Post-MVP (activa) — CT-E06
+## Modo actual — CT-E07 Mejoras continuas
 
-Trabajo de **cursada real**, fuera del MVP original:
+A partir de ahora el trabajo es **incremental**:
 
-- Auth, roles, invites, mails, duplicar cursada, tutor  
-- Formación de grupos, fichas de sprint, precalificación / notas finales  
-- Próximo: **notas de grupo** (CT-049) + **fotos** (CT-050)  
-- Infra pendiente: Docker (CT-014) en Backlog  
+1. Aparece una idea / dolor / mejora  
+2. Se crea una card (o se pide y la armamos) con `**Épica:** CT-E07`  
+3. Branch → PR → merge a `main` → card a **Hecho**  
 
-## Reglas de trabajo (obligatorias)
+No hace falta una “etapa gigante”: cada mejora es un ticket chico y shippable.
 
-1. **Una etapa activa.** Hoy: CT-E06. No inventar features “sueltas”.  
-2. **Toda card nueva** lleva `**Épica:** CT-E0X`, labels, y entra al checklist de la épica.  
-3. **Hecho en Trello ⇒ mergeado en `main`** (o card CT-051 de higiene abierta hasta mergear).  
-4. **Orden de PRs:** mergear de menor a mayor número / dependencia; rebase si hace falta.  
-5. **Backlog** = ideas sin compromiso de sprint.  
-6. Si una idea no cabe en E06 → nueva épica (no reabrir E04).
+## Reglas de trabajo
 
-## Orden inmediato sugerido
+1. **Etapa activa:** CT-E07.  
+2. **Toda card nueva** lleva `**Épica:** CT-E07` (salvo infra explícita).  
+3. **Hecho en Trello ⇒ mergeado en `main`**.  
+4. **Backlog** = ideas sin compromiso (incluye Docker).  
+5. No reabrir E04/E06; si hace falta un tema grande nuevo → nueva épica.
 
-1. ~~CT-051 — Mergear PR #45 → #46 → #47 a `main`~~ **hecho**  
-2. ~~CT-049 — Notas de seguimiento por grupo~~ **hecho** (PR #48)  
-3. ~~CT-050 — Fotos/capturas en notas~~ **hecho** (PR #49)  
-4. CT-014 — Docker (cuando toque infra)
+## Cierre reciente
+
+1. ~~CT-051 — Mergear PRs post-MVP~~ **hecho**  
+2. ~~CT-049 — Notas de seguimiento~~ **hecho** (PR #48)  
+3. ~~CT-050 — Fotos en notas~~ **hecho** (PR #49)  
+4. CT-014 — Docker → **Backlog / infra**
 
 ## Tablero
 
