@@ -96,6 +96,27 @@ export function patchGroupLinks(groupId: string, links: GroupLinks) {
   })
 }
 
+export type TeacherOption = {
+  id: string
+  email: string
+  displayName: string | null
+}
+
+export function fetchTeachers() {
+  return requestJson<TeacherOption[]>('/auth/teachers')
+}
+
+export function patchGroupTutor(groupId: string, tutorUserId: string | null) {
+  return requestJson<{
+    tutorUserId: string | null
+    teacherName: string | null
+    tutor: TeacherOption | null
+  }>(`/groups/${groupId}/tutor`, {
+    method: 'PATCH',
+    body: JSON.stringify({ tutorUserId }),
+  })
+}
+
 export function fetchAttendanceRoster(
   courseId: string,
   date: string,

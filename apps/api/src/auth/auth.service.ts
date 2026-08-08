@@ -76,6 +76,20 @@ export class AuthService {
     return toAuthUser(user);
   }
 
+  /** Teachers available as group tutors (CT-044). */
+  async listTeachers() {
+    const teachers = await this.prisma.user.findMany({
+      where: { role: UserRole.teacher },
+      orderBy: [{ displayName: 'asc' }, { email: 'asc' }],
+      select: {
+        id: true,
+        email: true,
+        displayName: true,
+      },
+    });
+    return teachers;
+  }
+
   private async findValidInvite(token: string) {
     const trimmed = token?.trim();
     if (!trimmed) {

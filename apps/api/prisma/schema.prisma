@@ -31,6 +31,7 @@ model User {
   role        UserRole @default(teacher)
   displayName String?  @map("display_name")
   invitesSent Invite[] @relation("InvitesSent")
+  tutoredGroups Group[] @relation("GroupTutor")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -85,7 +86,11 @@ model Group {
   number        Int
   name          String?
   projectTopic  String?         @map("project_topic")
+  /// Legacy display label; kept in sync when tutorUserId is set.
   teacherName   String?         @map("teacher_name")
+  /// Assigned tutor (User with role teacher). CT-044.
+  tutorUserId   String?         @map("tutor_user_id")
+  tutor         User?           @relation("GroupTutor", fields: [tutorUserId], references: [id], onDelete: SetNull)
   memberships   Membership[]
   sprintStatuses SprintStatus[]
   links         GroupLinks?
@@ -93,6 +98,7 @@ model Group {
   updatedAt     DateTime        @updatedAt @map("updated_at")
 
   @@unique([courseId, number])
+  @@index([tutorUserId])
   @@map("groups")
 }
 
