@@ -11,6 +11,11 @@ import {
   CRONOGRAMA_DESAPP_2026,
   parseSeedDate,
 } from './cronograma-desapp-2026';
+import {
+  DEMO_S1_END_OUTCOMES,
+  DEMO_S1_START_TASKS,
+  DEMO_S2_START_TASKS,
+} from './data/demo-sprint-sheets';
 
 type SeedStudent = {
   fullName: string;
@@ -133,6 +138,10 @@ async function main() {
     ],
   });
 
+  const teacher = await prisma.user.findUniqueOrThrow({
+    where: { email: 'docente@classtrack.local' },
+  });
+
   const course = await prisma.course.create({
     data: {
       name: payload.course.name,
@@ -206,7 +215,7 @@ async function main() {
         },
       });
 
-      // Demo fichas for group 1 (CT-056):
+      // Demo fichas for group 1 (CT-056): extensive realistic sheets
       // S1 start approved · S1 end approved · S2 start in review
       const startSheet = await prisma.sprintSheet.create({
         data: {
@@ -214,30 +223,22 @@ async function main() {
           sprintNumber: 1,
           kind: SheetKind.start,
           status: SheetStatus.approved,
-          submittedAt: new Date(),
-          approvedAt: new Date(),
+          submittedAt: new Date('2026-03-10T18:30:00.000Z'),
+          approvedAt: new Date('2026-03-12T21:05:00.000Z'),
           tasks: {
+            create: DEMO_S1_START_TASKS.map((task, sortOrder) => ({
+              category: task.category,
+              title: task.title,
+              description: task.description,
+              sortOrder,
+            })),
+          },
+          comments: {
             create: [
               {
-                category: TaskCategory.frontend,
-                title: 'Pantalla de login responsive',
-                description:
-                  '<ul><li>Formulario email/password</li><li>Usable en celular</li></ul>',
-                sortOrder: 0,
-              },
-              {
-                category: TaskCategory.backend,
-                title: 'Endpoint de autenticación',
-                description:
-                  '<p><strong>POST</strong> /auth/login con validación básica</p>',
-                sortOrder: 1,
-              },
-              {
-                category: TaskCategory.testing,
-                title: 'Prueba manual del flujo alumno',
-                description:
-                  '<ol><li>Login alumno</li><li>Abrir fichas</li><li>Enviar a revisión</li></ol>',
-                sortOrder: 2,
+                authorUserId: teacher.id,
+                body: 'Bien el nivel de detalle. Acuerden el endpoint de perfil para el próximo sprint y no dejen el Trello a medias.',
+                createdAt: new Date('2026-03-12T21:05:00.000Z'),
               },
             ],
           },
@@ -245,25 +246,90 @@ async function main() {
         include: { tasks: true },
       });
 
+      const startByOrder = [...startSheet.tasks].sort(
+        (a, b) => a.sortOrder - b.sortOrder,
+      );
+      const endTaskCreates: Array<{
+        category: TaskCategory;
+        title: string;
+        description: string | null;
+        completed: boolean;
+        incompleteReason: string | null;
+        isExtra: boolean;
+        extraReason: string | null;
+        sourceTaskId: string | null;
+        sortOrder: number;
+      }> = [];
+
+      let startIndex = 0;
+      let sortOrder = 0;
+      for (const outcome of DEMO_S1_END_OUTCOMES) {
+        if (outcome.kind === 'extra') {
+          endTaskCreates.push({
+            category: outcome.category,
+            title: outcome.title,
+            description: outcome.description,
+            completed: outcome.completed,
+            incompleteReason: null,
+            isExtra: true,
+            extraReason: outcome.reason,
+            sourceTaskId: null,
+            sortOrder: sortOrder++,
+          });
+          continue;
+        }
+
+        const source = startByOrder[startIndex++];
+        if (!source) {
+          throw new Error(
+            `Demo S1 end outcome missing start task at index ${startIndex - 1}`,
+          );
+        }
+
+        if (outcome.kind === 'done') {
+          endTaskCreates.push({
+            category: source.category,
+            title: source.title,
+            description: source.description,
+            completed: true,
+            incompleteReason: null,
+            isExtra: false,
+            extraReason: null,
+            sourceTaskId: source.id,
+            sortOrder: sortOrder++,
+          });
+        } else {
+          endTaskCreates.push({
+            category: source.category,
+            title: source.title,
+            description: source.description,
+            completed: false,
+            incompleteReason: outcome.reason,
+            isExtra: false,
+            extraReason: null,
+            sourceTaskId: source.id,
+            sortOrder: sortOrder++,
+          });
+        }
+      }
+
       await prisma.sprintSheet.create({
         data: {
           groupId: group.id,
           sprintNumber: 1,
           kind: SheetKind.end,
           status: SheetStatus.approved,
-          submittedAt: new Date(),
-          approvedAt: new Date(),
-          tasks: {
-            create: startSheet.tasks.map((t, index) => ({
-              category: t.category,
-              title: t.title,
-              description: t.description,
-              completed: true,
-              incompleteReason: null,
-              isExtra: false,
-              sourceTaskId: t.id,
-              sortOrder: index,
-            })),
+          submittedAt: new Date('2026-03-17T19:10:00.000Z'),
+          approvedAt: new Date('2026-03-19T20:40:00.000Z'),
+          tasks: { create: endTaskCreates },
+          comments: {
+            create: [
+              {
+                authorUserId: teacher.id,
+                body: 'Ok el cierre: se entiende qué quedó pendiente y por qué. Las extras suman. Aprobado.',
+                createdAt: new Date('2026-03-19T20:40:00.000Z'),
+              },
+            ],
           },
         },
       });
@@ -274,24 +340,14 @@ async function main() {
           sprintNumber: 2,
           kind: SheetKind.start,
           status: SheetStatus.in_review,
-          submittedAt: new Date(),
+          submittedAt: new Date('2026-03-24T18:55:00.000Z'),
           tasks: {
-            create: [
-              {
-                category: TaskCategory.frontend,
-                title: 'Tablero con lista de integrantes',
-                description:
-                  '<ul><li>Ver nombres en cada grupo</li><li>Cupo visible</li></ul>',
-                sortOrder: 0,
-              },
-              {
-                category: TaskCategory.devops,
-                title: 'Ajustes de seed demo',
-                description:
-                  '<p>Dejar fichas de ejemplo listas para la cursada</p>',
-                sortOrder: 1,
-              },
-            ],
+            create: DEMO_S2_START_TASKS.map((task, order) => ({
+              category: task.category,
+              title: task.title,
+              description: task.description,
+              sortOrder: order,
+            })),
           },
         },
       });
@@ -345,7 +401,7 @@ async function main() {
   console.log('Demo docente: docente@classtrack.local / demo123');
   console.log('Demo alumno:  alumno@classtrack.local / demo123');
   console.log(
-    'Demo fichas: G1 · S1 inicio+fin aprobadas · S2 inicio en revisión',
+    'Demo fichas: G1 · S1 inicio+fin extensas (aprobadas) · S2 inicio extensa (en revisión)',
   );
 }
 
