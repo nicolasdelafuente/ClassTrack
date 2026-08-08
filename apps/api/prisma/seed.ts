@@ -227,7 +227,7 @@ async function main() {
           approvedAt: new Date('2026-03-12T21:05:00.000Z'),
           tasks: {
             create: DEMO_S1_START_TASKS.map((task, sortOrder) => ({
-              categories: [task.category],
+              categories: task.categories,
               title: task.title,
               description: task.description,
               trelloLinks: task.trelloLinks ?? [],
@@ -268,7 +268,7 @@ async function main() {
       for (const outcome of DEMO_S1_END_OUTCOMES) {
         if (outcome.kind === 'extra') {
           endTaskCreates.push({
-            categories: [outcome.category],
+            categories: outcome.categories,
             title: outcome.title,
             description: outcome.description,
             completed: outcome.completed,
@@ -355,7 +355,7 @@ async function main() {
           submittedAt: new Date('2026-03-24T18:55:00.000Z'),
           tasks: {
             create: DEMO_S2_START_TASKS.map((task, order) => ({
-              categories: [task.category],
+              categories: task.categories,
               title: task.title,
               description: task.description,
               trelloLinks: task.trelloLinks ?? [],
