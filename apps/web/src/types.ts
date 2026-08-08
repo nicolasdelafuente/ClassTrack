@@ -282,7 +282,8 @@ export const SHEET_STATUS_LABELS: Record<SheetStatus, string> = {
 
 export type SprintSheetTask = {
   id: string
-  category: TaskCategory
+  /** Optional tags (0..n) from TASK_CATEGORIES (CT-069). */
+  categories: TaskCategory[]
   title: string
   description: string | null
   completed: boolean | null

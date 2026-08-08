@@ -227,7 +227,7 @@ async function main() {
           approvedAt: new Date('2026-03-12T21:05:00.000Z'),
           tasks: {
             create: DEMO_S1_START_TASKS.map((task, sortOrder) => ({
-              category: task.category,
+              categories: [task.category],
               title: task.title,
               description: task.description,
               trelloLinks: task.trelloLinks ?? [],
@@ -251,7 +251,7 @@ async function main() {
         (a, b) => a.sortOrder - b.sortOrder,
       );
       const endTaskCreates: Array<{
-        category: TaskCategory;
+        categories: TaskCategory[];
         title: string;
         description: string | null;
         completed: boolean;
@@ -268,7 +268,7 @@ async function main() {
       for (const outcome of DEMO_S1_END_OUTCOMES) {
         if (outcome.kind === 'extra') {
           endTaskCreates.push({
-            category: outcome.category,
+            categories: [outcome.category],
             title: outcome.title,
             description: outcome.description,
             completed: outcome.completed,
@@ -292,10 +292,13 @@ async function main() {
         const links = Array.isArray(source.trelloLinks)
           ? (source.trelloLinks as string[])
           : [];
+        const categories = Array.isArray(source.categories)
+          ? (source.categories as TaskCategory[])
+          : [];
 
         if (outcome.kind === 'done') {
           endTaskCreates.push({
-            category: source.category,
+            categories,
             title: source.title,
             description: source.description,
             completed: true,
@@ -308,7 +311,7 @@ async function main() {
           });
         } else {
           endTaskCreates.push({
-            category: source.category,
+            categories,
             title: source.title,
             description: source.description,
             completed: false,
@@ -352,7 +355,7 @@ async function main() {
           submittedAt: new Date('2026-03-24T18:55:00.000Z'),
           tasks: {
             create: DEMO_S2_START_TASKS.map((task, order) => ({
-              category: task.category,
+              categories: [task.category],
               title: task.title,
               description: task.description,
               trelloLinks: task.trelloLinks ?? [],

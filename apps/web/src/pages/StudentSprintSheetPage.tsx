@@ -33,7 +33,7 @@ import {
 
 type DraftTask = {
   key: string
-  category: TaskCategory
+  categories: TaskCategory[]
   title: string
   description: string
   completed: boolean | null
@@ -47,7 +47,7 @@ type DraftTask = {
 function toDraft(tasks: SprintSheetTask[]): DraftTask[] {
   return tasks.map((t, i) => ({
     key: t.id || `new-${i}`,
-    category: t.category,
+    categories: t.categories ?? [],
     title: t.title,
     description: t.description ?? '',
     completed: t.completed,
@@ -152,7 +152,7 @@ export function StudentSprintSheetPage() {
       const res = await saveSheetTasks(
         activeSheet.id,
         draft.map((t, i) => ({
-          category: t.category,
+          categories: t.categories,
           title: t.title,
           description: sanitizeRichHtml(t.description) || null,
           completed: activeKind === 'end' ? t.completed : null,
@@ -187,7 +187,7 @@ export function StudentSprintSheetPage() {
       await saveSheetTasks(
         activeSheet.id,
         draft.map((t, i) => ({
-          category: t.category,
+          categories: t.categories,
           title: t.title,
           description: sanitizeRichHtml(t.description) || null,
           completed: activeKind === 'end' ? t.completed : null,
@@ -220,7 +220,9 @@ export function StudentSprintSheetPage() {
     const map = new Map<TaskCategory, DraftTask[]>()
     for (const c of TASK_CATEGORIES) map.set(c, [])
     for (const t of draft) {
-      map.get(t.category)?.push(t)
+      // Temporary grouping by first tag until CT-070 list UX.
+      const primary = t.categories[0] ?? 'other'
+      map.get(primary)?.push(t)
     }
     return map
   }, [draft])
@@ -356,7 +358,7 @@ export function StudentSprintSheetPage() {
                             ...draft,
                             {
                               key: `new-${Date.now()}-${cat}`,
-                              category: cat,
+                              categories: [cat],
                               title: '',
                               description: '',
                               completed: null,
@@ -616,7 +618,7 @@ export function StudentSprintSheetPage() {
                         ...draft,
                         {
                           key: `extra-${Date.now()}`,
-                          category: cat,
+                          categories: [cat],
                           title: '',
                           description: '',
                           completed: true,

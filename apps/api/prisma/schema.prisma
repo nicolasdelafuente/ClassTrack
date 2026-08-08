@@ -317,7 +317,8 @@ model SprintSheetTask {
   id               String        @id @default(cuid())
   sheetId          String        @map("sheet_id")
   sheet            SprintSheet   @relation(fields: [sheetId], references: [id], onDelete: Cascade)
-  category         TaskCategory
+  /// Optional tags from TaskCategory preset (JSON string array). Empty = no tags.
+  categories       Json          @default("[]")
   title            String
   description      String?
   /// Null on start sheets; required true/false on end (for non-extras) when submitting.
