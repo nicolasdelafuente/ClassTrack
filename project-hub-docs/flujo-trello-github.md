@@ -19,7 +19,7 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 
 ### Etapa activa
 
-Ver [06-roadmap/etapas.md](./06-roadmap/etapas.md). Hoy: **CT-E06 Post-MVP**. No reabrir CT-E04.
+Ver [06-roadmap/etapas.md](./06-roadmap/etapas.md). Hoy: **CT-E07 Mejoras continuas**. No reabrir CT-E04 / CT-E06.
 
 ### Regla Hecho ⇔ main
 
