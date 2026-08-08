@@ -11,11 +11,19 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 | Lista | Uso |
 |-------|-----|
 | **Épicas** | Agrupa de trabajo grande (varios tickets) — solo épicas **abiertas** |
-| **Backlog** | Ideas / después del MVP |
-| **Por hacer** | Listo para empezar (priorizado) |
-| **En curso** | En desarrollo ahora |
+| **Backlog** | Ideas sin compromiso de etapa |
+| **Por hacer** | Listo para empezar (priorizado en la épica activa) |
+| **En curso** | En desarrollo ahora (ideal: 1–2 cards) |
 | **En revisión** | PR abierto / esperando feedback |
-| **Hecho** | Cerrado (con link a PR/commit). Incluye épicas con **todos** sus tickets hechos |
+| **Hecho** | Cerrado **y mergeado a `main`** (link a PR). Épicas cerradas también. |
+
+### Etapa activa
+
+Ver [06-roadmap/etapas.md](./06-roadmap/etapas.md). Hoy: **CT-E06 Post-MVP**. No reabrir CT-E04.
+
+### Regla Hecho ⇔ main
+
+Marcar **Hecho** solo cuando el PR está mergeado (o crear/mantener card de higiene de merges, p. ej. CT-051).
 
 ### Numeración
 

@@ -4,21 +4,14 @@ App web responsive para docentes de **Desarrollo de Aplicaciones** (UNaHur).
 
 ## Etapas
 
+Fuente de verdad actualizada: **[06-roadmap/etapas.md](./06-roadmap/etapas.md)**.
+
 | Etapa | Estado | Qué incluye |
 |-------|--------|-------------|
-| 0 — Alinear | Hecha | Usuario, dolores, plataforma, alcance |
-| 1 — Docs mínimas | Hecha | `vision`, `problema`, `usuarios`, `mvp` |
-| 2 — Flujos y pantallas | Hecha | sitemap, navegación, tablero, pantallas |
-| **3 — Esqueleto + primer vertical** | **En curso** | monorepo + seed OK → **tablero UI (CT-011)** |
-| 4+ — Ampliar | Pendiente | Integraciones, alumnos, etc. |
-
-## Etapa 3 — cómo la partimos
-
-| Sub-etapa | Estado | Qué |
-|-----------|--------|-----|
-| **3a — Arquitectura MVP** | **Hecha** | entidades, modelo, API borrador |
-| **3b — Skills** | **Hecha** | set en `./.agents/skills/` (no global) |
-| **3c — Esqueleto + tablero** | **En curso** | CT-009 monorepo + CT-010 seed hechos → CT-011 tablero |
+| 0–3 — Alinear / docs / esqueleto | Hecha | Producto, UI, monorepo, tablero |
+| **MVP clásico (CT-E04)** | **Cerrada** | Tablero + detalle + asistencia + cronograma/faltas |
+| Cronograma (CT-E05) | Hecha | Clases, obligatoriedad, libre |
+| **Post-MVP (CT-E06)** | **Activa** | Alumno, fichas, notas, seguimiento docente |
 
 ## Producto
 
@@ -26,6 +19,7 @@ App web responsive para docentes de **Desarrollo de Aplicaciones** (UNaHur).
 - [01-producto/problema.md](./01-producto/problema.md)
 - [01-producto/usuarios.md](./01-producto/usuarios.md)
 - [06-roadmap/mvp.md](./06-roadmap/mvp.md)
+- [06-roadmap/etapas.md](./06-roadmap/etapas.md)
 
 ## UI / UX
 

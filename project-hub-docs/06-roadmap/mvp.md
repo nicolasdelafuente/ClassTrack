@@ -13,15 +13,24 @@ Que un docente pueda **ver el estado de todos los grupos** de un cuatrimestre y,
 - Asistencia / participación por fecha (carga simple, usable en celular)
 - Datos de demo sembrados desde el Excel del cuatri pasado
 
-## Queda afuera (fase 2+)
+## Queda afuera (fase 2+ / Post-MVP)
+
+Ver [etapas.md](./etapas.md) — épica **CT-E06**.
+
+Ejemplos (ya no bloquean el “MVP listo”):
 
 - Sync con GitHub, Trello, Google Drive
 - IA (resúmenes, alertas inteligentes, etc.)
-- Rol alumno
-- Notas finales / actas / export complejo
+- Rol alumno / formación de grupos / fichas de sprint
+- Notas, precalificación, actas / export complejo
+- Notas de seguimiento de grupo + adjuntos
 - PPS con jurado, carpetas y flujo completo de evaluación
 - App nativa (Expo); v1 es **web responsive**
 - Reemplazo del sitio público de la materia
+
+## Estado
+
+El **MVP clásico está cerrado** (CT-E04). El desarrollo activo es **Post-MVP (CT-E06)**.
 
 ## Prioridad dentro del MVP
 
