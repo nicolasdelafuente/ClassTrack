@@ -12,10 +12,13 @@ import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
-import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
+import {
+  RichTextEditor,
+  RichTextView,
+  sanitizeRichHtml,
+} from '../components/molecules/RichTextEditor'
 import { AppShell } from '../components/templates/AppShell'
-import { cn } from '../lib/cn'
 import {
   SHEET_STATUS_LABELS,
   TASK_CATEGORIES,
@@ -147,12 +150,17 @@ export function StudentSprintSheetPage() {
         draft.map((t, i) => ({
           category: t.category,
           title: t.title,
-          description: t.description || null,
+          description: sanitizeRichHtml(t.description) || null,
           completed: activeKind === 'end' ? t.completed : null,
           incompleteReason:
-            activeKind === 'end' ? t.incompleteReason || null : null,
+            activeKind === 'end'
+              ? sanitizeRichHtml(t.incompleteReason) || null
+              : null,
           isExtra: activeKind === 'end' ? t.isExtra : false,
-          extraReason: activeKind === 'end' ? t.extraReason || null : null,
+          extraReason:
+            activeKind === 'end'
+              ? sanitizeRichHtml(t.extraReason) || null
+              : null,
           sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
           sortOrder: i,
         })),
@@ -176,12 +184,17 @@ export function StudentSprintSheetPage() {
         draft.map((t, i) => ({
           category: t.category,
           title: t.title,
-          description: t.description || null,
+          description: sanitizeRichHtml(t.description) || null,
           completed: activeKind === 'end' ? t.completed : null,
           incompleteReason:
-            activeKind === 'end' ? t.incompleteReason || null : null,
+            activeKind === 'end'
+              ? sanitizeRichHtml(t.incompleteReason) || null
+              : null,
           isExtra: activeKind === 'end' ? t.isExtra : false,
-          extraReason: activeKind === 'end' ? t.extraReason || null : null,
+          extraReason:
+            activeKind === 'end'
+              ? sanitizeRichHtml(t.extraReason) || null
+              : null,
           sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
           sortOrder: i,
         })),
@@ -376,17 +389,15 @@ export function StudentSprintSheetPage() {
                                 )
                               }
                             />
-                            <Label className="mt-2">Descripción (opcional)</Label>
-                            <textarea
-                              rows={2}
+                            <RichTextEditor
+                              label="Descripción (opcional)"
                               value={task.description}
                               disabled={busy}
-                              className={cn(fieldControlClassName, 'min-h-[3rem]')}
-                              onChange={(e) =>
+                              onChange={(html) =>
                                 setDraft(
                                   draft.map((d) =>
                                     d.key === task.key
-                                      ? { ...d, description: e.target.value }
+                                      ? { ...d, description: html }
                                       : d,
                                   ),
                                 )
@@ -441,61 +452,46 @@ export function StudentSprintSheetPage() {
                                   </Button>
                                 </div>
                                 {task.completed === false ? (
-                                  <>
-                                    <Label>¿Por qué no la terminaron?</Label>
-                                    <textarea
-                                      rows={2}
-                                      value={task.incompleteReason}
-                                      disabled={busy}
-                                      className={cn(
-                                        fieldControlClassName,
-                                        'min-h-[3rem]',
-                                      )}
-                                      onChange={(e) =>
-                                        setDraft(
-                                          draft.map((d) =>
-                                            d.key === task.key
-                                              ? {
-                                                  ...d,
-                                                  incompleteReason:
-                                                    e.target.value,
-                                                }
-                                              : d,
-                                          ),
-                                        )
-                                      }
-                                    />
-                                  </>
+                                  <RichTextEditor
+                                    className="mt-2"
+                                    label="¿Por qué no la terminaron?"
+                                    value={task.incompleteReason}
+                                    disabled={busy}
+                                    onChange={(html) =>
+                                      setDraft(
+                                        draft.map((d) =>
+                                          d.key === task.key
+                                            ? {
+                                                ...d,
+                                                incompleteReason: html,
+                                              }
+                                            : d,
+                                        ),
+                                      )
+                                    }
+                                  />
                                 ) : null}
                               </div>
                             ) : null}
                             {activeKind === 'end' && task.isExtra ? (
-                              <>
-                                <Label className="mt-2">
-                                  ¿Por qué la agregaron?
-                                </Label>
-                                <textarea
-                                  rows={2}
-                                  value={task.extraReason}
-                                  disabled={busy}
-                                  className={cn(
-                                    fieldControlClassName,
-                                    'min-h-[3rem]',
-                                  )}
-                                  onChange={(e) =>
-                                    setDraft(
-                                      draft.map((d) =>
-                                        d.key === task.key
-                                          ? {
-                                              ...d,
-                                              extraReason: e.target.value,
-                                            }
-                                          : d,
-                                      ),
-                                    )
-                                  }
-                                />
-                              </>
+                              <RichTextEditor
+                                className="mt-2"
+                                label="¿Por qué la agregaron?"
+                                value={task.extraReason}
+                                disabled={busy}
+                                onChange={(html) =>
+                                  setDraft(
+                                    draft.map((d) =>
+                                      d.key === task.key
+                                        ? {
+                                            ...d,
+                                            extraReason: html,
+                                          }
+                                        : d,
+                                    ),
+                                  )
+                                }
+                              />
                             ) : null}
                             {canEdit &&
                             (activeKind === 'start' || task.isExtra) ? (
@@ -527,18 +523,37 @@ export function StudentSprintSheetPage() {
                           <div>
                             <p className="m-0 font-medium text-fg">{task.title}</p>
                             {task.description ? (
-                              <p className="mt-1 m-0 text-[13px] text-fg-muted">
-                                {task.description}
-                              </p>
+                              <RichTextView
+                                className="mt-1"
+                                html={task.description}
+                              />
                             ) : null}
                             {activeKind === 'end' ? (
-                              <p className="mt-1 m-0 text-[12px] text-fg-faint">
-                                {task.isExtra
-                                  ? `Extra · ${task.extraReason || '—'}`
-                                  : task.completed
-                                    ? 'Hecha'
-                                    : `No hecha · ${task.incompleteReason || '—'}`}
-                              </p>
+                              <div className="mt-1 text-[12px] text-fg-faint">
+                                {task.isExtra ? (
+                                  <>
+                                    <span>Extra</span>
+                                    {task.extraReason ? (
+                                      <RichTextView
+                                        className="mt-0.5"
+                                        html={task.extraReason}
+                                      />
+                                    ) : null}
+                                  </>
+                                ) : task.completed ? (
+                                  'Hecha'
+                                ) : (
+                                  <>
+                                    <span>No hecha</span>
+                                    {task.incompleteReason ? (
+                                      <RichTextView
+                                        className="mt-0.5"
+                                        html={task.incompleteReason}
+                                      />
+                                    ) : null}
+                                  </>
+                                )}
+                              </div>
                             ) : null}
                           </div>
                         )}

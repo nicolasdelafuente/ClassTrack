@@ -206,7 +206,8 @@ async function main() {
         },
       });
 
-      // Sprint 1: start approved + end waiting for teacher review (CT-055).
+      // Demo fichas for group 1 (CT-056):
+      // S1 start approved · S1 end approved · S2 start in review
       const startSheet = await prisma.sprintSheet.create({
         data: {
           groupId: group.id,
@@ -220,18 +221,22 @@ async function main() {
               {
                 category: TaskCategory.frontend,
                 title: 'Pantalla de login responsive',
-                description: 'Formulario email/password usable en celular',
+                description:
+                  '<ul><li>Formulario email/password</li><li>Usable en celular</li></ul>',
                 sortOrder: 0,
               },
               {
                 category: TaskCategory.backend,
                 title: 'Endpoint de autenticación',
-                description: 'POST /auth/login con validación básica',
+                description:
+                  '<p><strong>POST</strong> /auth/login con validación básica</p>',
                 sortOrder: 1,
               },
               {
                 category: TaskCategory.testing,
                 title: 'Prueba manual del flujo alumno',
+                description:
+                  '<ol><li>Login alumno</li><li>Abrir fichas</li><li>Enviar a revisión</li></ol>',
                 sortOrder: 2,
               },
             ],
@@ -245,16 +250,16 @@ async function main() {
           groupId: group.id,
           sprintNumber: 1,
           kind: SheetKind.end,
-          status: SheetStatus.in_review,
+          status: SheetStatus.approved,
           submittedAt: new Date(),
+          approvedAt: new Date(),
           tasks: {
             create: startSheet.tasks.map((t, index) => ({
               category: t.category,
               title: t.title,
               description: t.description,
-              completed: index < 2,
-              incompleteReason:
-                index < 2 ? null : 'Quedó pendiente documentar el caso borde',
+              completed: true,
+              incompleteReason: null,
               isExtra: false,
               sourceTaskId: t.id,
               sortOrder: index,
@@ -263,9 +268,41 @@ async function main() {
         },
       });
 
+      await prisma.sprintSheet.create({
+        data: {
+          groupId: group.id,
+          sprintNumber: 2,
+          kind: SheetKind.start,
+          status: SheetStatus.in_review,
+          submittedAt: new Date(),
+          tasks: {
+            create: [
+              {
+                category: TaskCategory.frontend,
+                title: 'Tablero con lista de integrantes',
+                description:
+                  '<ul><li>Ver nombres en cada grupo</li><li>Cupo visible</li></ul>',
+                sortOrder: 0,
+              },
+              {
+                category: TaskCategory.devops,
+                title: 'Ajustes de seed demo',
+                description:
+                  '<p>Dejar fichas de ejemplo listas para la cursada</p>',
+                sortOrder: 1,
+              },
+            ],
+          },
+        },
+      });
+
       await prisma.sprintStatus.updateMany({
         where: { groupId: group.id, sprintNumber: 1 },
         data: { status: SprintStatusValue.ok },
+      });
+      await prisma.sprintStatus.updateMany({
+        where: { groupId: group.id, sprintNumber: 2 },
+        data: { status: SprintStatusValue.attention },
       });
     }
   }
@@ -308,7 +345,7 @@ async function main() {
   console.log('Demo docente: docente@classtrack.local / demo123');
   console.log('Demo alumno:  alumno@classtrack.local / demo123');
   console.log(
-    'Demo fichas: Grupo 1 · Sprint 1 inicio=aprobada · fin=en revisión',
+    'Demo fichas: G1 · S1 inicio+fin aprobadas · S2 inicio en revisión',
   );
 }
 
