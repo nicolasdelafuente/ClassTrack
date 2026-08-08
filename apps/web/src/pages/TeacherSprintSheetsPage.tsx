@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { fetchCourseSprintSheets, fetchCurrentBoard } from '../api/client'
-import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
@@ -67,9 +67,7 @@ export function TeacherSprintSheetsPage() {
           title="Fichas de sprint"
           description="Cola de fichas de inicio y fin enviadas por los grupos."
           actions={
-            <ButtonLink variant="ghost" className="min-h-11" to="/">
-              Tablero
-            </ButtonLink>
+            <HeroActions primary={[{ label: 'Tablero', to: '/', variant: 'ghost' }]} />
           }
         />
 

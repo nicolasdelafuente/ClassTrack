@@ -10,12 +10,11 @@ import {
   type GradesRoster,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
-import { ButtonLink } from '../components/atoms/ButtonLink'
-import { Input } from '../components/atoms/Input'
+import { fieldControlClassName, Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
-import { fieldControlClassName } from '../components/atoms/Input'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
@@ -203,25 +202,21 @@ export function GradesPage({ mode }: GradesPageProps) {
           title={title}
           description={description}
           actions={
-            <>
-              <ButtonLink
-                variant={mode === 'preliminary' ? 'primary' : 'ghost'}
-                className="min-h-11"
-                to={`/courses/${courseId}/grades/preliminary`}
-              >
-                Precalificación
-              </ButtonLink>
-              <ButtonLink
-                variant={mode === 'final' ? 'primary' : 'ghost'}
-                className="min-h-11"
-                to={`/courses/${courseId}/grades/final`}
-              >
-                Nota final
-              </ButtonLink>
-              <ButtonLink variant="ghost" className="min-h-11" to="/">
-                Tablero
-              </ButtonLink>
-            </>
+            <HeroActions
+              primary={[
+                {
+                  label: 'Precalificación',
+                  to: `/courses/${courseId}/grades/preliminary`,
+                  variant: mode === 'preliminary' ? 'primary' : 'ghost',
+                },
+                {
+                  label: 'Nota final',
+                  to: `/courses/${courseId}/grades/final`,
+                  variant: mode === 'final' ? 'primary' : 'ghost',
+                },
+              ]}
+              more={[{ label: 'Tablero', to: '/' }]}
+            />
           }
         />
 

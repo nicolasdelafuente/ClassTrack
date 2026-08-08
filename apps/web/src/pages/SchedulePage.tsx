@@ -6,12 +6,12 @@ import {
   patchScheduleSession,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
-import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { MandatoryChip } from '../components/atoms/MandatoryChip'
 import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { ScheduleHeroMeta } from '../components/molecules/ScheduleHeroMeta'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox } from '../components/molecules/StateBox'
@@ -200,22 +200,20 @@ export function SchedulePage() {
             />
           }
           actions={
-            <>
-              <ButtonLink
-                variant="primary"
-                className="min-h-10"
-                to={`/courses/${courseId}/attendance`}
-              >
-                Tomar asistencia
-              </ButtonLink>
-              <button
-                type="button"
-                className="min-h-10 cursor-pointer px-1 text-[13px] font-medium text-fg-faint transition-colors hover:text-fg"
-                onClick={() => setShowPolicy((v) => !v)}
-              >
-                {showPolicy ? 'Ocultar parametría' : 'Parametría'}
-              </button>
-            </>
+            <HeroActions
+              primary={[
+                {
+                  label: 'Tomar asistencia',
+                  to: `/courses/${courseId}/attendance`,
+                },
+              ]}
+              more={[
+                {
+                  label: showPolicy ? 'Ocultar parametría' : 'Parametría',
+                  onClick: () => setShowPolicy((v) => !v),
+                },
+              ]}
+            />
           }
         />
 

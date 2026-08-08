@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { fetchCurrentBoard } from '../api/client'
-import { ButtonLink } from '../components/atoms/ButtonLink'
 import { StateBox } from '../components/molecules/StateBox'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { GroupCard } from '../components/organisms/GroupCard'
 import { BoardPageSkeleton } from '../components/organisms/PageSkeletons'
 import { PageHero } from '../components/organisms/PageHero'
@@ -91,70 +91,49 @@ export function BoardPage() {
             },
           ]}
           actions={
-            <>
-              <ButtonLink
-                className="min-h-11 px-4 text-[14px]"
-                to={`/courses/${course.id}/attendance`}
-              >
-                Tomar asistencia
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/schedule`}
-              >
-                Cronograma
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/duplicate`}
-              >
-                Duplicar cursada
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/groups/setup`}
-              >
-                Armar grupos
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/sprint-sheets?status=in_review`}
-              >
-                Fichas de sprint
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/grades/preliminary`}
-              >
-                Precalificación
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/grades/final`}
-              >
-                Notas finales
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/invites`}
-              >
-                Invitar
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/compose-email`}
-              >
-                Escribir mail
-              </ButtonLink>
-            </>
+            <HeroActions
+              primary={[
+                {
+                  label: 'Tomar asistencia',
+                  to: `/courses/${course.id}/attendance`,
+                },
+                {
+                  label: 'Cronograma',
+                  to: `/courses/${course.id}/schedule`,
+                  variant: 'ghost',
+                },
+              ]}
+              more={[
+                {
+                  label: 'Armar grupos',
+                  to: `/courses/${course.id}/groups/setup`,
+                },
+                {
+                  label: 'Fichas de sprint',
+                  to: `/courses/${course.id}/sprint-sheets?status=in_review`,
+                },
+                {
+                  label: 'Precalificación',
+                  to: `/courses/${course.id}/grades/preliminary`,
+                },
+                {
+                  label: 'Notas finales',
+                  to: `/courses/${course.id}/grades/final`,
+                },
+                {
+                  label: 'Invitar',
+                  to: `/courses/${course.id}/invites`,
+                },
+                {
+                  label: 'Escribir mail',
+                  to: `/courses/${course.id}/compose-email`,
+                },
+                {
+                  label: 'Duplicar cursada',
+                  to: `/courses/${course.id}/duplicate`,
+                },
+              ]}
+            />
           }
         />
 

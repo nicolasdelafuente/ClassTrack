@@ -11,6 +11,7 @@ import { MandatoryChip } from '../components/atoms/MandatoryChip'
 import { Select } from '../components/atoms/Select'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { Text } from '../components/atoms/Text'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { StateBox } from '../components/molecules/StateBox'
 import { AttendanceGroupBlock } from '../components/organisms/AttendanceGroupBlock'
 import { AttendancePageSkeleton } from '../components/organisms/PageSkeletons'
@@ -344,22 +345,24 @@ export function AttendancePage() {
                     ))}
                   </Select>
                 </div>
-                <ButtonLink
-                  variant="ghost"
-                  className="min-h-10"
-                  to={`/courses/${courseId}/schedule`}
-                >
-                  Ver cronograma
-                </ButtonLink>
-                {scopedGroup ? (
-                  <ButtonLink
-                    variant="ghost"
-                    className="min-h-10"
-                    to={`/courses/${courseId}/groups/${scopedGroup.id}`}
-                  >
-                    Abrir workspace
-                  </ButtonLink>
-                ) : null}
+                <HeroActions
+                  primary={[
+                    {
+                      label: 'Ver cronograma',
+                      to: `/courses/${courseId}/schedule`,
+                      variant: 'ghost',
+                    },
+                    ...(scopedGroup
+                      ? [
+                          {
+                            label: 'Abrir workspace',
+                            to: `/courses/${courseId}/groups/${scopedGroup.id}`,
+                            variant: 'ghost' as const,
+                          },
+                        ]
+                      : []),
+                  ]}
+                />
               </div>
 
               {dayActivities.length > 0 ? (

@@ -9,8 +9,9 @@ import {
   patchGroupSprint,
   removeGroupMember,
 } from '../api/client'
-import { ButtonLink } from '../components/atoms/ButtonLink'
 import { IconLink, IconSignal, IconUsers } from '../components/atoms/icons'
+import type { HeroActionItem } from '../components/molecules/HeroActions'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { Panel } from '../components/atoms/Panel'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { SectionTitle } from '../components/molecules/SectionTitle'
@@ -255,45 +256,36 @@ export function GroupDetailPage() {
             },
           ]}
           actions={
-            <>
-              <ButtonLink
-                className="min-h-11 px-4 text-[14px]"
-                to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
-              >
-                Tomar asistencia
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${group.courseId}/sprint-sheets?status=in_review`}
-              >
-                Fichas de sprint
-              </ButtonLink>
-              {group.links.trelloUrl ? (
-                <ButtonLink
-                  external
-                  variant="ghost"
-                  className="min-h-11"
-                  href={group.links.trelloUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ver Trello
-                </ButtonLink>
-              ) : null}
-              {group.links.githubUrl ? (
-                <ButtonLink
-                  external
-                  variant="ghost"
-                  className="min-h-11"
-                  href={group.links.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ver GitHub
-                </ButtonLink>
-              ) : null}
-            </>
+            <HeroActions
+              primary={[
+                {
+                  label: 'Tomar asistencia',
+                  to: `/courses/${group.courseId}/attendance?groupId=${group.id}`,
+                },
+              ]}
+              more={[
+                {
+                  label: 'Fichas de sprint',
+                  to: `/courses/${group.courseId}/sprint-sheets?status=in_review`,
+                },
+                ...(group.links.trelloUrl
+                  ? ([
+                      {
+                        label: 'Ver Trello',
+                        href: group.links.trelloUrl,
+                      },
+                    ] satisfies HeroActionItem[])
+                  : []),
+                ...(group.links.githubUrl
+                  ? ([
+                      {
+                        label: 'Ver GitHub',
+                        href: group.links.githubUrl,
+                      },
+                    ] satisfies HeroActionItem[])
+                  : []),
+              ]}
+            />
           }
           footer={
             summary ? (

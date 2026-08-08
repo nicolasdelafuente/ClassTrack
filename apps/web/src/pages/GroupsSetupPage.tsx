@@ -7,11 +7,11 @@ import {
   type GroupStructureBatch,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
-import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
@@ -208,19 +208,19 @@ export function GroupsSetupPage() {
             },
           ]}
           actions={
-            <>
-              <Button
-                type="button"
-                variant={enrollmentOpen ? 'toggleOn' : 'toggle'}
-                disabled={busy}
-                onClick={() => void handleToggleEnrollment()}
-              >
-                {enrollmentOpen ? 'Cerrar inscripción' : 'Abrir inscripción'}
-              </Button>
-              <ButtonLink variant="ghost" className="min-h-11" to="/">
-                Volver al tablero
-              </ButtonLink>
-            </>
+            <HeroActions
+              leading={
+                <Button
+                  type="button"
+                  variant={enrollmentOpen ? 'toggleOn' : 'toggle'}
+                  disabled={busy}
+                  onClick={() => void handleToggleEnrollment()}
+                >
+                  {enrollmentOpen ? 'Cerrar inscripción' : 'Abrir inscripción'}
+                </Button>
+              }
+              more={[{ label: 'Volver al tablero', to: '/' }]}
+            />
           }
         />
 
