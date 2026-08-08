@@ -335,3 +335,56 @@ export function createInvite(
     body: JSON.stringify(body),
   })
 }
+
+export type EmailAudience = 'all' | 'group' | 'student'
+
+export type EmailRecipient = {
+  studentId: string | null
+  email: string
+  fullName: string
+  groupNumber: number | null
+}
+
+export function fetchEmailRecipients(
+  courseId: string,
+  params: {
+    audience: EmailAudience
+    groupId?: string
+    studentId?: string
+  },
+) {
+  const q = new URLSearchParams({ audience: params.audience })
+  if (params.groupId) q.set('groupId', params.groupId)
+  if (params.studentId) q.set('studentId', params.studentId)
+  return requestJson<{ total: number; recipients: EmailRecipient[] }>(
+    `/courses/${courseId}/email-recipients?${q.toString()}`,
+  )
+}
+
+export type BroadcastEmailResult = {
+  total: number
+  sent: number
+  failed: number
+  emailed: boolean
+  reason: string | null
+  recipientsPreview: string[]
+}
+
+export function sendCourseEmail(
+  courseId: string,
+  body: {
+    subject: string
+    body: string
+    audience: EmailAudience
+    groupId?: string
+    studentId?: string
+  },
+) {
+  return requestJson<BroadcastEmailResult>(
+    `/courses/${courseId}/emails/broadcast`,
+    {
+      method: 'POST',
+      body: JSON.stringify(body),
+    },
+  )
+}

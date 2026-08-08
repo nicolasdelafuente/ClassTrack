@@ -1,6 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CoursesService } from './courses.service';
-import { CreateInviteDto, DuplicateCourseDto } from './dto/courses.dto';
+import {
+  BroadcastEmailDto,
+  CreateInviteDto,
+  DuplicateCourseDto,
+} from './dto/courses.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -35,6 +39,31 @@ export class CoursesController {
     @Body() dto: CreateInviteDto,
   ) {
     return this.coursesService.createInvite(courseId, dto);
+  }
+
+  @Get(':courseId/email-recipients')
+  emailRecipients(
+    @Param('courseId') courseId: string,
+    @Query('audience') audience: 'all' | 'group' | 'student' = 'all',
+    @Query('groupId') groupId?: string,
+    @Query('studentId') studentId?: string,
+  ) {
+    const safeAudience =
+      audience === 'group' || audience === 'student' ? audience : 'all';
+    return this.coursesService.listEmailRecipients(
+      courseId,
+      safeAudience,
+      groupId,
+      studentId,
+    );
+  }
+
+  @Post(':courseId/emails/broadcast')
+  broadcastEmail(
+    @Param('courseId') courseId: string,
+    @Body() dto: BroadcastEmailDto,
+  ) {
+    return this.coursesService.broadcastEmail(courseId, dto);
   }
 
   @Get(':courseId/groups')

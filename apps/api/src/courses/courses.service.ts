@@ -13,7 +13,11 @@ import {
 import { normalizeEmail } from '../auth/auth.service';
 import { MailService } from '../mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateInviteDto, DuplicateCourseDto } from './dto/courses.dto';
+import { CreateInviteDto, DuplicateCourseDto, BroadcastEmailDto } from './dto/courses.dto';
+import {
+  plainTextToHtml,
+  renderEmailLayout,
+} from '../mail/email-layout';
 
 const INVITE_TTL_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
 
@@ -377,6 +381,190 @@ export class CoursesService {
       emailed: mailResult.emailed,
       expiresAt: invite.expiresAt.toISOString(),
     };
+  }
+
+  /** Recipients with email for compose UI preview (CT-043). */
+  async listEmailRecipients(
+    courseId: string,
+    audience: 'all' | 'group' | 'student',
+    groupId?: string,
+    studentId?: string,
+  ) {
+    const recipients = await this.resolveEmailRecipients(
+      courseId,
+      audience,
+      groupId,
+      studentId,
+    );
+    return {
+      total: recipients.length,
+      recipients: recipients.map((r) => ({
+        studentId: r.studentId ?? null,
+        email: r.email,
+        fullName: r.name,
+        groupNumber: r.groupNumber ?? null,
+      })),
+    };
+  }
+
+  /** Teacher broadcast email to all / group / student (CT-043). */
+  async broadcastEmail(courseId: string, dto: BroadcastEmailDto) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const subject = dto.subject.trim();
+    const body = dto.body.trim();
+    if (!subject || !body) {
+      throw new BadRequestException('Asunto y mensaje son obligatorios');
+    }
+
+    const recipients = await this.resolveEmailRecipients(
+      courseId,
+      dto.audience,
+      dto.groupId,
+      dto.studentId,
+    );
+    if (recipients.length === 0) {
+      throw new BadRequestException(
+        'No hay destinatarios con email para esa audiencia',
+      );
+    }
+
+    const bodyHtml = plainTextToHtml(body);
+    const html = renderEmailLayout({
+      title: subject,
+      preheader: body.slice(0, 120),
+      bodyHtml,
+      footerNote: `${course.name} (${course.code}) · Enviado desde ClassTrack`,
+    });
+
+    const mailResult = await this.mail.sendHtmlEmail({
+      to: recipients.map((r) => ({ email: r.email, name: r.name })),
+      subject: `[ClassTrack] ${subject}`,
+      html,
+      text: `${subject}\n\n${body}\n\n— ${course.name}`,
+    });
+
+    return {
+      total: recipients.length,
+      sent: mailResult.emailed ? recipients.length : 0,
+      failed: mailResult.emailed ? 0 : recipients.length,
+      emailed: mailResult.emailed,
+      reason: mailResult.reason ?? null,
+      recipientsPreview: recipients.slice(0, 8).map((r) => r.email),
+    };
+  }
+
+  private async resolveEmailRecipients(
+    courseId: string,
+    audience: 'all' | 'group' | 'student',
+    groupId?: string,
+    studentId?: string,
+  ): Promise<
+    {
+      email: string
+      name: string
+      studentId?: string
+      groupNumber?: number
+    }[]
+  > {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    if (audience === 'student') {
+      if (!studentId?.trim()) {
+        throw new BadRequestException('studentId es obligatorio');
+      }
+      const membership = await this.prisma.membership.findFirst({
+        where: {
+          studentId,
+          group: { courseId },
+        },
+        include: {
+          student: true,
+          group: { select: { number: true } },
+        },
+      });
+      if (!membership) {
+        throw new BadRequestException(
+          'Ese alumno no pertenece a la cursada',
+        );
+      }
+      const email = membership.student.email?.trim();
+      if (!email) {
+        throw new BadRequestException('Ese alumno no tiene email');
+      }
+      return [
+        {
+          email: normalizeEmail(email),
+          name: membership.student.fullName,
+          studentId: membership.student.id,
+          groupNumber: membership.group.number,
+        },
+      ];
+    }
+
+    if (audience === 'group') {
+      if (!groupId?.trim()) {
+        throw new BadRequestException('groupId es obligatorio');
+      }
+      const group = await this.prisma.group.findFirst({
+        where: { id: groupId, courseId },
+      });
+      if (!group) {
+        throw new BadRequestException('Ese grupo no pertenece a la cursada');
+      }
+    }
+
+    const memberships = await this.prisma.membership.findMany({
+      where: {
+        group: {
+          courseId,
+          ...(audience === 'group' && groupId ? { id: groupId } : {}),
+        },
+        student: { email: { not: null } },
+      },
+      include: {
+        student: true,
+        group: { select: { number: true } },
+      },
+      orderBy: [
+        { group: { number: 'asc' } },
+        { student: { fullName: 'asc' } },
+      ],
+    });
+
+    const byEmail = new Map<
+      string,
+      {
+        email: string
+        name: string
+        studentId?: string
+        groupNumber?: number
+      }
+    >();
+    for (const m of memberships) {
+      const raw = m.student.email?.trim();
+      if (!raw) continue;
+      const email = normalizeEmail(raw);
+      if (!byEmail.has(email)) {
+        byEmail.set(email, {
+          email,
+          name: m.student.fullName,
+          studentId: m.student.id,
+          groupNumber: m.group.number,
+        });
+      }
+    }
+    return [...byEmail.values()];
   }
 }
 
