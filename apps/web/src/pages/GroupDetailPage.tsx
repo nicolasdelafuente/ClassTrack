@@ -18,6 +18,7 @@ import { SprintTimeline } from '../components/molecules/SprintTimeline'
 import { StateBox } from '../components/molecules/StateBox'
 import { TutorAssigner } from '../components/molecules/TutorAssigner'
 import { LinksEditor } from '../components/organisms/LinksEditor'
+import { GroupNotesPanel } from '../components/organisms/GroupNotesPanel'
 import { MembersList } from '../components/organisms/MembersList'
 import { GroupDetailPageSkeleton } from '../components/organisms/PageSkeletons'
 import { PageHero } from '../components/organisms/PageHero'
@@ -427,6 +428,15 @@ export function GroupDetailPage() {
             disabled={busy}
             onSave={handleSaveLinks}
           />
+        </Panel>
+
+        <Panel
+          as="section"
+          tone="default"
+          stagger={4}
+          className="p-4 sm:p-5 lg:col-span-2"
+        >
+          <GroupNotesPanel groupId={group.id} disabled={busy} />
         </Panel>
       </article>
     </AppShell>
