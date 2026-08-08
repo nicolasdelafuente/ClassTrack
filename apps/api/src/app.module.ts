@@ -13,6 +13,7 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { MeModule } from './me/me.module';
 import { SprintSheetsModule } from './sprint-sheets/sprint-sheets.module';
 import { GradesModule } from './grades/grades.module';
+import { GroupNotesModule } from './group-notes/group-notes.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { GradesModule } from './grades/grades.module';
     MeModule,
     SprintSheetsModule,
     GradesModule,
+    GroupNotesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -19,6 +19,7 @@ import type {
   StudentMyGroup,
   CourseSprintSheetSummary,
   TaskCategory,
+  GroupNote,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'
@@ -697,5 +698,37 @@ export function patchGroupPreliminaryComment(
   }>(`/groups/${groupId}/preliminary-comment`, {
     method: 'PATCH',
     body: JSON.stringify({ comment }),
+  })
+}
+
+// ── Group notes (CT-049) ───────────────────────────────────
+
+export function fetchGroupNotes(groupId: string) {
+  return requestJson<GroupNote[]>(`/groups/${groupId}/notes`)
+}
+
+export function createGroupNote(
+  groupId: string,
+  body: { title: string; body: string },
+) {
+  return requestJson<GroupNote>(`/groups/${groupId}/notes`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
+export function updateGroupNote(
+  noteId: string,
+  body: { title: string; body: string },
+) {
+  return requestJson<GroupNote>(`/notes/${noteId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  })
+}
+
+export function deleteGroupNote(noteId: string) {
+  return requestJson<{ ok: boolean }>(`/notes/${noteId}`, {
+    method: 'DELETE',
   })
 }

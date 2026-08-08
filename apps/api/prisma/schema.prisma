@@ -36,6 +36,7 @@ model User {
   invitesSent Invite[] @relation("InvitesSent")
   tutoredGroups Group[] @relation("GroupTutor")
   sheetComments SprintSheetComment[]
+  groupNotes  GroupNote[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -108,6 +109,7 @@ model Group {
   links         GroupLinks?
   leaveLogs     GroupLeaveLog[]
   sprintSheets  SprintSheet[]
+  notes         GroupNote[]
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @updatedAt @map("updated_at")
 
@@ -379,4 +381,21 @@ model FinalGrade {
   @@unique([courseId, studentId])
   @@index([courseId])
   @@map("final_grades")
+}
+
+/// Teacher follow-up note on a group (CT-049). Photos → CT-050.
+model GroupNote {
+  id           String   @id @default(cuid())
+  groupId      String   @map("group_id")
+  group        Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  authorUserId String   @map("author_user_id")
+  author       User     @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
+  /// Display title (preset text or free text chosen by the teacher).
+  title        String
+  body         String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([groupId, createdAt])
+  @@map("group_notes")
 }

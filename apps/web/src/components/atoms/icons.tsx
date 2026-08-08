@@ -92,6 +92,27 @@ export function IconCalendar({ className }: { className?: string }) {
   )
 }
 
+/** Quiet note / document mark for follow-up notes panel. */
+export function IconNote({ className }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d="M4.5 2.5h5.2L12.5 5.3V13a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-9.5a1 1 0 0 1 1-1Z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <path d="M9.5 2.5V5.5H12.5" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+      <path
+        d="M5.5 8.5h5M5.5 11h3.5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
 export function IconChevronLeft({ className }: { className?: string }) {
   return (
     <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>

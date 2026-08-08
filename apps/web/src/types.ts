@@ -345,3 +345,39 @@ export type CourseSprintSheetSummary = {
   commentCount: number
   group: { id: string; number: number; name: string | null }
 }
+
+/** Teacher follow-up note on a group (CT-049). */
+export type GroupNote = {
+  id: string
+  groupId: string
+  title: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  author: {
+    id: string
+    displayName: string | null
+    email: string
+    label: string
+  }
+}
+
+/**
+ * Preset titles for the note form. Value "" means “custom / free title”.
+ * The API always stores the final display string in `title`.
+ */
+export const GROUP_NOTE_TITLE_PRESETS: { value: string; label: string }[] = [
+  { value: 'Sprint 1', label: 'Sprint 1' },
+  { value: 'Sprint 2', label: 'Sprint 2' },
+  { value: 'Sprint 3', label: 'Sprint 3' },
+  { value: 'Sprint 4', label: 'Sprint 4' },
+  { value: 'Sprint 5', label: 'Sprint 5' },
+  { value: 'Seguimiento sprint 1', label: 'Seguimiento sprint 1' },
+  { value: 'Seguimiento sprint 2', label: 'Seguimiento sprint 2' },
+  { value: 'Seguimiento sprint 3', label: 'Seguimiento sprint 3' },
+  { value: 'Seguimiento sprint 4', label: 'Seguimiento sprint 4' },
+  { value: 'Seguimiento sprint 5', label: 'Seguimiento sprint 5' },
+  { value: 'Presentación de medio término', label: 'Presentación de medio término' },
+  { value: 'Presentación final', label: 'Presentación final' },
+  { value: '', label: 'Título libre…' },
+]
