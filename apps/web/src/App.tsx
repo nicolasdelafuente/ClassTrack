@@ -7,6 +7,7 @@ import {
 } from './auth/RequireAuth'
 import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
+import { ComposeEmailPage } from './pages/ComposeEmailPage'
 import { DuplicateCoursePage } from './pages/DuplicateCoursePage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
 import { InvitesPage } from './pages/InvitesPage'
@@ -59,6 +60,16 @@ function App() {
               <RequireAuth>
                 <RequireTeacher>
                   <InvitesPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/compose-email"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <ComposeEmailPage />
                 </RequireTeacher>
               </RequireAuth>
             }

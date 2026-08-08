@@ -119,6 +119,13 @@ export function BoardPage() {
               >
                 Invitar
               </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
+                to={`/courses/${course.id}/compose-email`}
+              >
+                Escribir mail
+              </ButtonLink>
             </>
           }
         />

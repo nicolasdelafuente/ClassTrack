@@ -42,3 +42,25 @@ export class CreateInviteDto {
   @IsIn(['teacher', 'student'])
   role!: 'teacher' | 'student';
 }
+
+export class BroadcastEmailDto {
+  @IsString()
+  @MinLength(1)
+  subject!: string;
+
+  @IsString()
+  @MinLength(1)
+  body!: string;
+
+  @IsIn(['all', 'group', 'student'])
+  audience!: 'all' | 'group' | 'student';
+
+  @IsOptional()
+  @IsString()
+  groupId?: string;
+
+  @IsOptional()
+  @IsString()
+  studentId?: string;
+}
+
