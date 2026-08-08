@@ -11,6 +11,11 @@ import {
   CRONOGRAMA_DESAPP_2026,
   parseSeedDate,
 } from './cronograma-desapp-2026';
+import {
+  DEMO_S1_END_OUTCOMES,
+  DEMO_S1_START_TASKS,
+  DEMO_S2_START_TASKS,
+} from './data/demo-sprint-sheets';
 
 type SeedStudent = {
   fullName: string;
@@ -133,6 +138,10 @@ async function main() {
     ],
   });
 
+  const teacher = await prisma.user.findUniqueOrThrow({
+    where: { email: 'docente@classtrack.local' },
+  });
+
   const course = await prisma.course.create({
     data: {
       name: payload.course.name,
@@ -206,41 +215,31 @@ async function main() {
         },
       });
 
-      // Sprint 1: start approved + end waiting for teacher review (CT-055).
+      // Demo fichas for group 1 (CT-056 + CT-058):
+      // S1 start approved · S1 end approved · S2 start in review
       const startSheet = await prisma.sprintSheet.create({
         data: {
           groupId: group.id,
           sprintNumber: 1,
           kind: SheetKind.start,
           status: SheetStatus.approved,
-          submittedAt: new Date(),
-          approvedAt: new Date(),
+          submittedAt: new Date('2026-03-10T18:30:00.000Z'),
+          approvedAt: new Date('2026-03-12T21:05:00.000Z'),
           tasks: {
+            create: DEMO_S1_START_TASKS.map((task, sortOrder) => ({
+              category: task.category,
+              title: task.title,
+              description: task.description,
+              trelloLinks: task.trelloLinks ?? [],
+              sortOrder,
+            })),
+          },
+          comments: {
             create: [
               {
-                category: TaskCategory.frontend,
-                title: 'Pantalla de login responsive',
-                description: 'Formulario email/password usable en celular',
-                trelloLinks: [
-                  'https://trello.com/c/5KbT8SJd/ejemplo-login-responsive',
-                ],
-                sortOrder: 0,
-              },
-              {
-                category: TaskCategory.backend,
-                title: 'Endpoint de autenticación',
-                description: 'POST /auth/login con validación básica',
-                trelloLinks: [
-                  'https://trello.com/c/48YewFQR/ejemplo-auth-api',
-                  'https://trello.com/c/TTryoEYL/ejemplo-links-trello',
-                ],
-                sortOrder: 1,
-              },
-              {
-                category: TaskCategory.testing,
-                title: 'Prueba manual del flujo alumno',
-                trelloLinks: [],
-                sortOrder: 2,
+                authorUserId: teacher.id,
+                body: 'Bien el nivel de detalle. Acuerden el endpoint de perfil para el próximo sprint y no dejen el Trello a medias.',
+                createdAt: new Date('2026-03-12T21:05:00.000Z'),
               },
             ],
           },
@@ -248,25 +247,116 @@ async function main() {
         include: { tasks: true },
       });
 
+      const startByOrder = [...startSheet.tasks].sort(
+        (a, b) => a.sortOrder - b.sortOrder,
+      );
+      const endTaskCreates: Array<{
+        category: TaskCategory;
+        title: string;
+        description: string | null;
+        completed: boolean;
+        incompleteReason: string | null;
+        isExtra: boolean;
+        extraReason: string | null;
+        sourceTaskId: string | null;
+        trelloLinks: string[];
+        sortOrder: number;
+      }> = [];
+
+      let startIndex = 0;
+      let sortOrder = 0;
+      for (const outcome of DEMO_S1_END_OUTCOMES) {
+        if (outcome.kind === 'extra') {
+          endTaskCreates.push({
+            category: outcome.category,
+            title: outcome.title,
+            description: outcome.description,
+            completed: outcome.completed,
+            incompleteReason: null,
+            isExtra: true,
+            extraReason: outcome.reason,
+            sourceTaskId: null,
+            trelloLinks: [],
+            sortOrder: sortOrder++,
+          });
+          continue;
+        }
+
+        const source = startByOrder[startIndex++];
+        if (!source) {
+          throw new Error(
+            `Demo S1 end outcome missing start task at index ${startIndex - 1}`,
+          );
+        }
+
+        const links = Array.isArray(source.trelloLinks)
+          ? (source.trelloLinks as string[])
+          : [];
+
+        if (outcome.kind === 'done') {
+          endTaskCreates.push({
+            category: source.category,
+            title: source.title,
+            description: source.description,
+            completed: true,
+            incompleteReason: null,
+            isExtra: false,
+            extraReason: null,
+            sourceTaskId: source.id,
+            trelloLinks: links,
+            sortOrder: sortOrder++,
+          });
+        } else {
+          endTaskCreates.push({
+            category: source.category,
+            title: source.title,
+            description: source.description,
+            completed: false,
+            incompleteReason: outcome.reason,
+            isExtra: false,
+            extraReason: null,
+            sourceTaskId: source.id,
+            trelloLinks: links,
+            sortOrder: sortOrder++,
+          });
+        }
+      }
+
       await prisma.sprintSheet.create({
         data: {
           groupId: group.id,
           sprintNumber: 1,
           kind: SheetKind.end,
+          status: SheetStatus.approved,
+          submittedAt: new Date('2026-03-17T19:10:00.000Z'),
+          approvedAt: new Date('2026-03-19T20:40:00.000Z'),
+          tasks: { create: endTaskCreates },
+          comments: {
+            create: [
+              {
+                authorUserId: teacher.id,
+                body: 'Ok el cierre: se entiende qué quedó pendiente y por qué. Las extras suman. Aprobado.',
+                createdAt: new Date('2026-03-19T20:40:00.000Z'),
+              },
+            ],
+          },
+        },
+      });
+
+      await prisma.sprintSheet.create({
+        data: {
+          groupId: group.id,
+          sprintNumber: 2,
+          kind: SheetKind.start,
           status: SheetStatus.in_review,
-          submittedAt: new Date(),
+          submittedAt: new Date('2026-03-24T18:55:00.000Z'),
           tasks: {
-            create: startSheet.tasks.map((t, index) => ({
-              category: t.category,
-              title: t.title,
-              description: t.description,
-              completed: index < 2,
-              incompleteReason:
-                index < 2 ? null : 'Quedó pendiente documentar el caso borde',
-              isExtra: false,
-              sourceTaskId: t.id,
-              trelloLinks: t.trelloLinks ?? [],
-              sortOrder: index,
+            create: DEMO_S2_START_TASKS.map((task, order) => ({
+              category: task.category,
+              title: task.title,
+              description: task.description,
+              trelloLinks: task.trelloLinks ?? [],
+              sortOrder: order,
             })),
           },
         },
@@ -275,6 +365,10 @@ async function main() {
       await prisma.sprintStatus.updateMany({
         where: { groupId: group.id, sprintNumber: 1 },
         data: { status: SprintStatusValue.ok },
+      });
+      await prisma.sprintStatus.updateMany({
+        where: { groupId: group.id, sprintNumber: 2 },
+        data: { status: SprintStatusValue.attention },
       });
     }
   }
@@ -317,7 +411,7 @@ async function main() {
   console.log('Demo docente: docente@classtrack.local / demo123');
   console.log('Demo alumno:  alumno@classtrack.local / demo123');
   console.log(
-    'Demo fichas: Grupo 1 · Sprint 1 inicio=aprobada · fin=en revisión',
+    'Demo fichas: G1 · S1 inicio+fin extensas (aprobadas) · S2 inicio extensa (en revisión)',
   );
 }
 

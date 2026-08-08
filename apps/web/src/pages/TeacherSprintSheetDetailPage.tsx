@@ -10,6 +10,7 @@ import { Label } from '../components/atoms/Label'
 import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
+import { RichTextView } from '../components/molecules/RichTextEditor'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
@@ -160,19 +161,36 @@ export function TeacherSprintSheetDetailPage() {
                 {t.title}
               </p>
               {t.description ? (
-                <p className="mt-1 m-0 text-[13px] text-fg-muted">
-                  {t.description}
-                </p>
+                <RichTextView className="mt-1" html={t.description} />
               ) : null}
               <TaskTrelloLinks links={t.trelloLinks ?? []} />
               {sheet.kind === 'end' ? (
-                <p className="mt-1 m-0 text-[12px] text-fg-faint">
-                  {t.isExtra
-                    ? `Motivo extra: ${t.extraReason || '—'}`
-                    : t.completed
-                      ? 'Hecha'
-                      : `No hecha: ${t.incompleteReason || '—'}`}
-                </p>
+                <div className="mt-1 text-[12px] text-fg-faint">
+                  {t.isExtra ? (
+                    <>
+                      <span>Motivo extra</span>
+                      {t.extraReason ? (
+                        <RichTextView className="mt-0.5" html={t.extraReason} />
+                      ) : (
+                        <span>: —</span>
+                      )}
+                    </>
+                  ) : t.completed ? (
+                    'Hecha'
+                  ) : (
+                    <>
+                      <span>No hecha</span>
+                      {t.incompleteReason ? (
+                        <RichTextView
+                          className="mt-0.5"
+                          html={t.incompleteReason}
+                        />
+                      ) : (
+                        <span>: —</span>
+                      )}
+                    </>
+                  )}
+                </div>
               ) : null}
             </li>
           ))}
