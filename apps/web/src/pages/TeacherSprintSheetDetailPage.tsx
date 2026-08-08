@@ -5,22 +5,18 @@ import {
   fetchSheetById,
   requestSheetChanges,
 } from '../api/client'
-import { Badge } from '../components/atoms/Badge'
 import { Button } from '../components/atoms/Button'
 import { Label } from '../components/atoms/Label'
 import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
 import { RichTextView } from '../components/molecules/RichTextEditor'
+import { TaskCategoryChips } from '../components/molecules/TaskCategoryChips'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { cn } from '../lib/cn'
-import {
-  SHEET_STATUS_LABELS,
-  TASK_CATEGORY_LABELS,
-  type SprintSheet,
-} from '../types'
+import { SHEET_STATUS_LABELS, type SprintSheet } from '../types'
 
 /**
  * Teacher review of one sprint sheet (CT-046).
@@ -155,9 +151,7 @@ export function TeacherSprintSheetDetailPage() {
               className="rounded-lg border border-border bg-surface-1 px-3.5 py-3"
             >
               <div className="flex flex-wrap items-center gap-1.5">
-                {(t.categories ?? []).map((cat) => (
-                  <Badge key={cat}>{TASK_CATEGORY_LABELS[cat]}</Badge>
-                ))}
+                <TaskCategoryChips value={t.categories ?? []} />
                 {t.isExtra ? (
                   <span className="text-[11px] font-semibold uppercase tracking-wide text-fg-faint">
                     extra

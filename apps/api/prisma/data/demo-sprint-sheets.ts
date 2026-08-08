@@ -6,7 +6,8 @@ import { TaskCategory } from '@prisma/client';
  */
 
 export type DemoStartTask = {
-  category: TaskCategory;
+  /** Optional tags (0..n); demo usually has 1–2 (CT-071). */
+  categories: TaskCategory[];
   title: string;
   description: string;
   /** Optional Trello card URLs (CT-058). */
@@ -18,7 +19,7 @@ export type DemoEndOutcome =
   | { kind: 'incomplete'; reason: string }
   | {
       kind: 'extra';
-      category: TaskCategory;
+      categories: TaskCategory[];
       title: string;
       description: string;
       reason: string;
@@ -28,7 +29,7 @@ export type DemoEndOutcome =
 /** Sprint 1 — ficha de inicio (aprobada). */
 export const DEMO_S1_START_TASKS: DemoStartTask[] = [
   {
-    category: TaskCategory.design,
+    categories: [TaskCategory.design, TaskCategory.frontend],
     title: 'Wireframes de login y home del alumno',
     description: `
 <p>Definir pantallas base en Figma antes de codear.</p>
@@ -41,7 +42,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.frontend,
+    categories: [TaskCategory.frontend, TaskCategory.backend],
     title: 'Pantalla de login responsive',
     description: `
 <p>Formulario usable en notebook y celular.</p>
@@ -58,7 +59,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
     trelloLinks: ['https://trello.com/c/5KbT8SJd/ejemplo-login-responsive'],
   },
   {
-    category: TaskCategory.frontend,
+    categories: [TaskCategory.frontend],
     title: 'Shell de navegación del alumno',
     description: `
 <p>Header con nombre del curso, link a fichas y cerrar sesión.</p>
@@ -69,7 +70,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.backend,
+    categories: [TaskCategory.backend, TaskCategory.documentation],
     title: 'Endpoint de autenticación',
     description: `
 <p><strong>POST</strong> <code>/auth/login</code></p>
@@ -86,7 +87,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
     ],
   },
   {
-    category: TaskCategory.backend,
+    categories: [TaskCategory.backend],
     title: 'Endpoint de perfil del alumno logueado',
     description: `
 <p><strong>GET</strong> <code>/me</code> (o equivalente) para mostrar nombre, email y grupo asignado.</p>
@@ -97,7 +98,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.devops,
+    categories: [TaskCategory.devops],
     title: 'README de arranque local',
     description: `
 <p>Documentar cómo levantar web + api en una máquina limpia.</p>
@@ -110,7 +111,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.testing,
+    categories: [TaskCategory.testing],
     title: 'Prueba manual del flujo alumno',
     description: `
 <p>Checklist de aceptación del sprint 1:</p>
@@ -125,7 +126,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.documentation,
+    categories: [TaskCategory.documentation],
     title: 'Actualizar Trello del sprint 1',
     description: `
 <ul>
@@ -136,7 +137,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.other,
+    categories: [TaskCategory.other],
     title: 'Acuerdo de pair programming del equipo',
     description: `
 <p>Definir cómo nos organizamos esta semana:</p>
@@ -183,7 +184,7 @@ export const DEMO_S1_END_OUTCOMES: DemoEndOutcome[] = [
   { kind: 'done' },
   {
     kind: 'extra',
-    category: TaskCategory.frontend,
+    categories: [TaskCategory.frontend],
     title: 'Mensaje de bienvenida con nombre del alumno',
     description: `
 <p>En el home, mostrar <em>“Hola, {nombre}”</em> usando el perfil del login.</p>
@@ -198,7 +199,7 @@ export const DEMO_S1_END_OUTCOMES: DemoEndOutcome[] = [
   },
   {
     kind: 'extra',
-    category: TaskCategory.testing,
+    categories: [TaskCategory.testing],
     title: 'Smoke test del login docente',
     description: `
 <ol>
@@ -217,7 +218,7 @@ export const DEMO_S1_END_OUTCOMES: DemoEndOutcome[] = [
 /** Sprint 2 — ficha de inicio (en revisión). */
 export const DEMO_S2_START_TASKS: DemoStartTask[] = [
   {
-    category: TaskCategory.frontend,
+    categories: [TaskCategory.frontend],
     title: 'Tablero docente: nombres de integrantes en cada grupo',
     description: `
 <p>En las cards del tablero mostrar los alumnos del grupo (no solo “5/5”).</p>
@@ -230,7 +231,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
     trelloLinks: ['https://trello.com/c/vavg1Rz8/ejemplo-ver-alumnos'],
   },
   {
-    category: TaskCategory.frontend,
+    categories: [TaskCategory.frontend, TaskCategory.design],
     title: 'Vista de fichas del sprint (alumno)',
     description: `
 <p>Poder alternar Inicio / Fin y ver el estado (borrador, revisión, aprobada).</p>
@@ -242,20 +243,20 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.backend,
+    categories: [TaskCategory.backend, TaskCategory.documentation],
     title: 'API de fichas: crear inicio, guardar tareas, enviar a revisión',
     description: `
 <p>Endpoints alineados al flujo de clase:</p>
 <ol>
   <li>Crear ficha de inicio del sprint N</li>
-  <li>PATCH de tareas (título, descripción HTML, categoría)</li>
+  <li>PATCH de tareas (título, descripción HTML, tags opcionales)</li>
   <li>Submit → estado <strong>in_review</strong></li>
 </ol>
 <p><strong>Regla:</strong> no se edita si ya está en revisión o aprobada.</p>
 `.trim(),
   },
   {
-    category: TaskCategory.backend,
+    categories: [TaskCategory.backend],
     title: 'API docente: aprobar / pedir cambios',
     description: `
 <ul>
@@ -266,7 +267,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.design,
+    categories: [TaskCategory.design],
     title: 'Ajuste visual del editor de texto enriquecido',
     description: `
 <p>Que se entienda como “mini Word”, sin parecer un dashboard.</p>
@@ -277,7 +278,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.devops,
+    categories: [TaskCategory.devops],
     title: 'Seed demo con fichas S1/S2 realistas',
     description: `
 <p>Dejar el entorno listo para la cursada:</p>
@@ -290,7 +291,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.testing,
+    categories: [TaskCategory.testing],
     title: 'Recorrido docente: revisar ficha S2',
     description: `
 <ol>
@@ -302,7 +303,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.documentation,
+    categories: [TaskCategory.documentation],
     title: 'Guía corta para compañeros: cómo llenar la ficha',
     description: `
 <p>Media página en el Drive del grupo:</p>
@@ -314,7 +315,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
 `.trim(),
   },
   {
-    category: TaskCategory.other,
+    categories: [TaskCategory.other],
     title: 'Sync con el docente sobre criterios de aprobación',
     description: `
 <p>Anotar en la ficha lo que el docente pidió en clase:</p>
