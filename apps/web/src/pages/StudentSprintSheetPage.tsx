@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import {
   createEndSheet,
@@ -10,7 +10,6 @@ import {
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
-import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
 import { StateBox } from '../components/molecules/StateBox'
 import {
@@ -18,13 +17,12 @@ import {
   RichTextView,
   sanitizeRichHtml,
 } from '../components/molecules/RichTextEditor'
+import { TaskCategoryChips } from '../components/molecules/TaskCategoryChips'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import {
   SHEET_STATUS_LABELS,
-  TASK_CATEGORIES,
-  TASK_CATEGORY_LABELS,
   type SheetStatus,
   type SprintSheet,
   type SprintSheetTask,
@@ -63,8 +61,25 @@ function editable(status: SheetStatus) {
   return status === 'draft' || status === 'needs_changes'
 }
 
+function emptyTask(partial?: Partial<DraftTask>): DraftTask {
+  return {
+    key: `new-${Date.now()}`,
+    categories: [],
+    title: '',
+    description: '',
+    completed: null,
+    incompleteReason: '',
+    isExtra: false,
+    extraReason: '',
+    sourceTaskId: null,
+    trelloLinks: [],
+    ...partial,
+  }
+}
+
 /**
  * Student editor for start/end sprint sheet of one sprint.
+ * CT-070: single task list + composer (tags are optional chips).
  */
 export function StudentSprintSheetPage() {
   const { groupId = '', sprintNumber: sprintParam = '1' } = useParams()
@@ -76,6 +91,10 @@ export function StudentSprintSheetPage() {
   const [end, setEnd] = useState<SprintSheet | null>(null)
   const [activeKind, setActiveKind] = useState<'start' | 'end'>('start')
   const [draft, setDraft] = useState<DraftTask[]>([])
+  const [composerTitle, setComposerTitle] = useState('')
+  const [composerCategories, setComposerCategories] = useState<TaskCategory[]>(
+    [],
+  )
   const [busy, setBusy] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -115,6 +134,33 @@ export function StudentSprintSheetPage() {
     setActiveKind(kind)
     const sheet = kind === 'start' ? start : end
     setDraft(sheet ? toDraft(sheet.tasks) : [])
+    setComposerTitle('')
+    setComposerCategories([])
+  }
+
+  function patchTask(key: string, patch: Partial<DraftTask>) {
+    setDraft((prev) =>
+      prev.map((d) => (d.key === key ? { ...d, ...patch } : d)),
+    )
+  }
+
+  function tasksPayload() {
+    return draft.map((t, i) => ({
+      categories: t.categories,
+      title: t.title,
+      description: sanitizeRichHtml(t.description) || null,
+      completed: activeKind === 'end' ? t.completed : null,
+      incompleteReason:
+        activeKind === 'end'
+          ? sanitizeRichHtml(t.incompleteReason) || null
+          : null,
+      isExtra: activeKind === 'end' ? t.isExtra : false,
+      extraReason:
+        activeKind === 'end' ? sanitizeRichHtml(t.extraReason) || null : null,
+      sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
+      trelloLinks: t.trelloLinks,
+      sortOrder: i,
+    }))
   }
 
   async function handleCreateStart() {
@@ -145,31 +191,28 @@ export function StudentSprintSheetPage() {
     }
   }
 
+  function addComposerTask(asExtra = false) {
+    const title = composerTitle.trim()
+    if (!title) return
+    setDraft((prev) => [
+      ...prev,
+      emptyTask({
+        key: `${asExtra ? 'extra' : 'new'}-${Date.now()}`,
+        title,
+        categories: composerCategories,
+        isExtra: asExtra,
+        completed: asExtra ? true : null,
+      }),
+    ])
+    setComposerTitle('')
+    setComposerCategories([])
+  }
+
   async function handleSave() {
     if (!activeSheet) return
     setBusy(true)
     try {
-      const res = await saveSheetTasks(
-        activeSheet.id,
-        draft.map((t, i) => ({
-          categories: t.categories,
-          title: t.title,
-          description: sanitizeRichHtml(t.description) || null,
-          completed: activeKind === 'end' ? t.completed : null,
-          incompleteReason:
-            activeKind === 'end'
-              ? sanitizeRichHtml(t.incompleteReason) || null
-              : null,
-          isExtra: activeKind === 'end' ? t.isExtra : false,
-          extraReason:
-            activeKind === 'end'
-              ? sanitizeRichHtml(t.extraReason) || null
-              : null,
-          sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
-          trelloLinks: t.trelloLinks,
-          sortOrder: i,
-        })),
-      )
+      const res = await saveSheetTasks(activeSheet.id, tasksPayload())
       if (activeKind === 'start') setStart(res.sheet)
       else setEnd(res.sheet)
       setDraft(toDraft(res.sheet.tasks))
@@ -184,27 +227,7 @@ export function StudentSprintSheetPage() {
     if (!activeSheet) return
     setBusy(true)
     try {
-      await saveSheetTasks(
-        activeSheet.id,
-        draft.map((t, i) => ({
-          categories: t.categories,
-          title: t.title,
-          description: sanitizeRichHtml(t.description) || null,
-          completed: activeKind === 'end' ? t.completed : null,
-          incompleteReason:
-            activeKind === 'end'
-              ? sanitizeRichHtml(t.incompleteReason) || null
-              : null,
-          isExtra: activeKind === 'end' ? t.isExtra : false,
-          extraReason:
-            activeKind === 'end'
-              ? sanitizeRichHtml(t.extraReason) || null
-              : null,
-          sourceTaskId: activeKind === 'end' ? t.sourceTaskId : null,
-          trelloLinks: t.trelloLinks,
-          sortOrder: i,
-        })),
-      )
+      await saveSheetTasks(activeSheet.id, tasksPayload())
       const sheet = await submitSheet(activeSheet.id)
       if (sheet.kind === 'start') setStart(sheet)
       else setEnd(sheet)
@@ -215,17 +238,6 @@ export function StudentSprintSheetPage() {
       setBusy(false)
     }
   }
-
-  const byCategory = useMemo(() => {
-    const map = new Map<TaskCategory, DraftTask[]>()
-    for (const c of TASK_CATEGORIES) map.set(c, [])
-    for (const t of draft) {
-      // Temporary grouping by first tag until CT-070 list UX.
-      const primary = t.categories[0] ?? 'other'
-      map.get(primary)?.push(t)
-    }
-    return map
-  }, [draft])
 
   if (loading) {
     return (
@@ -254,7 +266,10 @@ export function StudentSprintSheetPage() {
             Sprint {sprintNumber} — fichas
           </h1>
           <p className="mt-1 text-[13px] text-fg-muted">
-            <Link to="/alumno" className="text-accent no-underline hover:underline">
+            <Link
+              to="/alumno"
+              className="text-accent no-underline hover:underline"
+            >
               ← Volver
             </Link>
           </p>
@@ -335,307 +350,231 @@ export function StudentSprintSheetPage() {
               </div>
             ) : null}
 
-            {TASK_CATEGORIES.map((cat) => {
-              const items = byCategory.get(cat) ?? []
-              if (items.length === 0 && !canEdit) return null
-              return (
-                <section
-                  key={cat}
-                  className="rounded-lg border border-border bg-surface-1 p-4"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <h2 className="m-0 text-[15px] font-semibold text-fg">
-                      {TASK_CATEGORY_LABELS[cat]}
-                    </h2>
-                    {canEdit && activeKind === 'start' ? (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="text-[12px]"
-                        disabled={busy}
-                        onClick={() =>
-                          setDraft([
-                            ...draft,
-                            {
-                              key: `new-${Date.now()}-${cat}`,
-                              categories: [cat],
-                              title: '',
-                              description: '',
-                              completed: null,
-                              incompleteReason: '',
-                              isExtra: false,
-                              extraReason: '',
-                              sourceTaskId: null,
-                              trelloLinks: [],
-                            },
-                          ])
-                        }
-                      >
-                        + Tarea
-                      </Button>
-                    ) : null}
-                  </div>
+            <section className="rounded-xl border border-border bg-surface-1 p-4 shadow-panel">
+              <h2 className="m-0 text-[17px] font-semibold text-fg">
+                {activeKind === 'start'
+                  ? '¿Qué vamos a hacer en este sprint?'
+                  : 'Tareas del sprint'}
+              </h2>
+              <p className="mt-1 m-0 text-[13px] text-fg-muted">
+                {activeKind === 'start'
+                  ? 'Agregá tareas en un solo listado. Los tags son opcionales.'
+                  : 'Marcá el avance y, si hace falta, sumá tareas extra.'}
+              </p>
 
-                  <ul className="mt-3 m-0 flex list-none flex-col gap-3 p-0">
-                    {items.map((task) => (
-                      <li
-                        key={task.key}
-                        className="rounded-md border border-border bg-surface-2 p-3"
-                      >
-                        {canEdit ? (
-                          <>
-                            <Label>Título</Label>
-                            <Input
-                              value={task.title}
-                              disabled={busy}
-                              onChange={(e) =>
-                                setDraft(
-                                  draft.map((d) =>
-                                    d.key === task.key
-                                      ? { ...d, title: e.target.value }
-                                      : d,
-                                  ),
-                                )
-                              }
-                            />
-                            <RichTextEditor
-                              label="Descripción (opcional)"
-                              value={task.description}
-                              disabled={busy}
-                              onChange={(html) =>
-                                setDraft(
-                                  draft.map((d) =>
-                                    d.key === task.key
-                                      ? { ...d, description: html }
-                                      : d,
-                                  ),
-                                )
-                              }
-                            />
-                            <TaskTrelloLinks
-                              editable
-                              disabled={busy}
-                              links={task.trelloLinks}
-                              onChange={(trelloLinks) =>
-                                setDraft(
-                                  draft.map((d) =>
-                                    d.key === task.key
-                                      ? { ...d, trelloLinks }
-                                      : d,
-                                  ),
-                                )
-                              }
-                            />
-                            {activeKind === 'end' && !task.isExtra ? (
-                              <div className="mt-2 flex flex-col gap-2">
-                                <div className="flex flex-wrap gap-2">
-                                  <Button
-                                    type="button"
-                                    variant={
-                                      task.completed === true
-                                        ? 'toggleOn'
-                                        : 'toggle'
-                                    }
-                                    disabled={busy}
-                                    onClick={() =>
-                                      setDraft(
-                                        draft.map((d) =>
-                                          d.key === task.key
-                                            ? {
-                                                ...d,
-                                                completed: true,
-                                                incompleteReason: '',
-                                              }
-                                            : d,
-                                        ),
-                                      )
-                                    }
-                                  >
-                                    Hecha
-                                  </Button>
-                                  <Button
-                                    type="button"
-                                    variant={
-                                      task.completed === false
-                                        ? 'toggleOn'
-                                        : 'toggle'
-                                    }
-                                    disabled={busy}
-                                    onClick={() =>
-                                      setDraft(
-                                        draft.map((d) =>
-                                          d.key === task.key
-                                            ? { ...d, completed: false }
-                                            : d,
-                                        ),
-                                      )
-                                    }
-                                  >
-                                    No hecha
-                                  </Button>
-                                </div>
-                                {task.completed === false ? (
-                                  <RichTextEditor
-                                    className="mt-2"
-                                    label="¿Por qué no la terminaron?"
-                                    value={task.incompleteReason}
-                                    disabled={busy}
-                                    onChange={(html) =>
-                                      setDraft(
-                                        draft.map((d) =>
-                                          d.key === task.key
-                                            ? {
-                                                ...d,
-                                                incompleteReason: html,
-                                              }
-                                            : d,
-                                        ),
-                                      )
-                                    }
-                                  />
-                                ) : null}
-                              </div>
-                            ) : null}
-                            {activeKind === 'end' && task.isExtra ? (
-                              <RichTextEditor
-                                className="mt-2"
-                                label="¿Por qué la agregaron?"
-                                value={task.extraReason}
-                                disabled={busy}
-                                onChange={(html) =>
-                                  setDraft(
-                                    draft.map((d) =>
-                                      d.key === task.key
-                                        ? {
-                                            ...d,
-                                            extraReason: html,
-                                          }
-                                        : d,
-                                    ),
-                                  )
-                                }
-                              />
-                            ) : null}
-                            {canEdit &&
-                            (activeKind === 'start' || task.isExtra) ? (
-                              <div className="mt-3 flex justify-end border-t border-border/80 pt-2">
+              {canEdit &&
+              (activeKind === 'start' || activeKind === 'end') ? (
+                <div className="mt-4 flex flex-col gap-2 rounded-lg border border-border bg-surface-2 p-3">
+                  <Label htmlFor="sheet-task-composer">
+                    {activeKind === 'end' ? 'Nueva tarea extra' : 'Nueva tarea'}
+                  </Label>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
+                    <Input
+                      id="sheet-task-composer"
+                      className="min-w-0 flex-1"
+                      placeholder="Escribí una tarea..."
+                      value={composerTitle}
+                      disabled={busy}
+                      onChange={(e) => setComposerTitle(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          addComposerTask(activeKind === 'end')
+                        }
+                      }}
+                    />
+                    <Button
+                      type="button"
+                      disabled={busy || !composerTitle.trim()}
+                      className="shrink-0 sm:self-stretch"
+                      onClick={() => addComposerTask(activeKind === 'end')}
+                    >
+                      {activeKind === 'end' ? '+ Extra' : '+'}
+                    </Button>
+                  </div>
+                  <TaskCategoryChips
+                    editable
+                    disabled={busy}
+                    value={composerCategories}
+                    onChange={setComposerCategories}
+                  />
+                </div>
+              ) : null}
+
+              {draft.length === 0 ? (
+                <p className="mt-4 m-0 text-[13px] text-fg-muted">
+                  Todavía no hay tareas en esta ficha.
+                </p>
+              ) : (
+                <ul className="mt-4 m-0 flex list-none flex-col gap-2.5 p-0">
+                  {draft.map((task) => (
+                    <li
+                      key={task.key}
+                      className="rounded-lg border border-border bg-surface-2 p-3 transition-[border-color,box-shadow,transform] duration-200 ease-out motion-safe:hover:-translate-y-px hover:border-border-strong hover:shadow-lift"
+                    >
+                      {canEdit ? (
+                        <div className="flex flex-col gap-2">
+                          <TaskCategoryChips
+                            editable
+                            disabled={busy}
+                            value={task.categories}
+                            onChange={(categories) =>
+                              patchTask(task.key, { categories })
+                            }
+                          />
+                          <Label>Título</Label>
+                          <Input
+                            value={task.title}
+                            disabled={busy}
+                            onChange={(e) =>
+                              patchTask(task.key, { title: e.target.value })
+                            }
+                          />
+                          <RichTextEditor
+                            label="Descripción (opcional)"
+                            value={task.description}
+                            disabled={busy}
+                            onChange={(html) =>
+                              patchTask(task.key, { description: html })
+                            }
+                          />
+                          <TaskTrelloLinks
+                            editable
+                            disabled={busy}
+                            links={task.trelloLinks}
+                            onChange={(trelloLinks) =>
+                              patchTask(task.key, { trelloLinks })
+                            }
+                          />
+                          {activeKind === 'end' && !task.isExtra ? (
+                            <div className="mt-1 flex flex-col gap-2">
+                              <div className="flex flex-wrap gap-2">
                                 <Button
                                   type="button"
-                                  variant="ghost"
-                                  className="min-h-9 text-[12px] text-critical"
+                                  variant={
+                                    task.completed === true
+                                      ? 'toggleOn'
+                                      : 'toggle'
+                                  }
                                   disabled={busy}
-                                  onClick={() => {
-                                    if (
-                                      !window.confirm(
-                                        '¿Eliminar esta tarea de la ficha?',
-                                      )
-                                    ) {
-                                      return
-                                    }
-                                    setDraft(
-                                      draft.filter((d) => d.key !== task.key),
-                                    )
-                                  }}
+                                  onClick={() =>
+                                    patchTask(task.key, {
+                                      completed: true,
+                                      incompleteReason: '',
+                                    })
+                                  }
                                 >
-                                  Eliminar tarea
+                                  Hecha
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant={
+                                    task.completed === false
+                                      ? 'toggleOn'
+                                      : 'toggle'
+                                  }
+                                  disabled={busy}
+                                  onClick={() =>
+                                    patchTask(task.key, { completed: false })
+                                  }
+                                >
+                                  No hecha
                                 </Button>
                               </div>
-                            ) : null}
-                          </>
-                        ) : (
-                          <div>
-                            <p className="m-0 font-medium text-fg">{task.title}</p>
-                            {task.description ? (
-                              <RichTextView
-                                className="mt-1"
-                                html={task.description}
-                              />
-                            ) : null}
-                            <TaskTrelloLinks links={task.trelloLinks} />
-                            {activeKind === 'end' ? (
-                              <div className="mt-1 text-[12px] text-fg-faint">
-                                {task.isExtra ? (
-                                  <>
-                                    <span>Extra</span>
-                                    {task.extraReason ? (
-                                      <RichTextView
-                                        className="mt-0.5"
-                                        html={task.extraReason}
-                                      />
-                                    ) : null}
-                                  </>
-                                ) : task.completed ? (
-                                  'Hecha'
-                                ) : (
-                                  <>
-                                    <span>No hecha</span>
-                                    {task.incompleteReason ? (
-                                      <RichTextView
-                                        className="mt-0.5"
-                                        html={task.incompleteReason}
-                                      />
-                                    ) : null}
-                                  </>
-                                )}
-                              </div>
-                            ) : null}
-                          </div>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              )
-            })}
-
-            {canEdit && activeKind === 'end' ? (
-              <div className="rounded-lg border border-dashed border-border bg-surface-1 p-4">
-                <p className="m-0 text-[13px] font-medium text-fg">
-                  Agregar tarea extra
-                </p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <Select
-                    id="extra-cat"
-                    defaultValue="other"
-                    className="max-w-[12rem]"
-                  >
-                    {TASK_CATEGORIES.map((c) => (
-                      <option key={c} value={c}>
-                        {TASK_CATEGORY_LABELS[c]}
-                      </option>
-                    ))}
-                  </Select>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    disabled={busy}
-                    onClick={() => {
-                      const sel = document.getElementById(
-                        'extra-cat',
-                      ) as HTMLSelectElement
-                      const cat = (sel?.value || 'other') as TaskCategory
-                      setDraft([
-                        ...draft,
-                        {
-                          key: `extra-${Date.now()}`,
-                          categories: [cat],
-                          title: '',
-                          description: '',
-                          completed: true,
-                          incompleteReason: '',
-                          isExtra: true,
-                          extraReason: '',
-                          sourceTaskId: null,
-                          trelloLinks: [],
-                        },
-                      ])
-                    }}
-                  >
-                    + Extra
-                  </Button>
-                </div>
-              </div>
-            ) : null}
+                              {task.completed === false ? (
+                                <RichTextEditor
+                                  label="¿Por qué no la terminaron?"
+                                  value={task.incompleteReason}
+                                  disabled={busy}
+                                  onChange={(html) =>
+                                    patchTask(task.key, {
+                                      incompleteReason: html,
+                                    })
+                                  }
+                                />
+                              ) : null}
+                            </div>
+                          ) : null}
+                          {activeKind === 'end' && task.isExtra ? (
+                            <RichTextEditor
+                              label="¿Por qué la agregaron?"
+                              value={task.extraReason}
+                              disabled={busy}
+                              onChange={(html) =>
+                                patchTask(task.key, { extraReason: html })
+                              }
+                            />
+                          ) : null}
+                          {activeKind === 'start' || task.isExtra ? (
+                            <div className="mt-1 flex justify-end border-t border-border/80 pt-2">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                className="min-h-9 text-[12px] text-critical"
+                                disabled={busy}
+                                onClick={() => {
+                                  if (
+                                    !window.confirm(
+                                      '¿Eliminar esta tarea de la ficha?',
+                                    )
+                                  ) {
+                                    return
+                                  }
+                                  setDraft((prev) =>
+                                    prev.filter((d) => d.key !== task.key),
+                                  )
+                                }}
+                              >
+                                Eliminar tarea
+                              </Button>
+                            </div>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-1.5">
+                          <TaskCategoryChips value={task.categories} />
+                          <p className="m-0 font-medium text-fg">{task.title}</p>
+                          {task.description ? (
+                            <RichTextView
+                              className="mt-0.5"
+                              html={task.description}
+                            />
+                          ) : null}
+                          <TaskTrelloLinks links={task.trelloLinks} />
+                          {activeKind === 'end' ? (
+                            <div className="mt-1 text-[12px] text-fg-faint">
+                              {task.isExtra ? (
+                                <>
+                                  <span>Extra</span>
+                                  {task.extraReason ? (
+                                    <RichTextView
+                                      className="mt-0.5"
+                                      html={task.extraReason}
+                                    />
+                                  ) : null}
+                                </>
+                              ) : task.completed ? (
+                                'Hecha'
+                              ) : (
+                                <>
+                                  <span>No hecha</span>
+                                  {task.incompleteReason ? (
+                                    <RichTextView
+                                      className="mt-0.5"
+                                      html={task.incompleteReason}
+                                    />
+                                  ) : null}
+                                </>
+                              )}
+                            </div>
+                          ) : null}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
 
             {canEdit ? (
               <div className="flex flex-col gap-2">
