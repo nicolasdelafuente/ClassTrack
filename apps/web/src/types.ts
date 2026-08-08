@@ -237,3 +237,111 @@ export function todayDateInputValue(): string {
   const d = String(now.getDate()).padStart(2, '0')
   return `${y}-${m}-${d}`
 }
+
+/** Sprint sheet categories (CT-046). */
+export type TaskCategory =
+  | 'backend'
+  | 'frontend'
+  | 'documentation'
+  | 'testing'
+  | 'devops'
+  | 'design'
+  | 'other'
+
+export const TASK_CATEGORIES: TaskCategory[] = [
+  'backend',
+  'frontend',
+  'documentation',
+  'testing',
+  'devops',
+  'design',
+  'other',
+]
+
+export const TASK_CATEGORY_LABELS: Record<TaskCategory, string> = {
+  backend: 'Backend',
+  frontend: 'Frontend',
+  documentation: 'Documentación',
+  testing: 'Testing',
+  devops: 'DevOps / Deploy',
+  design: 'Diseño / UX',
+  other: 'Otro',
+}
+
+export type SheetKind = 'start' | 'end'
+export type SheetStatus = 'draft' | 'in_review' | 'needs_changes' | 'approved'
+
+export const SHEET_STATUS_LABELS: Record<SheetStatus, string> = {
+  draft: 'Borrador',
+  in_review: 'En revisión',
+  needs_changes: 'Cambios pedidos',
+  approved: 'Aprobada',
+}
+
+export type SprintSheetTask = {
+  id: string
+  category: TaskCategory
+  title: string
+  description: string | null
+  completed: boolean | null
+  incompleteReason: string | null
+  isExtra: boolean
+  extraReason: string | null
+  sourceTaskId: string | null
+  sortOrder: number
+}
+
+export type SprintSheetComment = {
+  id: string
+  body: string
+  createdAt: string
+  author: {
+    id: string
+    displayName: string | null
+    email: string
+  }
+}
+
+export type SprintSheet = {
+  id: string
+  groupId: string
+  sprintNumber: number
+  kind: SheetKind
+  status: SheetStatus
+  submittedAt: string | null
+  approvedAt: string | null
+  updatedAt: string
+  tasks: SprintSheetTask[]
+  comments: SprintSheetComment[]
+}
+
+export type SprintSheetOverview = {
+  groupId: string
+  sprints: {
+    sprintNumber: number
+    start: { id: string; status: SheetStatus } | null
+    end: { id: string; status: SheetStatus } | null
+  }[]
+}
+
+export type StudentMyGroup = {
+  group: {
+    id: string
+    number: number
+    name: string | null
+    courseId: string
+    course: { id: string; name: string; code: string }
+  } | null
+}
+
+export type CourseSprintSheetSummary = {
+  id: string
+  kind: SheetKind
+  status: SheetStatus
+  sprintNumber: number
+  submittedAt: string | null
+  approvedAt: string | null
+  taskCount: number
+  commentCount: number
+  group: { id: string; number: number; name: string | null }
+}

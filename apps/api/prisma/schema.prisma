@@ -30,11 +30,12 @@ model User {
   password    String
   role        UserRole @default(teacher)
   displayName String?  @map("display_name")
-  /// Linked roster Student when role is student (CT-045).
+  /// Linked roster Student (CT-045 / CT-046).
   studentId   String?  @unique @map("student_id")
   student     Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
   invitesSent Invite[] @relation("InvitesSent")
   tutoredGroups Group[] @relation("GroupTutor")
+  sheetComments SprintSheetComment[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -102,6 +103,7 @@ model Group {
   sprintStatuses SprintStatus[]
   links         GroupLinks?
   leaveLogs     GroupLeaveLog[]
+  sprintSheets  SprintSheet[]
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @updatedAt @map("updated_at")
 
@@ -257,4 +259,82 @@ model CourseActivityTypeDefault {
   @@unique([courseId, activityType])
   @@index([courseId])
   @@map("course_activity_type_defaults")
+}
+
+/// Start or end sprint sheet for a group (CT-046).
+enum SheetKind {
+  start
+  end
+}
+
+enum SheetStatus {
+  draft
+  in_review
+  needs_changes
+  approved
+}
+
+enum TaskCategory {
+  backend
+  frontend
+  documentation
+  testing
+  devops
+  design
+  other
+}
+
+model SprintSheet {
+  id           String              @id @default(cuid())
+  groupId      String              @map("group_id")
+  group        Group               @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sprintNumber Int                 @map("sprint_number")
+  kind         SheetKind
+  status       SheetStatus         @default(draft)
+  submittedAt  DateTime?           @map("submitted_at")
+  approvedAt   DateTime?           @map("approved_at")
+  tasks        SprintSheetTask[]
+  comments     SprintSheetComment[]
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  @@unique([groupId, sprintNumber, kind])
+  @@index([groupId])
+  @@index([status])
+  @@map("sprint_sheets")
+}
+
+model SprintSheetTask {
+  id               String        @id @default(cuid())
+  sheetId          String        @map("sheet_id")
+  sheet            SprintSheet   @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  category         TaskCategory
+  title            String
+  description      String?
+  /// Null on start sheets; required true/false on end (for non-extras) when submitting.
+  completed        Boolean?
+  incompleteReason String?       @map("incomplete_reason")
+  isExtra          Boolean       @default(false) @map("is_extra")
+  extraReason      String?       @map("extra_reason")
+  /// Points to the start-sheet task this end-row was copied from.
+  sourceTaskId     String?       @map("source_task_id")
+  sortOrder        Int           @default(0) @map("sort_order")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  @@index([sheetId])
+  @@map("sprint_sheet_tasks")
+}
+
+model SprintSheetComment {
+  id           String      @id @default(cuid())
+  sheetId      String      @map("sheet_id")
+  sheet        SprintSheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  authorUserId String      @map("author_user_id")
+  author       User        @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
+  body         String
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  @@index([sheetId])
+  @@map("sprint_sheet_comments")
 }

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import {
   addGroupMember,
   fetchGroupDetail,
+  fetchGroupSprintSheets,
   fetchUnassignedStudents,
   patchGroupLinks,
   patchGroupSprint,
@@ -27,11 +28,13 @@ import {
   overallSprintStatus,
   sprintProgress,
 } from '../lib/sprintMeta'
-import type {
-  GroupDetail,
-  GroupLinks,
-  SprintStatus,
-  UnassignedStudent,
+import {
+  SHEET_STATUS_LABELS,
+  type GroupDetail,
+  type GroupLinks,
+  type SheetStatus,
+  type SprintStatus,
+  type UnassignedStudent,
 } from '../types'
 
 type LoadState =
@@ -39,11 +42,18 @@ type LoadState =
   | { status: 'error'; message: string }
   | { status: 'ready'; group: GroupDetail }
 
+type SheetChip = {
+  sprintNumber: number
+  start: SheetStatus | null
+  end: SheetStatus | null
+}
+
 export function GroupDetailPage() {
   const { groupId } = useParams()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [busy, setBusy] = useState(false)
   const [unassigned, setUnassigned] = useState<UnassignedStudent[]>([])
+  const [sheetChips, setSheetChips] = useState<SheetChip[]>([])
 
   useEffect(() => {
     if (!groupId) {
@@ -64,6 +74,21 @@ export function GroupDetailPage() {
         } catch {
           if (!cancelled) setUnassigned([])
         }
+
+        const chips: SheetChip[] = []
+        for (const n of [1, 2, 3, 4, 5]) {
+          try {
+            const sheets = await fetchGroupSprintSheets(groupId!, n)
+            chips.push({
+              sprintNumber: n,
+              start: sheets.start?.status ?? null,
+              end: sheets.end?.status ?? null,
+            })
+          } catch {
+            chips.push({ sprintNumber: n, start: null, end: null })
+          }
+        }
+        if (!cancelled) setSheetChips(chips)
       } catch (err) {
         if (!cancelled) {
           setState({
@@ -236,6 +261,13 @@ export function GroupDetailPage() {
               >
                 Tomar asistencia
               </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
+                to={`/courses/${group.courseId}/sprint-sheets?status=in_review`}
+              >
+                Fichas de sprint
+              </ButtonLink>
               {group.links.trelloUrl ? (
                 <ButtonLink
                   external
@@ -288,6 +320,39 @@ export function GroupDetailPage() {
             ) : null
           }
         />
+
+        {sheetChips.length > 0 ? (
+          <Panel
+            as="section"
+            tone="soft"
+            className="p-4 sm:p-5 lg:col-span-2"
+          >
+            <SectionTitle hint="Estado de fichas inicio / fin por sprint">
+              Fichas de sprint
+            </SectionTitle>
+            <ul className="m-0 mt-2 flex list-none flex-wrap gap-2 p-0">
+              {sheetChips.map((chip) => (
+                <li
+                  key={chip.sprintNumber}
+                  className="rounded-md border border-border bg-surface-1 px-2.5 py-1.5 text-[12px]"
+                >
+                  <span className="font-semibold text-fg">
+                    S{chip.sprintNumber}
+                  </span>
+                  <span className="text-fg-muted">
+                    {' '}
+                    · Inicio:{' '}
+                    {chip.start
+                      ? SHEET_STATUS_LABELS[chip.start]
+                      : '—'}{' '}
+                    · Fin:{' '}
+                    {chip.end ? SHEET_STATUS_LABELS[chip.end] : '—'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        ) : null}
 
         <Panel as="section" tone="default" stagger={2} className="p-4 sm:p-5">
           <SectionTitle

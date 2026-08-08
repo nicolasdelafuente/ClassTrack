@@ -85,6 +85,9 @@ async function main() {
   console.log(`Seeding from ${source}`);
 
   // Clean demo tables (order matters for FKs)
+  await prisma.sprintSheetComment.deleteMany();
+  await prisma.sprintSheetTask.deleteMany();
+  await prisma.sprintSheet.deleteMany();
   await prisma.groupLeaveLog.deleteMany();
   await prisma.attendanceRecord.deleteMany();
   await prisma.classSessionItem.deleteMany();

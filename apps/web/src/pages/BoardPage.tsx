@@ -122,6 +122,13 @@ export function BoardPage() {
               <ButtonLink
                 variant="ghost"
                 className="min-h-11"
+                to={`/courses/${course.id}/sprint-sheets?status=in_review`}
+              >
+                Fichas de sprint
+              </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
                 to={`/courses/${course.id}/invites`}
               >
                 Invitar

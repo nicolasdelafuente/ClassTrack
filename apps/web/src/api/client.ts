@@ -14,6 +14,11 @@ import type {
   ActivityTypeDefault,
   StudentGroupEnrollment,
   UnassignedStudent,
+  SprintSheet,
+  SprintSheetOverview,
+  StudentMyGroup,
+  CourseSprintSheetSummary,
+  TaskCategory,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'
@@ -485,5 +490,133 @@ export function leaveGroupAsStudent(groupId: string, reason: string) {
   return requestJson<StudentGroupEnrollment>(`/me/groups/${groupId}/leave`, {
     method: 'POST',
     body: JSON.stringify({ reason }),
+  })
+}
+
+// ── Sprint sheets (CT-046) ─────────────────────────────────
+
+export function fetchMyGroup(courseId?: string) {
+  const q = courseId ? `?courseId=${encodeURIComponent(courseId)}` : ''
+  return requestJson<StudentMyGroup>(`/me/my-group${q}`)
+}
+
+export function fetchStudentSprintOverview(groupId: string) {
+  return requestJson<SprintSheetOverview>(
+    `/me/groups/${groupId}/sprint-sheets`,
+  )
+}
+
+export function fetchStudentSprintSheets(
+  groupId: string,
+  sprintNumber: number,
+) {
+  return requestJson<{
+    group: {
+      id: string
+      number: number
+      name: string | null
+      courseId: string
+    }
+    sprintNumber: number
+    start: SprintSheet | null
+    end: SprintSheet | null
+  }>(`/me/groups/${groupId}/sprints/${sprintNumber}/sheets`)
+}
+
+export function createStartSheet(groupId: string, sprintNumber: number) {
+  return requestJson<{ group: unknown; sheet: SprintSheet }>(
+    `/me/groups/${groupId}/sprints/${sprintNumber}/sheets/start`,
+    { method: 'POST' },
+  )
+}
+
+export function createEndSheet(groupId: string, sprintNumber: number) {
+  return requestJson<{ group: unknown; sheet: SprintSheet }>(
+    `/me/groups/${groupId}/sprints/${sprintNumber}/sheets/end`,
+    { method: 'POST' },
+  )
+}
+
+export function saveSheetTasks(
+  sheetId: string,
+  tasks: Array<{
+    category: TaskCategory
+    title: string
+    description?: string | null
+    completed?: boolean | null
+    incompleteReason?: string | null
+    isExtra?: boolean
+    extraReason?: string | null
+    sourceTaskId?: string | null
+    sortOrder?: number
+  }>,
+) {
+  return requestJson<{ group: unknown; sheet: SprintSheet }>(
+    `/me/sheets/${sheetId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ tasks }),
+    },
+  )
+}
+
+export function submitSheet(sheetId: string) {
+  return requestJson<SprintSheet>(`/me/sheets/${sheetId}/submit`, {
+    method: 'POST',
+  })
+}
+
+export function fetchCourseSprintSheets(
+  courseId: string,
+  params?: { sprint?: number; status?: string },
+) {
+  const q = new URLSearchParams()
+  if (params?.sprint != null) q.set('sprint', String(params.sprint))
+  if (params?.status) q.set('status', params.status)
+  const qs = q.toString()
+  return requestJson<CourseSprintSheetSummary[]>(
+    `/courses/${courseId}/sprint-sheets${qs ? `?${qs}` : ''}`,
+  )
+}
+
+export function fetchSheetById(sheetId: string) {
+  return requestJson<{
+    group: {
+      id: string
+      number: number
+      name: string | null
+      courseId: string
+    }
+    sheet: SprintSheet
+  }>(`/sheets/${sheetId}`)
+}
+
+export function fetchGroupSprintSheets(
+  groupId: string,
+  sprintNumber: number,
+) {
+  return requestJson<{
+    group: {
+      id: string
+      number: number
+      name: string | null
+      courseId: string
+    }
+    sprintNumber: number
+    start: SprintSheet | null
+    end: SprintSheet | null
+  }>(`/groups/${groupId}/sprints/${sprintNumber}/sheets`)
+}
+
+export function approveSheet(sheetId: string) {
+  return requestJson<SprintSheet>(`/sheets/${sheetId}/approve`, {
+    method: 'POST',
+  })
+}
+
+export function requestSheetChanges(sheetId: string, comment: string) {
+  return requestJson<SprintSheet>(`/sheets/${sheetId}/request-changes`, {
+    method: 'POST',
+    body: JSON.stringify({ comment }),
   })
 }
