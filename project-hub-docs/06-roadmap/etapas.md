@@ -44,7 +44,7 @@ Trabajo de **cursada real**, fuera del MVP original:
 
 1. ~~CT-051 — Mergear PR #45 → #46 → #47 a `main`~~ **hecho**  
 2. ~~CT-049 — Notas de seguimiento por grupo~~ **hecho** (PR #48)  
-3. **CT-050 — Fotos/capturas en notas** (en curso)  
+3. ~~CT-050 — Fotos/capturas en notas~~ **hecho** (PR #49)  
 4. CT-014 — Docker (cuando toque infra)
 
 ## Tablero
