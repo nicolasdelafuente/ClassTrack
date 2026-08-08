@@ -21,6 +21,7 @@ import {
   type GroupNoteAttachment,
 } from '../../types'
 import { SectionTitle } from '../molecules/SectionTitle'
+import { GroupNotesListSkeleton } from './PageSkeletons'
 
 type GroupNotesPanelProps = {
   groupId: string
@@ -318,7 +319,7 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
       </form>
 
       {loading ? (
-        <Text className="mt-4 text-[13px] text-fg-faint">Cargando notas…</Text>
+        <GroupNotesListSkeleton />
       ) : loadError ? (
         <Text className="mt-4 text-[13px] text-critical">{loadError}</Text>
       ) : notes.length === 0 ? (

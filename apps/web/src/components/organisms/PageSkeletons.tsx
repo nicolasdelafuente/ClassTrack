@@ -195,3 +195,201 @@ export function ScheduleSessionPageSkeleton() {
     </section>
   )
 }
+
+/** Student sprint sheet editor / teacher sheet detail. */
+export function SprintSheetPageSkeleton({ rows = 4 }: { rows?: number }) {
+  return (
+    <section
+      className="mx-auto flex max-w-2xl flex-col gap-4 pb-10"
+      aria-busy="true"
+      aria-label="Cargando ficha"
+    >
+      <div className="space-y-2">
+        <Skeleton className="h-3 w-28" />
+        <Skeleton className="h-7 w-56" />
+        <Skeleton className="h-3 w-20" />
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Skeleton className="h-10 w-28" rounded="md" />
+        <Skeleton className="h-10 w-24" rounded="md" />
+      </div>
+      {Array.from({ length: rows }, (_, i) => (
+        <Panel key={i} tone="default" className="space-y-3 p-4">
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-10 w-full" />
+          <SkeletonText lines={2} />
+          <Skeleton className="h-8 w-40" />
+        </Panel>
+      ))}
+      <div className="flex flex-wrap gap-2">
+        <Skeleton className="h-11 w-28" rounded="md" />
+        <Skeleton className="h-11 w-36" rounded="md" />
+      </div>
+    </section>
+  )
+}
+
+/** Teacher list of sprint sheets pending review. */
+export function SprintSheetsListSkeleton({ rows = 5 }: { rows?: number }) {
+  return (
+    <ul
+      className="m-0 flex list-none flex-col gap-2 p-0"
+      aria-busy="true"
+      aria-label="Cargando fichas"
+    >
+      {Array.from({ length: rows }, (_, i) => (
+        <li
+          key={i}
+          className="rounded-lg border border-border bg-surface-1 px-3.5 py-3 shadow-panel"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0 flex-1 space-y-2">
+              <Skeleton className="h-4 w-[70%]" />
+              <Skeleton className="h-3 w-[45%]" />
+            </div>
+            <Skeleton className="h-3 w-16 shrink-0" />
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Groups setup / capacity page. */
+export function GroupsSetupPageSkeleton() {
+  return (
+    <section
+      className="mx-auto flex max-w-2xl flex-col gap-4"
+      aria-busy="true"
+      aria-label="Cargando grupos"
+    >
+      <PageHeroSkeleton compact stats={2} showActions={false} />
+      <Panel tone="default" className="space-y-3 p-4">
+        <Skeleton className="h-4 w-40" />
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-48" />
+      </Panel>
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        {Array.from({ length: 4 }, (_, i) => (
+          <li
+            key={i}
+            className="rounded-lg border border-border bg-surface-1 px-3.5 py-3"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-9 w-20" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+/** Grades page: group blocks with student rows. */
+export function GradesPageSkeleton({ groups = 3 }: { groups?: number }) {
+  return (
+    <div
+      className="flex flex-col gap-4"
+      aria-busy="true"
+      aria-label="Cargando notas"
+    >
+      {Array.from({ length: groups }, (_, g) => (
+        <section
+          key={g}
+          className="rounded-lg border border-border bg-surface-1 p-4 shadow-panel"
+        >
+          <Skeleton className="mb-3 h-4 w-40" />
+          <Skeleton className="mb-3 h-16 w-full" rounded="md" />
+          <ul className="m-0 flex list-none flex-col gap-3 p-0">
+            {Array.from({ length: 4 }, (_, i) => (
+              <li key={i} className="flex items-center justify-between gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <SkeletonCircle size={32} />
+                  <Skeleton className="h-3.5 w-36" />
+                </div>
+                <Skeleton className="h-9 w-16" />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )
+}
+
+/** Student home: group card + sprint list. */
+export function StudentHomeSkeleton({ rows = 5 }: { rows?: number }) {
+  return (
+    <div
+      className="flex flex-col gap-3"
+      aria-busy="true"
+      aria-label="Cargando inicio alumno"
+    >
+      <div className="rounded-lg border border-border bg-surface-1 px-4 py-3 shadow-panel">
+        <Skeleton className="h-3.5 w-48" />
+        <Skeleton className="mt-2 h-3 w-28" />
+      </div>
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        {Array.from({ length: rows }, (_, i) => (
+          <li
+            key={i}
+            className="rounded-lg border border-border bg-surface-1 px-4 py-3"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-3 w-20" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** Inline notes list inside group detail. */
+export function GroupNotesListSkeleton({ rows = 3 }: { rows?: number }) {
+  return (
+    <ul
+      className="m-0 mt-4 flex list-none flex-col gap-3 p-0"
+      aria-busy="true"
+      aria-label="Cargando notas"
+    >
+      {Array.from({ length: rows }, (_, i) => (
+        <li
+          key={i}
+          className="rounded-md border border-border bg-surface-1 px-3 py-3"
+        >
+          <Skeleton className="h-3.5 w-[55%]" />
+          <SkeletonText lines={2} className="mt-2" />
+          <Skeleton className="mt-2 h-3 w-24" />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Auth/register invite validation. */
+export function AuthFormSkeleton() {
+  return (
+    <div
+      className="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 shadow-panel"
+      aria-busy="true"
+      aria-label="Cargando formulario"
+    >
+      <div className="space-y-2">
+        <Skeleton className="h-3 w-32" />
+        <Skeleton className="h-4 w-48" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-3 w-16" />
+        <Skeleton className="h-11 w-full" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-3 w-24" />
+        <Skeleton className="h-11 w-full" />
+      </div>
+      <Skeleton className="h-11 w-full" rounded="md" />
+    </div>
+  )
+}

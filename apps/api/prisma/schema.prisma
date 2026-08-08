@@ -327,6 +327,8 @@ model SprintSheetTask {
   extraReason      String?       @map("extra_reason")
   /// Points to the start-sheet task this end-row was copied from.
   sourceTaskId     String?       @map("source_task_id")
+  /// Optional Trello card URLs for this task (JSON string array).
+  trelloLinks      Json          @default("[]") @map("trello_links")
   sortOrder        Int           @default(0) @map("sort_order")
   createdAt        DateTime      @default(now()) @map("created_at")
   updatedAt        DateTime      @updatedAt @map("updated_at")

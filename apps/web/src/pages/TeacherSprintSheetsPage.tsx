@@ -6,6 +6,7 @@ import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
+import { SprintSheetsListSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import {
   SHEET_STATUS_LABELS,
@@ -117,7 +118,7 @@ export function TeacherSprintSheetsPage() {
           </Select>
         </div>
 
-        {loading ? <Text>Cargando…</Text> : null}
+        {loading ? <SprintSheetsListSkeleton /> : null}
         {error ? <StateBox title="Error" message={error} /> : null}
 
         {!loading && !error && items.length === 0 ? (
@@ -126,6 +127,7 @@ export function TeacherSprintSheetsPage() {
           </Text>
         ) : null}
 
+        {!loading && !error ? (
         <ul className="m-0 flex list-none flex-col gap-2 p-0">
           {items.map((item) => (
             <li key={item.id}>
@@ -155,6 +157,7 @@ export function TeacherSprintSheetsPage() {
             </li>
           ))}
         </ul>
+        ) : null}
       </section>
     </AppShell>
   )

@@ -8,8 +8,8 @@ import {
 import { useAuth } from '../auth/AuthContext'
 import { roleLabel } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
-import { Text } from '../components/atoms/Text'
 import { StateBox } from '../components/molecules/StateBox'
+import { StudentHomeSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import {
   SHEET_STATUS_LABELS,
@@ -87,9 +87,7 @@ export function StudentHomePage() {
           </p>
         </header>
 
-        {state.status === 'loading' ? (
-          <Text className="text-center text-fg-muted">Cargando…</Text>
-        ) : null}
+        {state.status === 'loading' ? <StudentHomeSkeleton /> : null}
 
         {state.status === 'error' ? (
           <StateBox title="No pudimos cargar" message={state.message} />

@@ -9,6 +9,8 @@ export type DemoStartTask = {
   category: TaskCategory;
   title: string;
   description: string;
+  /** Optional Trello card URLs (CT-058). */
+  trelloLinks?: string[];
 };
 
 export type DemoEndOutcome =
@@ -53,6 +55,7 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
   <li>Probar en viewport móvil (~375px)</li>
 </ol>
 `.trim(),
+    trelloLinks: ['https://trello.com/c/5KbT8SJd/ejemplo-login-responsive'],
   },
   {
     category: TaskCategory.frontend,
@@ -77,6 +80,10 @@ export const DEMO_S1_START_TASKS: DemoStartTask[] = [
 </ul>
 <p><em>Nota:</em> por ahora sin refresh token; alcanza para la demo del sprint.</p>
 `.trim(),
+    trelloLinks: [
+      'https://trello.com/c/48YewFQR/ejemplo-auth-api',
+      'https://trello.com/c/TTryoEYL/ejemplo-links-trello',
+    ],
   },
   {
     category: TaskCategory.backend,
@@ -220,6 +227,7 @@ export const DEMO_S2_START_TASKS: DemoStartTask[] = [
   <li>Link “Armar grupos” cerca del contador</li>
 </ul>
 `.trim(),
+    trelloLinks: ['https://trello.com/c/vavg1Rz8/ejemplo-ver-alumnos'],
   },
   {
     category: TaskCategory.frontend,

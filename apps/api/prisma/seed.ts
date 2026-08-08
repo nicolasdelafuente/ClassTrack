@@ -215,7 +215,7 @@ async function main() {
         },
       });
 
-      // Demo fichas for group 1 (CT-056): extensive realistic sheets
+      // Demo fichas for group 1 (CT-056 + CT-058):
       // S1 start approved · S1 end approved · S2 start in review
       const startSheet = await prisma.sprintSheet.create({
         data: {
@@ -230,6 +230,7 @@ async function main() {
               category: task.category,
               title: task.title,
               description: task.description,
+              trelloLinks: task.trelloLinks ?? [],
               sortOrder,
             })),
           },
@@ -258,6 +259,7 @@ async function main() {
         isExtra: boolean;
         extraReason: string | null;
         sourceTaskId: string | null;
+        trelloLinks: string[];
         sortOrder: number;
       }> = [];
 
@@ -274,6 +276,7 @@ async function main() {
             isExtra: true,
             extraReason: outcome.reason,
             sourceTaskId: null,
+            trelloLinks: [],
             sortOrder: sortOrder++,
           });
           continue;
@@ -286,6 +289,10 @@ async function main() {
           );
         }
 
+        const links = Array.isArray(source.trelloLinks)
+          ? (source.trelloLinks as string[])
+          : [];
+
         if (outcome.kind === 'done') {
           endTaskCreates.push({
             category: source.category,
@@ -296,6 +303,7 @@ async function main() {
             isExtra: false,
             extraReason: null,
             sourceTaskId: source.id,
+            trelloLinks: links,
             sortOrder: sortOrder++,
           });
         } else {
@@ -308,6 +316,7 @@ async function main() {
             isExtra: false,
             extraReason: null,
             sourceTaskId: source.id,
+            trelloLinks: links,
             sortOrder: sortOrder++,
           });
         }
@@ -346,6 +355,7 @@ async function main() {
               category: task.category,
               title: task.title,
               description: task.description,
+              trelloLinks: task.trelloLinks ?? [],
               sortOrder: order,
             })),
           },

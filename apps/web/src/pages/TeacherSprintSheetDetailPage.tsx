@@ -11,6 +11,8 @@ import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
 import { RichTextView } from '../components/molecules/RichTextEditor'
+import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
+import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { cn } from '../lib/cn'
 import {
@@ -92,7 +94,7 @@ export function TeacherSprintSheetDetailPage() {
   if (loading) {
     return (
       <AppShell showBack>
-        <Text>Cargando…</Text>
+        <SprintSheetPageSkeleton />
       </AppShell>
     )
   }
@@ -161,6 +163,7 @@ export function TeacherSprintSheetDetailPage() {
               {t.description ? (
                 <RichTextView className="mt-1" html={t.description} />
               ) : null}
+              <TaskTrelloLinks links={t.trelloLinks ?? []} />
               {sheet.kind === 'end' ? (
                 <div className="mt-1 text-[12px] text-fg-faint">
                   {t.isExtra ? (

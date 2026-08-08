@@ -290,6 +290,8 @@ export type SprintSheetTask = {
   isExtra: boolean
   extraReason: string | null
   sourceTaskId: string | null
+  /** Optional Trello card URLs related to this task (CT-058). */
+  trelloLinks: string[]
   sortOrder: number
 }
 
