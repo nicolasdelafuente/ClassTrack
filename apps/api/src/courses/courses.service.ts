@@ -4,17 +4,25 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { SprintStatusValue } from '@prisma/client';
+import { randomBytes } from 'node:crypto';
+import { SprintStatusValue, UserRole } from '@prisma/client';
 import {
   parseDateOnly,
   toDateOnlyString,
 } from '../attendance/attendance.service';
+import { normalizeEmail } from '../auth/auth.service';
+import { MailService } from '../mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { DuplicateCourseDto } from './dto/courses.dto';
+import { CreateInviteDto, DuplicateCourseDto } from './dto/courses.dto';
+
+const INVITE_TTL_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
 
 @Injectable()
 export class CoursesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mail: MailService,
+  ) {}
 
   async getCurrent() {
     const course = await this.prisma.course.findFirst({
@@ -204,6 +212,170 @@ export class CoursesService {
             ? toDateOnlyString(addUtcDays(source.classSessions[0].date, dayOffset))
             : dto.firstSessionDate,
       },
+    };
+  }
+
+  /** Students in the course with email, ready to invite (CT-042). */
+  async listInviteCandidates(courseId: string) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const memberships = await this.prisma.membership.findMany({
+      where: { group: { courseId } },
+      include: {
+        student: true,
+        group: { select: { id: true, number: true, name: true } },
+      },
+      orderBy: [{ group: { number: 'asc' } }, { student: { fullName: 'asc' } }],
+    });
+
+    const withEmail = memberships.filter((m) => m.student.email?.trim());
+    const emails = [
+      ...new Set(
+        withEmail.map((m) => normalizeEmail(m.student.email!)),
+      ),
+    ];
+
+    const [users, pendingInvites] = await Promise.all([
+      emails.length
+        ? this.prisma.user.findMany({
+            where: { email: { in: emails } },
+            select: { email: true },
+          })
+        : Promise.resolve([]),
+      emails.length
+        ? this.prisma.invite.findMany({
+            where: {
+              courseId,
+              email: { in: emails },
+              usedAt: null,
+              expiresAt: { gt: new Date() },
+            },
+            select: { email: true },
+          })
+        : Promise.resolve([]),
+    ]);
+
+    const registered = new Set(users.map((u) => u.email));
+    const pending = new Set(pendingInvites.map((i) => i.email));
+
+    return withEmail.map((m) => {
+      const email = normalizeEmail(m.student.email!);
+      return {
+        studentId: m.student.id,
+        fullName: m.student.fullName,
+        email,
+        legajo: m.student.legajo,
+        group: {
+          id: m.group.id,
+          number: m.group.number,
+          name: m.group.name,
+        },
+        alreadyRegistered: registered.has(email),
+        invitePending: pending.has(email),
+      };
+    });
+  }
+
+  async createInvite(courseId: string, dto: CreateInviteDto) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const email = normalizeEmail(dto.email);
+    const role = dto.role as UserRole;
+
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    if (existingUser) {
+      throw new ConflictException('Ese email ya tiene una cuenta');
+    }
+
+    let studentId: string | null = null;
+    let studentName: string | null = null;
+
+    if (role === UserRole.student) {
+      const membership = await this.prisma.membership.findFirst({
+        where: {
+          group: { courseId },
+          student: {
+            email: { equals: email },
+          },
+        },
+        include: { student: true },
+      });
+      // SQLite may be case-sensitive — also try scan
+      let matched = membership;
+      if (!matched) {
+        const all = await this.prisma.membership.findMany({
+          where: { group: { courseId }, student: { email: { not: null } } },
+          include: { student: true },
+        });
+        matched =
+          all.find(
+            (m) => m.student.email && normalizeEmail(m.student.email) === email,
+          ) ?? null;
+      }
+      if (!matched) {
+        throw new BadRequestException(
+          'Ese email no está en el roster de la cursada',
+        );
+      }
+      studentId = matched.student.id;
+      studentName = matched.student.fullName;
+    }
+
+    // Invalidate previous unused invites for same email+course
+    await this.prisma.invite.updateMany({
+      where: {
+        courseId,
+        email,
+        usedAt: null,
+      },
+      data: { expiresAt: new Date() },
+    });
+
+    const token = randomBytes(24).toString('hex');
+    const invite = await this.prisma.invite.create({
+      data: {
+        token,
+        email,
+        role,
+        courseId,
+        studentId,
+        expiresAt: new Date(Date.now() + INVITE_TTL_MS),
+      },
+    });
+
+    const webBase = (
+      process.env.WEB_APP_URL || 'http://localhost:5173'
+    ).replace(/\/$/, '');
+    const inviteUrl = `${webBase}/register?token=${token}`;
+    const roleLabel = role === UserRole.teacher ? 'docente' : 'alumno';
+
+    const mailResult = await this.mail.sendInviteEmail({
+      toEmail: email,
+      toName: studentName,
+      roleLabel,
+      inviteUrl,
+      courseName: course.name,
+    });
+
+    return {
+      inviteId: invite.id,
+      email: invite.email,
+      role: invite.role,
+      inviteUrl,
+      emailed: mailResult.emailed,
+      expiresAt: invite.expiresAt.toISOString(),
     };
   }
 }

@@ -1,6 +1,8 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
@@ -16,27 +18,47 @@ export type AuthUserResponse = {
 };
 
 /**
- * DEMO auth for MVP (CT-038 / CT-039).
+ * DEMO auth for MVP (CT-038 / CT-042).
  * Passwords are compared as plain text — replace before any real deploy.
+ * Registration requires a valid unused invite token.
  */
 @Injectable()
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getInvitePreview(token: string) {
+    const invite = await this.findValidInvite(token);
+    return {
+      email: invite.email,
+      role: invite.role as UserRoleValue,
+      expiresAt: invite.expiresAt.toISOString(),
+      courseName: invite.course?.name ?? null,
+    };
+  }
+
   async register(dto: RegisterDto): Promise<AuthUserResponse> {
-    const email = normalizeEmail(dto.email);
+    const invite = await this.findValidInvite(dto.token);
+    const email = invite.email;
+
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) {
       throw new ConflictException('Ese email ya está registrado');
     }
 
-    const user = await this.prisma.user.create({
-      data: {
-        email,
-        password: dto.password,
-        role: dto.role as UserRole,
-        displayName: dto.displayName?.trim() || null,
-      },
+    const user = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.user.create({
+        data: {
+          email,
+          password: dto.password,
+          role: invite.role,
+          displayName: dto.displayName?.trim() || null,
+        },
+      });
+      await tx.invite.update({
+        where: { id: invite.id },
+        data: { usedAt: new Date() },
+      });
+      return created;
     });
 
     return toAuthUser(user);
@@ -53,9 +75,33 @@ export class AuthService {
 
     return toAuthUser(user);
   }
+
+  private async findValidInvite(token: string) {
+    const trimmed = token?.trim();
+    if (!trimmed) {
+      throw new BadRequestException(
+        'Falta el token de invitación. Pedile el link a tu docente.',
+      );
+    }
+
+    const invite = await this.prisma.invite.findUnique({
+      where: { token: trimmed },
+      include: { course: { select: { name: true } } },
+    });
+    if (!invite) {
+      throw new NotFoundException('Invitación no válida o inexistente');
+    }
+    if (invite.usedAt) {
+      throw new BadRequestException('Esta invitación ya fue usada');
+    }
+    if (invite.expiresAt.getTime() < Date.now()) {
+      throw new BadRequestException('Esta invitación venció');
+    }
+    return invite;
+  }
 }
 
-function normalizeEmail(email: string): string {
+export function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
 

@@ -112,6 +112,13 @@ export function BoardPage() {
               >
                 Duplicar cursada
               </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
+                to={`/courses/${course.id}/invites`}
+              >
+                Invitar
+              </ButtonLink>
             </>
           }
         />

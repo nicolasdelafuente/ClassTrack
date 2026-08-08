@@ -30,10 +30,34 @@ model User {
   password    String
   role        UserRole @default(teacher)
   displayName String?  @map("display_name")
+  invitesSent Invite[] @relation("InvitesSent")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+/**
+ * Registration invite (CT-042). Email + role locked; token opens /register?token=…
+ */
+model Invite {
+  id              String    @id @default(cuid())
+  token           String    @unique
+  email           String
+  role            UserRole
+  courseId        String?   @map("course_id")
+  course          Course?   @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  studentId       String?   @map("student_id")
+  student         Student?  @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  invitedByUserId String?   @map("invited_by_user_id")
+  invitedBy       User?     @relation("InvitesSent", fields: [invitedByUserId], references: [id], onDelete: SetNull)
+  expiresAt       DateTime  @map("expires_at")
+  usedAt          DateTime? @map("used_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([email])
+  @@index([courseId])
+  @@map("invites")
 }
 
 model Course {
@@ -47,6 +71,7 @@ model Course {
   attendanceRecords    AttendanceRecord[]
   classSessions        ClassSession[]
   activityTypeDefaults CourseActivityTypeDefault[]
+  invites              Invite[]
   createdAt            DateTime                     @default(now()) @map("created_at")
   updatedAt            DateTime                     @updatedAt @map("updated_at")
 
@@ -78,6 +103,7 @@ model Student {
   email             String?
   memberships       Membership[]
   attendanceRecords AttendanceRecord[]
+  invites           Invite[]
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
 

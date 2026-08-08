@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { loginUser } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { homePathForRole } from '../auth/roles'
@@ -94,10 +94,7 @@ export function LoginPage() {
       </form>
 
       <p className="mt-5 text-center text-[13px] text-fg-muted">
-        ¿No tenés cuenta?{' '}
-        <Link className="font-semibold text-accent hover:underline" to="/register">
-          Registrate
-        </Link>
+        Si te invitaron, usá el link del mail para registrarte.
       </p>
       <p className="mt-3 text-center text-[12px] leading-relaxed text-fg-faint">
         Demo docente: docente@classtrack.local / demo123

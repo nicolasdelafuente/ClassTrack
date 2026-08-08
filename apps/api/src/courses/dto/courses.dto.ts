@@ -1,5 +1,7 @@
 import {
   IsBoolean,
+  IsEmail,
+  IsIn,
   IsOptional,
   IsString,
   Matches,
@@ -31,4 +33,12 @@ export class DuplicateCourseDto {
   @IsOptional()
   @IsBoolean()
   copyEmptyGroups?: boolean;
+}
+
+export class CreateInviteDto {
+  @IsEmail()
+  email!: string;
+
+  @IsIn(['teacher', 'student'])
+  role!: 'teacher' | 'student';
 }

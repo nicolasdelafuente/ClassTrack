@@ -9,16 +9,15 @@ import {
 export const USER_ROLES = ['teacher', 'student'] as const;
 export type UserRoleValue = (typeof USER_ROLES)[number];
 
+/** Register only via invite token (CT-042). Email/role come from the invite. */
 export class RegisterDto {
-  @IsEmail()
-  email!: string;
+  @IsString()
+  @MinLength(16)
+  token!: string;
 
   @IsString()
   @MinLength(4)
   password!: string;
-
-  @IsIn(USER_ROLES)
-  role!: UserRoleValue;
 
   @IsOptional()
   @IsString()
