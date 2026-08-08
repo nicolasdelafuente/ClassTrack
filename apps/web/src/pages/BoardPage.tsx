@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { fetchCurrentBoard } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { StateBox } from '../components/molecules/StateBox'
@@ -14,6 +15,9 @@ type LoadState =
   | { status: 'error'; message: string }
   | { status: 'ready'; course: Course; groups: GroupSummary[] }
 
+/**
+ * Board: contextual actions only (nav lives in the course sidebar).
+ */
 export function BoardPage() {
   const [state, setState] = useState<LoadState>({ status: 'loading' })
 
@@ -77,14 +81,31 @@ export function BoardPage() {
   }).length
 
   return (
-    <AppShell courseName={course.name} courseCode={course.code}>
+    <AppShell
+      courseId={course.id}
+      courseName={course.name}
+      courseCode={course.code}
+    >
       <section className="flex flex-col gap-4">
         <PageHero
           eyebrow="Cursada actual"
           title="Tablero de grupos"
-          description={`${groups.length} grupos · semáforo de sprints de un vistazo`}
+          description="Semáforo de sprints de un vistazo"
           stats={[
-            { label: 'Grupos', value: groups.length },
+            {
+              label: 'Grupos',
+              value: (
+                <span className="inline-flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                  <span>{groups.length}</span>
+                  <Link
+                    to={`/courses/${course.id}/groups/setup`}
+                    className="text-[12px] font-medium text-accent no-underline hover:underline"
+                  >
+                    Armar grupos
+                  </Link>
+                </span>
+              ),
+            },
             {
               label: 'Requieren atención',
               value: attention,
@@ -93,63 +114,14 @@ export function BoardPage() {
           actions={
             <>
               <ButtonLink
-                className="min-h-11 px-4 text-[14px]"
+                className="min-h-11 px-5 text-[14px]"
                 to={`/courses/${course.id}/attendance`}
               >
                 Tomar asistencia
               </ButtonLink>
               <ButtonLink
                 variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/schedule`}
-              >
-                Cronograma
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/duplicate`}
-              >
-                Duplicar cursada
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/groups/setup`}
-              >
-                Armar grupos
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/sprint-sheets?status=in_review`}
-              >
-                Fichas de sprint
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/grades/preliminary`}
-              >
-                Precalificación
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/grades/final`}
-              >
-                Notas finales
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${course.id}/invites`}
-              >
-                Invitar
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
+                className="min-h-11 border-border-strong px-4 text-[14px]"
                 to={`/courses/${course.id}/compose-email`}
               >
                 Escribir mail
