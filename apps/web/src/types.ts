@@ -40,6 +40,8 @@ export type GroupSummary = {
   capacity: number
   memberCount: number
   spotsLeft: number
+  /** Roster preview for the board (CT-054). */
+  members: GroupMember[]
   sprints: GroupSprint[]
   links: GroupLinks | null
 }

@@ -155,7 +155,7 @@ async function main() {
   });
 
   for (const g of payload.groups) {
-    const memberCount = g.students.length;
+    const memberCount = g.students.length + (g.number === 1 ? 1 : 0);
     const capacity = Math.max(4, memberCount);
     const group = await prisma.group.create({
       data: {
@@ -193,6 +193,16 @@ async function main() {
         data: {
           groupId: group.id,
           studentId: student.id,
+        },
+      });
+    }
+
+    // Put demo alumno in group 1 so student login has a real workspace (CT-054).
+    if (g.number === 1) {
+      await prisma.membership.create({
+        data: {
+          groupId: group.id,
+          studentId: demoStudent.id,
         },
       });
     }

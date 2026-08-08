@@ -1,8 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { fetchCurrentCourse } from '../../api/client'
+import { fetchCurrentCourse, loginUser } from '../../api/client'
 import { useAuth } from '../../auth/AuthContext'
-import { roleLabel } from '../../auth/roles'
+import { DEMO_STUDENT, DEMO_TEACHER } from '../../auth/demoAccounts'
+import { homePathForRole, roleLabel } from '../../auth/roles'
 import { Button } from '../atoms/Button'
 import { IconMenu } from '../atoms/icons'
 import { CourseSidebar } from '../organisms/CourseSidebar'
@@ -31,9 +32,12 @@ export function AppShell({
   backTo = '/',
   backLabel = '← Tablero',
 }: AppShellProps) {
-  const { user, logout, isAuthenticated } = useAuth()
+  const { user, logout, login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const isTeacher = user?.role === 'teacher'
+  const isDemoTeacher = user?.email === DEMO_TEACHER.email
+  const isDemoStudent = user?.email === DEMO_STUDENT.email
+  const [switchingDemo, setSwitchingDemo] = useState(false)
 
   const [resolvedCourse, setResolvedCourse] = useState<{
     id: string
@@ -71,6 +75,25 @@ export function AppShell({
   function handleLogout() {
     logout()
     navigate('/login', { replace: true })
+  }
+
+  async function switchDemo(kind: 'teacher' | 'student') {
+    setSwitchingDemo(true)
+    try {
+      const creds = kind === 'teacher' ? DEMO_TEACHER : DEMO_STUDENT
+      const next = await loginUser({
+        email: creds.email,
+        password: creds.password,
+      })
+      login(next)
+      navigate(homePathForRole(next.role), { replace: true })
+    } catch {
+      window.alert(
+        'No se pudo cambiar de cuenta demo. ¿Corriste el seed (npm run seed -w api)?',
+      )
+    } finally {
+      setSwitchingDemo(false)
+    }
   }
 
   return (
@@ -177,13 +200,35 @@ export function AppShell({
                 </p>
               )}
               {isAuthenticated && user ? (
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="hidden items-center gap-1.5 text-[12px] text-fg-faint sm:inline-flex">
                     <span className="rounded-full border border-border bg-surface-1 px-2 py-0.5 text-[11px] font-medium text-fg-muted">
                       {roleLabel(user.role)}
                     </span>
                     <span>{user.displayName || user.email}</span>
                   </span>
+                  {isDemoTeacher ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="min-h-8 px-2.5 py-1 text-[12px]"
+                      disabled={switchingDemo}
+                      onClick={() => void switchDemo('student')}
+                    >
+                      Probar como alumno
+                    </Button>
+                  ) : null}
+                  {isDemoStudent ? (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="min-h-8 px-2.5 py-1 text-[12px]"
+                      disabled={switchingDemo}
+                      onClick={() => void switchDemo('teacher')}
+                    >
+                      Volver a docente
+                    </Button>
+                  ) : null}
                   <Button
                     type="button"
                     variant="ghost"
