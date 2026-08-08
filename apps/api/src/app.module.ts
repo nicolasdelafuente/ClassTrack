@@ -12,12 +12,12 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { MeModule } from './me/me.module';
 import { SprintSheetsModule } from './sprint-sheets/sprint-sheets.module';
+import { GradesModule } from './grades/grades.module';
 
 @Module({
   imports: [
     ThrottlerModule.forRoot([
       {
-        name: 'default',
         ttl: 60_000,
         limit: 120,
       },
@@ -31,6 +31,7 @@ import { SprintSheetsModule } from './sprint-sheets/sprint-sheets.module';
     ScheduleModule,
     MeModule,
     SprintSheetsModule,
+    GradesModule,
   ],
   controllers: [AppController],
   providers: [

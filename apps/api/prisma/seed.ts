@@ -88,6 +88,8 @@ async function main() {
   await prisma.sprintSheetComment.deleteMany();
   await prisma.sprintSheetTask.deleteMany();
   await prisma.sprintSheet.deleteMany();
+  await prisma.preliminaryGrade.deleteMany();
+  await prisma.finalGrade.deleteMany();
   await prisma.groupLeaveLog.deleteMany();
   await prisma.attendanceRecord.deleteMany();
   await prisma.classSessionItem.deleteMany();
