@@ -16,6 +16,8 @@ export type Course = {
   name: string
   code: string
   isCurrent: boolean
+  /** Students may join/leave groups when true (CT-045). */
+  groupEnrollmentOpen?: boolean
 }
 
 export type GroupSprint = {
@@ -35,7 +37,9 @@ export type GroupSummary = {
   name: string | null
   projectTopic: string | null
   teacherName: string | null
+  capacity: number
   memberCount: number
+  spotsLeft: number
   sprints: GroupSprint[]
   links: GroupLinks | null
 }
@@ -58,6 +62,7 @@ export type GroupDetail = {
   number: number
   name: string | null
   projectTopic: string | null
+  capacity: number
   teacherName: string | null
   tutorUserId: string | null
   tutor: {
@@ -68,6 +73,37 @@ export type GroupDetail = {
   sprints: GroupSprint[]
   members: GroupMember[]
   links: GroupLinks
+}
+
+/** Student view of groups for enrollment (CT-045). */
+export type StudentGroupEnrollment = {
+  course: {
+    id: string
+    name: string
+    code: string
+    groupEnrollmentOpen: boolean
+  }
+  myGroup: {
+    id: string
+    number: number
+    name: string | null
+  } | null
+  groups: {
+    id: string
+    number: number
+    name: string | null
+    capacity: number
+    memberCount: number
+    spotsLeft: number
+    isMine: boolean
+  }[]
+}
+
+export type UnassignedStudent = {
+  id: string
+  fullName: string
+  legajo: string | null
+  email: string | null
 }
 
 export const SPRINT_STATUS_ORDER: SprintStatus[] = [

@@ -10,6 +10,7 @@ import { CoursesModule } from './courses/courses.module';
 import { GroupsModule } from './groups/groups.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { MeModule } from './me/me.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ScheduleModule } from './schedule/schedule.module';
     GroupsModule,
     AttendanceModule,
     ScheduleModule,
+    MeModule,
   ],
   controllers: [AppController],
   providers: [

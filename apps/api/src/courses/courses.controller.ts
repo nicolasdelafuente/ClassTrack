@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import {
   BroadcastEmailDto,
+  CreateGroupStructureDto,
   CreateInviteDto,
   DuplicateCourseDto,
+  UpdateGroupEnrollmentDto,
 } from './dto/courses.dto';
 
 @Controller('courses')
@@ -69,5 +79,26 @@ export class CoursesController {
   @Get(':courseId/groups')
   getGroups(@Param('courseId') courseId: string) {
     return this.coursesService.getGroups(courseId);
+  }
+
+  @Post(':courseId/groups/structure')
+  createGroupStructure(
+    @Param('courseId') courseId: string,
+    @Body() dto: CreateGroupStructureDto,
+  ) {
+    return this.coursesService.createGroupStructure(courseId, dto);
+  }
+
+  @Patch(':courseId/group-enrollment')
+  setGroupEnrollment(
+    @Param('courseId') courseId: string,
+    @Body() dto: UpdateGroupEnrollmentDto,
+  ) {
+    return this.coursesService.setGroupEnrollment(courseId, dto.open);
+  }
+
+  @Get(':courseId/unassigned-students')
+  unassignedStudents(@Param('courseId') courseId: string) {
+    return this.coursesService.listUnassignedStudents(courseId);
   }
 }

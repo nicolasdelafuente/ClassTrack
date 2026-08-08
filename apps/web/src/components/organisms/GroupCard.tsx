@@ -54,7 +54,7 @@ export function GroupCard({ group, courseId, className }: GroupCardProps) {
         <div>
           <dt className="m-0 font-medium text-fg-faint">Equipo</dt>
           <dd className="mt-0.5 font-semibold tabular-nums text-fg">
-            {group.memberCount}
+            {group.memberCount}/{group.capacity ?? '—'}
           </dd>
         </div>
         <div>

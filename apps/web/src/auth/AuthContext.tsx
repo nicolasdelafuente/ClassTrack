@@ -1,9 +1,11 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from 'react'
+import { setApiUserId } from '../api/client'
 import type { AuthUser } from '../types'
 import { normalizeAuthUser } from './roles'
 
@@ -30,6 +32,10 @@ function readStoredUser(): AuthUser | null {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => readStoredUser())
+
+  useEffect(() => {
+    setApiUserId(user?.id ?? null)
+  }, [user])
 
   const value: AuthContextValue = {
     user,

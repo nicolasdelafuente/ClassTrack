@@ -52,6 +52,8 @@ export class AuthService {
           password: dto.password,
           role: invite.role,
           displayName: dto.displayName?.trim() || null,
+          studentId:
+            invite.role === UserRole.student ? invite.studentId : null,
         },
       });
       await tx.invite.update({

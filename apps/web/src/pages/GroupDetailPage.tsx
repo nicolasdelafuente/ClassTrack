@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
+  addGroupMember,
   fetchGroupDetail,
+  fetchUnassignedStudents,
   patchGroupLinks,
   patchGroupSprint,
+  removeGroupMember,
 } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { IconLink, IconSignal, IconUsers } from '../components/atoms/icons'
@@ -24,7 +27,12 @@ import {
   overallSprintStatus,
   sprintProgress,
 } from '../lib/sprintMeta'
-import type { GroupDetail, GroupLinks, SprintStatus } from '../types'
+import type {
+  GroupDetail,
+  GroupLinks,
+  SprintStatus,
+  UnassignedStudent,
+} from '../types'
 
 type LoadState =
   | { status: 'loading' }
@@ -35,6 +43,7 @@ export function GroupDetailPage() {
   const { groupId } = useParams()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [busy, setBusy] = useState(false)
+  const [unassigned, setUnassigned] = useState<UnassignedStudent[]>([])
 
   useEffect(() => {
     if (!groupId) {
@@ -47,7 +56,14 @@ export function GroupDetailPage() {
     async function load() {
       try {
         const group = await fetchGroupDetail(groupId!)
-        if (!cancelled) setState({ status: 'ready', group })
+        if (cancelled) return
+        setState({ status: 'ready', group })
+        try {
+          const list = await fetchUnassignedStudents(group.courseId)
+          if (!cancelled) setUnassigned(list)
+        } catch {
+          if (!cancelled) setUnassigned([])
+        }
       } catch (err) {
         if (!cancelled) {
           setState({
@@ -64,6 +80,14 @@ export function GroupDetailPage() {
       cancelled = true
     }
   }, [groupId])
+
+  async function refreshUnassigned(courseId: string) {
+    try {
+      setUnassigned(await fetchUnassignedStudents(courseId))
+    } catch {
+      setUnassigned([])
+    }
+  }
 
   async function handleCycleSprint(sprintNumber: number, next: SprintStatus) {
     if (!groupId || state.status !== 'ready') return
@@ -95,6 +119,40 @@ export function GroupDetailPage() {
       status: 'ready',
       group: { ...state.group, links: saved },
     })
+  }
+
+  async function handleAddMember(studentId: string) {
+    if (!groupId || state.status !== 'ready') return
+    setBusy(true)
+    try {
+      const group = await addGroupMember(groupId, studentId)
+      setState({ status: 'ready', group })
+      await refreshUnassigned(group.courseId)
+    } catch (err) {
+      window.alert(
+        err instanceof Error ? err.message : 'No se pudo agregar al alumno',
+      )
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleRemoveMember(studentId: string) {
+    if (!groupId || state.status !== 'ready') return
+    const ok = window.confirm('¿Sacar a este alumno del grupo?')
+    if (!ok) return
+    setBusy(true)
+    try {
+      const group = await removeGroupMember(groupId, studentId)
+      setState({ status: 'ready', group })
+      await refreshUnassigned(group.courseId)
+    } catch (err) {
+      window.alert(
+        err instanceof Error ? err.message : 'No se pudo sacar al alumno',
+      )
+    } finally {
+      setBusy(false)
+    }
   }
 
   const summary = useMemo(() => {
@@ -157,7 +215,7 @@ export function GroupDetailPage() {
             },
             {
               label: 'Integrantes',
-              value: group.members.length,
+              value: `${group.members.length}/${group.capacity}`,
             },
             {
               label: 'Links',
@@ -278,11 +336,18 @@ export function GroupDetailPage() {
         >
           <SectionTitle
             icon={<IconUsers className="text-fg-muted" />}
-            hint={`${group.members.length} personas en el equipo`}
+            hint={`${group.members.length}/${group.capacity} · el docente puede forzar altas/bajas`}
           >
             Integrantes
           </SectionTitle>
-          <MembersList members={group.members} />
+          <MembersList
+            members={group.members}
+            capacity={group.capacity}
+            unassigned={unassigned}
+            busy={busy}
+            onAdd={(id) => void handleAddMember(id)}
+            onRemove={(id) => void handleRemoveMember(id)}
+          />
         </Panel>
 
         <Panel as="section" tone="soft" stagger={4} className="p-4 sm:p-5">
