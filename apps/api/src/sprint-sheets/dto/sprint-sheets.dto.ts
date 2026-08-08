@@ -34,8 +34,16 @@ export class SheetTaskInputDto {
   @IsString()
   id?: string;
 
+  /** Optional tags (0..n) from the TaskCategory preset. */
+  @IsOptional()
+  @IsArray()
+  @IsIn(TASK_CATEGORIES, { each: true })
+  categories?: (typeof TASK_CATEGORIES)[number][];
+
+  /** @deprecated Prefer `categories`. Accepted for one release as a single-tag fallback. */
+  @IsOptional()
   @IsIn(TASK_CATEGORIES)
-  category!: (typeof TASK_CATEGORIES)[number];
+  category?: (typeof TASK_CATEGORIES)[number];
 
   @IsString()
   @MinLength(1)

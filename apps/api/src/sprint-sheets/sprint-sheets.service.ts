@@ -7,11 +7,14 @@ import {
 import {
   SheetKind,
   SheetStatus,
-  TaskCategory,
   UserRole,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { SheetTaskInputDto } from './dto/sprint-sheets.dto';
+import {
+  normalizeCategories,
+  readCategories,
+} from './task-categories';
 import {
   normalizeTrelloLinks,
   readTrelloLinks,
@@ -307,7 +310,7 @@ export class SprintSheetsService {
         status: SheetStatus.draft,
         tasks: {
           create: start.tasks.map((t, index) => ({
-            category: t.category,
+            categories: readCategories(t.categories),
             title: t.title,
             description: t.description,
             completed: null,
@@ -361,7 +364,7 @@ export class SprintSheetsService {
       await tx.sprintSheetTask.createMany({
         data: tasks.map((t, index) => ({
           sheetId,
-          category: t.category as TaskCategory,
+          categories: normalizeCategories(t.categories, t.category),
           title: t.title.trim(),
           description: t.description?.trim() || null,
           completed:
@@ -588,7 +591,7 @@ export class SprintSheetsService {
     updatedAt: Date;
     tasks: {
       id: string;
-      category: TaskCategory;
+      categories: unknown;
       title: string;
       description: string | null;
       completed: boolean | null;
@@ -622,7 +625,7 @@ export class SprintSheetsService {
       updatedAt: sheet.updatedAt.toISOString(),
       tasks: sheet.tasks.map((t) => ({
         id: t.id,
-        category: t.category,
+        categories: readCategories(t.categories),
         title: t.title,
         description: t.description,
         completed: t.completed,

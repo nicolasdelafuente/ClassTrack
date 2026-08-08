@@ -5,6 +5,7 @@ import {
   fetchSheetById,
   requestSheetChanges,
 } from '../api/client'
+import { Badge } from '../components/atoms/Badge'
 import { Button } from '../components/atoms/Button'
 import { Label } from '../components/atoms/Label'
 import { Text } from '../components/atoms/Text'
@@ -153,10 +154,16 @@ export function TeacherSprintSheetDetailPage() {
               key={t.id}
               className="rounded-lg border border-border bg-surface-1 px-3.5 py-3"
             >
-              <p className="m-0 text-[11px] font-semibold uppercase tracking-wide text-fg-faint">
-                {TASK_CATEGORY_LABELS[t.category]}
-                {t.isExtra ? ' · extra' : ''}
-              </p>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {(t.categories ?? []).map((cat) => (
+                  <Badge key={cat}>{TASK_CATEGORY_LABELS[cat]}</Badge>
+                ))}
+                {t.isExtra ? (
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-fg-faint">
+                    extra
+                  </span>
+                ) : null}
+              </div>
               <p className="mt-1 m-0 text-[14px] font-medium text-fg">
                 {t.title}
               </p>

@@ -547,7 +547,7 @@ export function createEndSheet(groupId: string, sprintNumber: number) {
 export function saveSheetTasks(
   sheetId: string,
   tasks: Array<{
-    category: TaskCategory
+    categories?: TaskCategory[]
     title: string
     description?: string | null
     completed?: boolean | null
