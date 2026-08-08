@@ -9,6 +9,7 @@ import { AttendancePage } from './pages/AttendancePage'
 import { BoardPage } from './pages/BoardPage'
 import { ComposeEmailPage } from './pages/ComposeEmailPage'
 import { DuplicateCoursePage } from './pages/DuplicateCoursePage'
+import { GradesPage } from './pages/GradesPage'
 import { GroupDetailPage } from './pages/GroupDetailPage'
 import { GroupsSetupPage } from './pages/GroupsSetupPage'
 import { InvitesPage } from './pages/InvitesPage'
@@ -74,6 +75,26 @@ function App() {
               <RequireAuth>
                 <RequireTeacher>
                   <TeacherSprintSheetDetailPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/grades/preliminary"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <GradesPage mode="preliminary" />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/grades/final"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <GradesPage mode="final" />
                 </RequireTeacher>
               </RequireAuth>
             }

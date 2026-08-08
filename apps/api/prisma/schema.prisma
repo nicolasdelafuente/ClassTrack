@@ -79,6 +79,8 @@ model Course {
   classSessions        ClassSession[]
   activityTypeDefaults CourseActivityTypeDefault[]
   invites              Invite[]
+  preliminaryGrades    PreliminaryGrade[]
+  finalGrades          FinalGrade[]
   createdAt            DateTime                     @default(now()) @map("created_at")
   updatedAt            DateTime                     @updatedAt @map("updated_at")
 
@@ -99,6 +101,8 @@ model Group {
   /// Assigned tutor (User with role teacher). CT-044.
   tutorUserId   String?         @map("tutor_user_id")
   tutor         User?           @relation("GroupTutor", fields: [tutorUserId], references: [id], onDelete: SetNull)
+  /// Teacher note for the group before final presentation (CT-047).
+  preliminaryGroupComment String? @map("preliminary_group_comment")
   memberships   Membership[]
   sprintStatuses SprintStatus[]
   links         GroupLinks?
@@ -122,6 +126,8 @@ model Student {
   attendanceRecords AttendanceRecord[]
   invites           Invite[]
   leaveLogs         GroupLeaveLog[]
+  preliminaryGrades PreliminaryGrade[]
+  finalGrades       FinalGrade[]
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
 
@@ -337,4 +343,40 @@ model SprintSheetComment {
 
   @@index([sheetId])
   @@map("sprint_sheet_comments")
+}
+
+/// Pre-presentation grade per student (CT-047). score 1–10 or absent (A).
+model PreliminaryGrade {
+  id        String   @id @default(cuid())
+  courseId  String   @map("course_id")
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentId String   @map("student_id")
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  /// 1…10 when graded; null if absent or unset.
+  score     Int?
+  isAbsent  Boolean  @default(false) @map("is_absent")
+  comment   String?
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([courseId, studentId])
+  @@index([courseId])
+  @@map("preliminary_grades")
+}
+
+/// Final grade per student (CT-048). score 1–10 or absent (A).
+model FinalGrade {
+  id        String   @id @default(cuid())
+  courseId  String   @map("course_id")
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentId String   @map("student_id")
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  score     Int?
+  isAbsent  Boolean  @default(false) @map("is_absent")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([courseId, studentId])
+  @@index([courseId])
+  @@map("final_grades")
 }

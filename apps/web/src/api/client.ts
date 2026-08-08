@@ -620,3 +620,82 @@ export function requestSheetChanges(sheetId: string, comment: string) {
     body: JSON.stringify({ comment }),
   })
 }
+
+// ── Grades (CT-047 / CT-048) ───────────────────────────────
+
+export type GradeStudentRow = {
+  id: string
+  fullName: string
+  legajo: string | null
+  email: string | null
+  score: number | null
+  isAbsent: boolean
+  comment?: string | null
+  hasMark: boolean
+}
+
+export type GradesRoster = {
+  courseId: string
+  kind: 'preliminary' | 'final'
+  groups: {
+    id: string
+    number: number
+    name: string | null
+    preliminaryGroupComment?: string | null
+    students: GradeStudentRow[]
+  }[]
+}
+
+export function fetchPreliminaryGrades(courseId: string) {
+  return requestJson<GradesRoster>(
+    `/courses/${courseId}/grades/preliminary`,
+  )
+}
+
+export function fetchFinalGrades(courseId: string) {
+  return requestJson<GradesRoster>(`/courses/${courseId}/grades/final`)
+}
+
+export function putPreliminaryGrade(
+  courseId: string,
+  studentId: string,
+  body: {
+    score?: number | null
+    isAbsent?: boolean
+    clear?: boolean
+    comment?: string | null
+  },
+) {
+  return requestJson<GradeStudentRow>(
+    `/courses/${courseId}/grades/preliminary/${studentId}`,
+    { method: 'PUT', body: JSON.stringify(body) },
+  )
+}
+
+export function putFinalGrade(
+  courseId: string,
+  studentId: string,
+  body: {
+    score?: number | null
+    isAbsent?: boolean
+    clear?: boolean
+  },
+) {
+  return requestJson<GradeStudentRow>(
+    `/courses/${courseId}/grades/final/${studentId}`,
+    { method: 'PUT', body: JSON.stringify(body) },
+  )
+}
+
+export function patchGroupPreliminaryComment(
+  groupId: string,
+  comment: string | null,
+) {
+  return requestJson<{
+    groupId: string
+    preliminaryGroupComment: string | null
+  }>(`/groups/${groupId}/preliminary-comment`, {
+    method: 'PATCH',
+    body: JSON.stringify({ comment }),
+  })
+}

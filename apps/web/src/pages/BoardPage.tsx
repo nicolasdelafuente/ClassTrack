@@ -129,6 +129,20 @@ export function BoardPage() {
               <ButtonLink
                 variant="ghost"
                 className="min-h-11"
+                to={`/courses/${course.id}/grades/preliminary`}
+              >
+                Precalificación
+              </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
+                to={`/courses/${course.id}/grades/final`}
+              >
+                Notas finales
+              </ButtonLink>
+              <ButtonLink
+                variant="ghost"
+                className="min-h-11"
                 to={`/courses/${course.id}/invites`}
               >
                 Invitar
