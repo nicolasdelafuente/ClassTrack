@@ -346,7 +346,24 @@ export type CourseSprintSheetSummary = {
   group: { id: string; number: number; name: string | null }
 }
 
-/** Teacher follow-up note on a group (CT-049). */
+/** Teacher follow-up note on a group (CT-049 / CT-050). */
+export type GroupNoteAttachment = {
+  id: string
+  noteId: string
+  /** Path under the API host, e.g. /api/uploads/group-notes/…. */
+  url: string
+  originalName: string
+  mimeType: string
+  sizeBytes: number
+  createdAt: string
+  uploadedBy: {
+    id: string
+    displayName: string | null
+    email: string
+    label: string
+  }
+}
+
 export type GroupNote = {
   id: string
   groupId: string
@@ -360,6 +377,7 @@ export type GroupNote = {
     email: string
     label: string
   }
+  attachments: GroupNoteAttachment[]
 }
 
 /**

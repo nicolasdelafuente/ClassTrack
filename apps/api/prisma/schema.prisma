@@ -37,6 +37,7 @@ model User {
   tutoredGroups Group[] @relation("GroupTutor")
   sheetComments SprintSheetComment[]
   groupNotes  GroupNote[]
+  noteAttachments GroupNoteAttachment[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -385,17 +386,36 @@ model FinalGrade {
 
 /// Teacher follow-up note on a group (CT-049). Photos → CT-050.
 model GroupNote {
-  id           String   @id @default(cuid())
-  groupId      String   @map("group_id")
-  group        Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  authorUserId String   @map("author_user_id")
-  author       User     @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
+  id           String                @id @default(cuid())
+  groupId      String                @map("group_id")
+  group        Group                 @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  authorUserId String                @map("author_user_id")
+  author       User                  @relation(fields: [authorUserId], references: [id], onDelete: Cascade)
   /// Display title (preset text or free text chosen by the teacher).
   title        String
   body         String
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  attachments  GroupNoteAttachment[]
+  createdAt    DateTime              @default(now()) @map("created_at")
+  updatedAt    DateTime              @updatedAt @map("updated_at")
 
   @@index([groupId, createdAt])
   @@map("group_notes")
+}
+
+/// Image attached to a group note (CT-050). Files live under uploads/.
+model GroupNoteAttachment {
+  id               String    @id @default(cuid())
+  noteId           String    @map("note_id")
+  note             GroupNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  uploadedByUserId String    @map("uploaded_by_user_id")
+  uploadedBy       User      @relation(fields: [uploadedByUserId], references: [id], onDelete: Cascade)
+  /// Stored filename on disk (unique).
+  storedName       String    @map("stored_name")
+  originalName     String    @map("original_name")
+  mimeType         String    @map("mime_type")
+  sizeBytes        Int       @map("size_bytes")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  @@index([noteId])
+  @@map("group_note_attachments")
 }
