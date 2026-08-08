@@ -555,6 +555,7 @@ export function saveSheetTasks(
     isExtra?: boolean
     extraReason?: string | null
     sourceTaskId?: string | null
+    trelloLinks?: string[]
     sortOrder?: number
   }>,
 ) {
