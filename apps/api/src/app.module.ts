@@ -11,6 +11,7 @@ import { GroupsModule } from './groups/groups.module';
 import { AttendanceModule } from './attendance/attendance.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { MeModule } from './me/me.module';
+import { SprintSheetsModule } from './sprint-sheets/sprint-sheets.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { MeModule } from './me/me.module';
     AttendanceModule,
     ScheduleModule,
     MeModule,
+    SprintSheetsModule,
   ],
   controllers: [AppController],
   providers: [

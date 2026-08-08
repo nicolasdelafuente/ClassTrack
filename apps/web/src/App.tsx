@@ -17,6 +17,9 @@ import { RegisterPage } from './pages/RegisterPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { ScheduleSessionPage } from './pages/ScheduleSessionPage'
 import { StudentHomePage } from './pages/StudentHomePage'
+import { StudentSprintSheetPage } from './pages/StudentSprintSheetPage'
+import { TeacherSprintSheetDetailPage } from './pages/TeacherSprintSheetDetailPage'
+import { TeacherSprintSheetsPage } from './pages/TeacherSprintSheetsPage'
 
 function App() {
   return (
@@ -36,11 +39,41 @@ function App() {
             }
           />
           <Route
+            path="/alumno/grupos/:groupId/sprints/:sprintNumber"
+            element={
+              <RequireAuth>
+                <RequireStudent>
+                  <StudentSprintSheetPage />
+                </RequireStudent>
+              </RequireAuth>
+            }
+          />
+          <Route
             path="/"
             element={
               <RequireAuth>
                 <RequireTeacher>
                   <BoardPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/sprint-sheets"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <TeacherSprintSheetsPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/sprint-sheets/:sheetId"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <TeacherSprintSheetDetailPage />
                 </RequireTeacher>
               </RequireAuth>
             }
