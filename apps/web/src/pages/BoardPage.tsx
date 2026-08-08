@@ -90,7 +90,7 @@ export function BoardPage() {
         <PageHero
           eyebrow="Cursada actual"
           title="Tablero de grupos"
-          description="Semáforo de sprints de un vistazo — las acciones de esta pantalla viven acá; el resto de módulos, en la barra lateral."
+          description="Semáforo de sprints de un vistazo"
           stats={[
             {
               label: 'Grupos',
