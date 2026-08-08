@@ -61,6 +61,10 @@ export class CoursesService {
       include: {
         sprintStatuses: { orderBy: { sprintNumber: 'asc' } },
         links: true,
+        memberships: {
+          include: { student: true },
+          orderBy: { student: { fullName: 'asc' } },
+        },
         _count: { select: { memberships: true } },
       },
     });
@@ -74,6 +78,12 @@ export class CoursesService {
       capacity: g.capacity,
       memberCount: g._count.memberships,
       spotsLeft: Math.max(0, g.capacity - g._count.memberships),
+      members: g.memberships.map((m) => ({
+        id: m.student.id,
+        fullName: m.student.fullName,
+        legajo: m.student.legajo,
+        email: m.student.email,
+      })),
       sprints: g.sprintStatuses.map((s) => ({
         sprintNumber: s.sprintNumber,
         status: s.status,

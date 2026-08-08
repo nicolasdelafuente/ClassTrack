@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { loginUser } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import { DEMO_STUDENT, DEMO_TEACHER } from '../auth/demoAccounts'
 import { homePathForRole } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
@@ -20,12 +21,13 @@ export function LoginPage() {
     return <Navigate to={homePathForRole(user.role)} replace />
   }
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault()
+  async function enterAs(nextEmail: string, nextPassword: string) {
     setError(null)
     setSubmitting(true)
+    setEmail(nextEmail)
+    setPassword(nextPassword)
     try {
-      const next = await loginUser({ email, password })
+      const next = await loginUser({ email: nextEmail, password: nextPassword })
       login(next)
       navigate(homePathForRole(next.role), { replace: true })
     } catch (err) {
@@ -35,6 +37,11 @@ export function LoginPage() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  async function onSubmit(event: FormEvent) {
+    event.preventDefault()
+    await enterAs(email, password)
   }
 
   return (
@@ -51,8 +58,29 @@ export function LoginPage() {
         </p>
       </div>
 
+      <div className="mb-4 grid gap-2 sm:grid-cols-2">
+        <Button
+          type="button"
+          variant="ghost"
+          className="min-h-11 w-full"
+          disabled={submitting}
+          onClick={() => void enterAs(DEMO_TEACHER.email, DEMO_TEACHER.password)}
+        >
+          Entrar como docente
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          className="min-h-11 w-full"
+          disabled={submitting}
+          onClick={() => void enterAs(DEMO_STUDENT.email, DEMO_STUDENT.password)}
+        >
+          Entrar como alumno
+        </Button>
+      </div>
+
       <form
-        onSubmit={onSubmit}
+        onSubmit={(e) => void onSubmit(e)}
         className="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 shadow-panel"
       >
         <div>
@@ -97,9 +125,7 @@ export function LoginPage() {
         Si te invitaron, usá el link del mail para registrarte.
       </p>
       <p className="mt-3 text-center text-[12px] leading-relaxed text-fg-faint">
-        Demo docente: docente@classtrack.local / demo123
-        <br />
-        Demo alumno: alumno@classtrack.local / demo123
+        Las cuentas demo usan la contraseña <code>demo123</code> (solo local).
       </p>
     </div>
   )
