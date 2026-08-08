@@ -11,7 +11,8 @@ Fuente de verdad actualizada: **[06-roadmap/etapas.md](./06-roadmap/etapas.md)**
 | 0–3 — Alinear / docs / esqueleto | Hecha | Producto, UI, monorepo, tablero |
 | **MVP clásico (CT-E04)** | **Cerrada** | Tablero + detalle + asistencia + cronograma/faltas |
 | Cronograma (CT-E05) | Hecha | Clases, obligatoriedad, libre |
-| **Post-MVP (CT-E06)** | **Activa** | Alumno, fichas, notas, seguimiento docente |
+| Post-MVP / cursada real (CT-E06) | **Cerrada** | Alumno, fichas, notas, seguimiento + fotos |
+| **Mejoras continuas (CT-E07)** | **Activa** | Features e mejoras que vayan surgiendo |
 
 ## Producto
 
