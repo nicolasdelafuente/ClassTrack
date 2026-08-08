@@ -32,6 +32,9 @@ apps/api/prisma/data/from-excel.json
 *.db
 *.db-journal
 
+# Local uploaded images (CT-050)
+apps/api/uploads/
+
 # Local Trello / tokens (nunca commitear)
 .trello-env
 .trello-*.json

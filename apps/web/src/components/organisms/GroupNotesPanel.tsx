@@ -1,9 +1,12 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import {
+  apiOrigin,
   createGroupNote,
   deleteGroupNote,
+  deleteGroupNoteAttachment,
   fetchGroupNotes,
   updateGroupNote,
+  uploadGroupNoteAttachments,
 } from '../../api/client'
 import { Button } from '../atoms/Button'
 import { IconNote } from '../atoms/icons'
@@ -15,6 +18,7 @@ import { cn } from '../../lib/cn'
 import {
   GROUP_NOTE_TITLE_PRESETS,
   type GroupNote,
+  type GroupNoteAttachment,
 } from '../../types'
 import { SectionTitle } from '../molecules/SectionTitle'
 
@@ -34,9 +38,13 @@ function formatNoteWhen(iso: string) {
   }
 }
 
+function attachmentSrc(att: GroupNoteAttachment) {
+  if (att.url.startsWith('http')) return att.url
+  return `${apiOrigin()}${att.url}`
+}
+
 /**
- * Teacher follow-up notes for a group (CT-049).
- * Shows author + datetime on every note; title from preset or free text.
+ * Teacher follow-up notes (CT-049) with image attachments (CT-050).
  */
 export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
   const [notes, setNotes] = useState<GroupNote[]>([])
@@ -47,11 +55,14 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
   const [preset, setPreset] = useState(GROUP_NOTE_TITLE_PRESETS[0]?.value ?? '')
   const [customTitle, setCustomTitle] = useState('')
   const [body, setBody] = useState('')
+  const [createFiles, setCreateFiles] = useState<File[]>([])
   const [formError, setFormError] = useState<string | null>(null)
+  const createFileInputRef = useRef<HTMLInputElement>(null)
 
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [editBody, setEditBody] = useState('')
+  const attachInputRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
   useEffect(() => {
     let cancelled = false
@@ -97,9 +108,18 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
     setBusy(true)
     setFormError(null)
     try {
-      const created = await createGroupNote(groupId, { title, body: text })
+      let created = await createGroupNote(groupId, { title, body: text })
+      if (createFiles.length > 0) {
+        const uploaded = await uploadGroupNoteAttachments(
+          created.id,
+          createFiles,
+        )
+        created = { ...created, attachments: uploaded }
+      }
       setNotes((prev) => [created, ...prev])
       setBody('')
+      setCreateFiles([])
+      if (createFileInputRef.current) createFileInputRef.current.value = ''
       if (!preset) setCustomTitle('')
     } catch (err) {
       setFormError(
@@ -128,7 +148,13 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
     setFormError(null)
     try {
       const updated = await updateGroupNote(noteId, { title, body: text })
-      setNotes((prev) => prev.map((n) => (n.id === noteId ? updated : n)))
+      setNotes((prev) =>
+        prev.map((n) =>
+          n.id === noteId
+            ? { ...updated, attachments: n.attachments }
+            : n,
+        ),
+      )
       setEditingId(null)
     } catch (err) {
       setFormError(
@@ -140,7 +166,7 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
   }
 
   async function handleDelete(noteId: string) {
-    if (!window.confirm('¿Borrar esta nota?')) return
+    if (!window.confirm('¿Borrar esta nota y sus fotos?')) return
     setBusy(true)
     try {
       await deleteGroupNote(noteId)
@@ -155,11 +181,59 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
     }
   }
 
+  async function handleUploadToNote(noteId: string, fileList: FileList | null) {
+    if (!fileList?.length) return
+    const files = Array.from(fileList)
+    setBusy(true)
+    try {
+      const uploaded = await uploadGroupNoteAttachments(noteId, files)
+      setNotes((prev) =>
+        prev.map((n) =>
+          n.id === noteId
+            ? { ...n, attachments: [...n.attachments, ...uploaded] }
+            : n,
+        ),
+      )
+    } catch (err) {
+      window.alert(
+        err instanceof Error ? err.message : 'No se pudieron subir las fotos',
+      )
+    } finally {
+      setBusy(false)
+      const input = attachInputRefs.current[noteId]
+      if (input) input.value = ''
+    }
+  }
+
+  async function handleDeleteAttachment(noteId: string, attachmentId: string) {
+    if (!window.confirm('¿Borrar esta foto?')) return
+    setBusy(true)
+    try {
+      await deleteGroupNoteAttachment(attachmentId)
+      setNotes((prev) =>
+        prev.map((n) =>
+          n.id === noteId
+            ? {
+                ...n,
+                attachments: n.attachments.filter((a) => a.id !== attachmentId),
+              }
+            : n,
+        ),
+      )
+    } catch (err) {
+      window.alert(
+        err instanceof Error ? err.message : 'No se pudo borrar la foto',
+      )
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
     <div>
       <SectionTitle
         icon={<IconNote className="text-fg-muted" />}
-        hint="Cualquier docente puede escribir. Se guarda quién y cuándo."
+        hint="Texto + fotos. Se guarda quién escribió y quién subió cada imagen."
       >
         Notas de seguimiento
       </SectionTitle>
@@ -210,6 +284,28 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
             className={cn(fieldControlClassName, 'min-h-[5.5rem] resize-y')}
             onChange={(e) => setBody(e.target.value)}
           />
+        </div>
+        <div>
+          <Label htmlFor="note-photos">Fotos (opcional)</Label>
+          <input
+            ref={createFileInputRef}
+            id="note-photos"
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            multiple
+            disabled={disabled || busy}
+            className="block w-full text-[13px] text-fg-muted file:mr-3 file:rounded-md file:border file:border-border file:bg-surface-1 file:px-3 file:py-2 file:text-[13px] file:font-medium file:text-fg"
+            onChange={(e) =>
+              setCreateFiles(e.target.files ? Array.from(e.target.files) : [])
+            }
+          />
+          {createFiles.length > 0 ? (
+            <Text faint className="mt-1.5">
+              {createFiles.length} archivo
+              {createFiles.length === 1 ? '' : 's'} listo
+              {createFiles.length === 1 ? '' : 's'} para subir
+            </Text>
+          ) : null}
         </div>
         {formError && !editingId ? (
           <Text className="text-[13px] text-critical">{formError}</Text>
@@ -292,9 +388,52 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
                     {note.body}
                   </p>
                   <p className="m-0 mt-2 text-[12px] text-fg-faint">
-                    Por <span className="font-medium text-fg-muted">{note.author.label}</span>
+                    Por{' '}
+                    <span className="font-medium text-fg-muted">
+                      {note.author.label}
+                    </span>
                   </p>
-                  <div className="mt-2 flex flex-wrap gap-2">
+
+                  {note.attachments.length > 0 ? (
+                    <ul className="m-0 mt-3 flex list-none flex-wrap gap-2 p-0">
+                      {note.attachments.map((att) => (
+                        <li
+                          key={att.id}
+                          className="relative w-[7.5rem] overflow-hidden rounded-md border border-border bg-surface-2"
+                        >
+                          <a
+                            href={attachmentSrc(att)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="block"
+                            title={`${att.originalName} · subida por ${att.uploadedBy.label}`}
+                          >
+                            <img
+                              src={attachmentSrc(att)}
+                              alt={att.originalName}
+                              className="h-24 w-full object-cover"
+                              loading="lazy"
+                            />
+                          </a>
+                          <p className="m-0 truncate px-1.5 py-1 text-[10px] text-fg-faint">
+                            {att.uploadedBy.label}
+                          </p>
+                          <button
+                            type="button"
+                            className="absolute right-1 top-1 rounded bg-surface-1/90 px-1.5 py-0.5 text-[10px] font-medium text-critical"
+                            disabled={disabled || busy}
+                            onClick={() =>
+                              void handleDeleteAttachment(note.id, att.id)
+                            }
+                          >
+                            ×
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
                     <Button
                       variant="ghost"
                       className="min-h-9 px-2 text-[12px]"
@@ -303,6 +442,30 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
                     >
                       Editar
                     </Button>
+                    <Button
+                      variant="ghost"
+                      className="min-h-9 px-2 text-[12px]"
+                      disabled={disabled || busy}
+                      onClick={() =>
+                        attachInputRefs.current[note.id]?.click()
+                      }
+                    >
+                      Agregar fotos
+                    </Button>
+                    <input
+                      ref={(el) => {
+                        attachInputRefs.current[note.id] = el
+                      }}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      multiple
+                      className="sr-only"
+                      tabIndex={-1}
+                      aria-hidden
+                      onChange={(e) =>
+                        void handleUploadToNote(note.id, e.target.files)
+                      }
+                    />
                     <Button
                       variant="ghost"
                       className="min-h-9 px-2 text-[12px] text-critical"

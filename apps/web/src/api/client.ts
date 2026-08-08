@@ -20,9 +20,15 @@ import type {
   CourseSprintSheetSummary,
   TaskCategory,
   GroupNote,
+  GroupNoteAttachment,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'
+
+/** Host origin for static uploads (strip trailing /api). */
+export function apiOrigin(): string {
+  return API_URL.replace(/\/api\/?$/, '')
+}
 
 /** MVP identity for /me endpoints (client-side auth). */
 let apiUserId: string | null = null
@@ -729,6 +735,37 @@ export function updateGroupNote(
 
 export function deleteGroupNote(noteId: string) {
   return requestJson<{ ok: boolean }>(`/notes/${noteId}`, {
+    method: 'DELETE',
+  })
+}
+
+export function uploadGroupNoteAttachments(noteId: string, files: File[]) {
+  const form = new FormData()
+  for (const file of files) {
+    form.append('files', file)
+  }
+  const headers: Record<string, string> = {}
+  if (apiUserId) {
+    headers['X-User-Id'] = apiUserId
+  }
+  // Do not set Content-Type — browser sets multipart boundary.
+  return fetch(`${API_URL}/notes/${noteId}/attachments`, {
+    method: 'POST',
+    headers,
+    body: form,
+  }).then(async (res) => {
+    if (!res.ok) {
+      const body = await res.text()
+      throw new Error(
+        messageFromErrorBody(body, res.status, `/notes/${noteId}/attachments`),
+      )
+    }
+    return res.json() as Promise<GroupNoteAttachment[]>
+  })
+}
+
+export function deleteGroupNoteAttachment(attachmentId: string) {
+  return requestJson<{ ok: boolean }>(`/note-attachments/${attachmentId}`, {
     method: 'DELETE',
   })
 }
