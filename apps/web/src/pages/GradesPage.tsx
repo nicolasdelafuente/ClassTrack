@@ -14,10 +14,10 @@ import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Select } from '../components/atoms/Select'
-import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
+import { GradesPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { cn } from '../lib/cn'
 
@@ -225,10 +225,11 @@ export function GradesPage({ mode }: GradesPageProps) {
           }
         />
 
-        {loading ? <Text>Cargando…</Text> : null}
+        {loading ? <GradesPageSkeleton /> : null}
         {error ? <StateBox title="Error" message={error} /> : null}
 
-        {roster?.groups.map((group) => (
+        {!loading && !error
+          ? roster?.groups.map((group) => (
           <section
             key={group.id}
             className="rounded-lg border border-border bg-surface-1 p-4 shadow-panel"
@@ -332,7 +333,8 @@ export function GradesPage({ mode }: GradesPageProps) {
               ))}
             </ul>
           </section>
-        ))}
+        ))
+          : null}
       </section>
     </AppShell>
   )

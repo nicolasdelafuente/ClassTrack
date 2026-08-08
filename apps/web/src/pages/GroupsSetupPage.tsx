@@ -15,6 +15,7 @@ import { Text } from '../components/atoms/Text'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
+import { GroupsSetupPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import type { Course, GroupSummary } from '../types'
 
@@ -177,7 +178,7 @@ export function GroupsSetupPage() {
   if (state.status === 'loading') {
     return (
       <AppShell showBack>
-        <Text>Cargando…</Text>
+        <GroupsSetupPageSkeleton />
       </AppShell>
     )
   }

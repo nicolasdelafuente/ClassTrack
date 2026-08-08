@@ -15,6 +15,7 @@ import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
+import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { cn } from '../lib/cn'
 import {
@@ -214,7 +215,7 @@ export function StudentSprintSheetPage() {
   if (loading) {
     return (
       <AppShell showBack>
-        <Text>Cargando ficha…</Text>
+        <SprintSheetPageSkeleton />
       </AppShell>
     )
   }

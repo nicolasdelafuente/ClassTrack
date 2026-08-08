@@ -8,6 +8,7 @@ import { useAuth } from '../../auth/AuthContext'
 import { Button } from '../atoms/Button'
 import { Label } from '../atoms/Label'
 import { Select } from '../atoms/Select'
+import { Skeleton } from '../atoms/Skeleton'
 import { Text } from '../atoms/Text'
 
 type TutorAssignerProps = {
@@ -96,20 +97,28 @@ export function TutorAssigner({
     <div className="flex flex-col gap-3">
       <div>
         <Label htmlFor="group-tutor">Docente tutor</Label>
-        <Select
-          id="group-tutor"
-          disabled={disabled || loading || saving}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        >
-          <option value="">Sin tutor asignado</option>
-          {teachers.map((t) => (
-            <option key={t.id} value={t.id}>
-              {labelFor(t)}
-              {user?.id === t.id ? ' (vos)' : ''}
-            </option>
-          ))}
-        </Select>
+        {loading ? (
+          <Skeleton
+            className="mt-1.5 h-11 w-full"
+            rounded="md"
+            aria-label="Cargando docentes"
+          />
+        ) : (
+          <Select
+            id="group-tutor"
+            disabled={disabled || saving}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          >
+            <option value="">Sin tutor asignado</option>
+            {teachers.map((t) => (
+              <option key={t.id} value={t.id}>
+                {labelFor(t)}
+                {user?.id === t.id ? ' (vos)' : ''}
+              </option>
+            ))}
+          </Select>
+        )}
         {!tutorUserId && teacherName ? (
           <Text faint className="mt-1">
             Etiqueta anterior del seed: {teacherName}
@@ -122,7 +131,7 @@ export function TutorAssigner({
           <Button
             type="button"
             variant="ghost"
-            disabled={disabled || saving}
+            disabled={disabled || loading || saving}
             onClick={assignMe}
           >
             Asignarme a mí

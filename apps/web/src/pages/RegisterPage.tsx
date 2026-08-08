@@ -6,6 +6,7 @@ import { homePathForRole, roleLabel } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
+import { AuthFormSkeleton } from '../components/organisms/PageSkeletons'
 import type { UserRole } from '../types'
 
 type InviteState =
@@ -132,11 +133,7 @@ export function RegisterPage() {
         </div>
       ) : null}
 
-      {invite.status === 'loading' ? (
-        <p className="text-center text-[13px] text-fg-muted">
-          Validando invitación…
-        </p>
-      ) : null}
+      {invite.status === 'loading' ? <AuthFormSkeleton /> : null}
 
       {invite.status === 'error' ? (
         <div className="rounded-lg border border-border bg-surface-1 p-5 text-center shadow-panel">
