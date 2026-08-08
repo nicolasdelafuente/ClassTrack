@@ -30,6 +30,9 @@ model User {
   password    String
   role        UserRole @default(teacher)
   displayName String?  @map("display_name")
+  /// Linked roster Student when role is student (CT-045).
+  studentId   String?  @unique @map("student_id")
+  student     Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
   invitesSent Invite[] @relation("InvitesSent")
   tutoredGroups Group[] @relation("GroupTutor")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -68,6 +71,8 @@ model Course {
   isCurrent            Boolean                      @default(false) @map("is_current")
   /// Absences allowed on mandatory classes before libre (default 4 → 5th absence = libre).
   maxAbsencesAllowed   Int                          @default(4) @map("max_absences_allowed")
+  /// When true, students may join/leave groups (CT-045).
+  groupEnrollmentOpen  Boolean                      @default(false) @map("group_enrollment_open")
   groups               Group[]
   attendanceRecords    AttendanceRecord[]
   classSessions        ClassSession[]
@@ -86,6 +91,8 @@ model Group {
   number        Int
   name          String?
   projectTopic  String?         @map("project_topic")
+  /// Max members for student self-join (CT-045). Teacher override ignores this.
+  capacity      Int             @default(4)
   /// Legacy display label; kept in sync when tutorUserId is set.
   teacherName   String?         @map("teacher_name")
   /// Assigned tutor (User with role teacher). CT-044.
@@ -94,6 +101,7 @@ model Group {
   memberships   Membership[]
   sprintStatuses SprintStatus[]
   links         GroupLinks?
+  leaveLogs     GroupLeaveLog[]
   createdAt     DateTime        @default(now()) @map("created_at")
   updatedAt     DateTime        @updatedAt @map("updated_at")
 
@@ -107,13 +115,30 @@ model Student {
   legajo            String?
   fullName          String             @map("full_name")
   email             String?
+  user              User?
   memberships       Membership[]
   attendanceRecords AttendanceRecord[]
   invites           Invite[]
+  leaveLogs         GroupLeaveLog[]
   createdAt         DateTime           @default(now()) @map("created_at")
   updatedAt         DateTime           @updatedAt @map("updated_at")
 
   @@map("students")
+}
+
+/// Student left a group with a justification while enrollment was open (CT-045).
+model GroupLeaveLog {
+  id        String   @id @default(cuid())
+  studentId String   @map("student_id")
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  groupId   String   @map("group_id")
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  reason    String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([groupId])
+  @@index([studentId])
+  @@map("group_leave_logs")
 }
 
 model Membership {

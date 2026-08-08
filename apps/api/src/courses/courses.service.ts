@@ -13,7 +13,7 @@ import {
 import { normalizeEmail } from '../auth/auth.service';
 import { MailService } from '../mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateInviteDto, DuplicateCourseDto, BroadcastEmailDto } from './dto/courses.dto';
+import { CreateInviteDto, DuplicateCourseDto, BroadcastEmailDto, CreateGroupStructureDto } from './dto/courses.dto';
 import {
   plainTextToHtml,
   renderEmailLayout,
@@ -71,7 +71,9 @@ export class CoursesService {
       name: g.name,
       projectTopic: g.projectTopic,
       teacherName: g.teacherName,
+      capacity: g.capacity,
       memberCount: g._count.memberships,
+      spotsLeft: Math.max(0, g.capacity - g._count.memberships),
       sprints: g.sprintStatuses.map((s) => ({
         sprintNumber: s.sprintNumber,
         status: s.status,
@@ -84,6 +86,161 @@ export class CoursesService {
           }
         : null,
     }));
+  }
+
+  async setGroupEnrollment(courseId: string, open: boolean) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const updated = await this.prisma.course.update({
+      where: { id: courseId },
+      data: { groupEnrollmentOpen: open },
+    });
+
+    return {
+      id: updated.id,
+      groupEnrollmentOpen: updated.groupEnrollmentOpen,
+    };
+  }
+
+  /**
+   * Create empty group shells from batches (e.g. 10×3 + 2×4).
+   * Allowed only when the course has no groups, or all groups are empty.
+   */
+  async createGroupStructure(courseId: string, dto: CreateGroupStructureDto) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        groups: {
+          include: { _count: { select: { memberships: true } } },
+          orderBy: { number: 'asc' },
+        },
+      },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const hasMembers = course.groups.some((g) => g._count.memberships > 0);
+    if (hasMembers) {
+      throw new BadRequestException(
+        'No se puede armar la estructura: hay grupos con integrantes. Sacá a todos o usá una cursada vacía.',
+      );
+    }
+
+    const totalNew = dto.batches.reduce((sum, b) => sum + b.count, 0);
+    if (totalNew < 1) {
+      throw new BadRequestException('Indicá al menos un grupo');
+    }
+    if (totalNew > 40) {
+      throw new BadRequestException('Máximo 40 grupos por estructura');
+    }
+
+    if (course.groups.length > 0) {
+      await this.prisma.group.deleteMany({ where: { courseId } });
+    }
+
+    const created: { id: string; number: number; capacity: number }[] = [];
+    let nextNumber = 1;
+
+    await this.prisma.$transaction(async (tx) => {
+      for (const batch of dto.batches) {
+        for (let i = 0; i < batch.count; i++) {
+          const group = await tx.group.create({
+            data: {
+              courseId,
+              number: nextNumber,
+              name: `Grupo ${nextNumber}`,
+              capacity: batch.capacity,
+              sprintStatuses: {
+                create: [1, 2, 3, 4, 5].map((sprintNumber) => ({
+                  sprintNumber,
+                  status: SprintStatusValue.unknown,
+                })),
+              },
+              links: { create: {} },
+            },
+          });
+          created.push({
+            id: group.id,
+            number: group.number,
+            capacity: group.capacity,
+          });
+          nextNumber += 1;
+        }
+      }
+    });
+
+    const totalSpots = created.reduce((sum, g) => sum + g.capacity, 0);
+    return {
+      groups: created,
+      meta: {
+        groupCount: created.length,
+        totalSpots,
+      },
+    };
+  }
+
+  /** Students known to the course who are not in a group yet (teacher override). */
+  async listUnassignedStudents(courseId: string) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const assigned = await this.prisma.membership.findMany({
+      where: { group: { courseId } },
+      select: { studentId: true },
+    });
+    const assignedIds = new Set(assigned.map((m) => m.studentId));
+
+    const [leaveLogs, invites, linkedUsers] = await Promise.all([
+      this.prisma.groupLeaveLog.findMany({
+        where: { group: { courseId } },
+        select: { studentId: true },
+      }),
+      this.prisma.invite.findMany({
+        where: { courseId, studentId: { not: null } },
+        select: { studentId: true },
+      }),
+      this.prisma.user.findMany({
+        where: { role: UserRole.student, studentId: { not: null } },
+        select: { studentId: true },
+      }),
+    ]);
+
+    const candidateIds = new Set<string>();
+    for (const row of leaveLogs) candidateIds.add(row.studentId);
+    for (const row of invites) {
+      if (row.studentId) candidateIds.add(row.studentId);
+    }
+    for (const row of linkedUsers) {
+      if (row.studentId) candidateIds.add(row.studentId);
+    }
+
+    if (candidateIds.size === 0) {
+      return [];
+    }
+
+    const students = await this.prisma.student.findMany({
+      where: { id: { in: [...candidateIds] } },
+      orderBy: { fullName: 'asc' },
+    });
+
+    return students
+      .filter((s) => !assignedIds.has(s.id))
+      .map((s) => ({
+        id: s.id,
+        fullName: s.fullName,
+        legajo: s.legajo,
+        email: s.email,
+      }));
   }
 
   /**
@@ -143,6 +300,7 @@ export class CoursesService {
           code,
           isCurrent: setAsCurrent,
           maxAbsencesAllowed: source.maxAbsencesAllowed,
+          groupEnrollmentOpen: false,
           activityTypeDefaults: {
             create: source.activityTypeDefaults.map((d) => ({
               activityType: d.activityType,
@@ -181,6 +339,7 @@ export class CoursesService {
               courseId: course.id,
               number: group.number,
               name: group.name,
+              capacity: group.capacity,
               // Fresh quarter: keep teacher label, clear topic (new projects)
               teacherName: group.teacherName,
               projectTopic: null,

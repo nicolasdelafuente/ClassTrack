@@ -12,9 +12,18 @@ import type {
   ScheduleSession,
   SprintStatus,
   ActivityTypeDefault,
+  StudentGroupEnrollment,
+  UnassignedStudent,
 } from '../types'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'
+
+/** MVP identity for /me endpoints (client-side auth). */
+let apiUserId: string | null = null
+
+export function setApiUserId(userId: string | null) {
+  apiUserId = userId
+}
 
 /** Parse Nest/HTTP error bodies without leaking raw stacks to the UI. */
 function messageFromErrorBody(body: string, status: number, path: string): string {
@@ -43,12 +52,17 @@ async function requestJson<T>(
   path: string,
   init?: RequestInit,
 ): Promise<T> {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(init?.headers as Record<string, string> | undefined),
+  }
+  if (apiUserId) {
+    headers['X-User-Id'] = apiUserId
+  }
+
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(init?.headers ?? {}),
-    },
+    headers,
   })
   if (!res.ok) {
     const body = await res.text()
@@ -408,4 +422,68 @@ export function sendCourseEmail(
       body: JSON.stringify(body),
     },
   )
+}
+
+export function patchGroupEnrollment(courseId: string, open: boolean) {
+  return requestJson<{ id: string; groupEnrollmentOpen: boolean }>(
+    `/courses/${courseId}/group-enrollment`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ open }),
+    },
+  )
+}
+
+export type GroupStructureBatch = { count: number; capacity: number }
+
+export function createGroupStructure(
+  courseId: string,
+  batches: GroupStructureBatch[],
+) {
+  return requestJson<{
+    groups: { id: string; number: number; capacity: number }[]
+    meta: { groupCount: number; totalSpots: number }
+  }>(`/courses/${courseId}/groups/structure`, {
+    method: 'POST',
+    body: JSON.stringify({ batches }),
+  })
+}
+
+export function fetchUnassignedStudents(courseId: string) {
+  return requestJson<UnassignedStudent[]>(
+    `/courses/${courseId}/unassigned-students`,
+  )
+}
+
+export function addGroupMember(groupId: string, studentId: string) {
+  return requestJson<GroupDetail>(`/groups/${groupId}/members`, {
+    method: 'POST',
+    body: JSON.stringify({ studentId }),
+  })
+}
+
+export function removeGroupMember(groupId: string, studentId: string) {
+  return requestJson<GroupDetail>(
+    `/groups/${groupId}/members/${studentId}`,
+    { method: 'DELETE' },
+  )
+}
+
+export function fetchMyCourseGroups(courseId: string) {
+  return requestJson<StudentGroupEnrollment>(
+    `/me/courses/${courseId}/groups`,
+  )
+}
+
+export function joinGroupAsStudent(groupId: string) {
+  return requestJson<StudentGroupEnrollment>(`/me/groups/${groupId}/join`, {
+    method: 'POST',
+  })
+}
+
+export function leaveGroupAsStudent(groupId: string, reason: string) {
+  return requestJson<StudentGroupEnrollment>(`/me/groups/${groupId}/leave`, {
+    method: 'POST',
+    body: JSON.stringify({ reason }),
+  })
 }

@@ -85,6 +85,7 @@ async function main() {
   console.log(`Seeding from ${source}`);
 
   // Clean demo tables (order matters for FKs)
+  await prisma.groupLeaveLog.deleteMany();
   await prisma.attendanceRecord.deleteMany();
   await prisma.classSessionItem.deleteMany();
   await prisma.classSession.deleteMany();
@@ -92,12 +93,21 @@ async function main() {
   await prisma.sprintStatus.deleteMany();
   await prisma.groupLinks.deleteMany();
   await prisma.membership.deleteMany();
+  await prisma.invite.deleteMany();
+  await prisma.user.deleteMany();
   await prisma.student.deleteMany();
   await prisma.group.deleteMany();
   await prisma.course.deleteMany();
-  await prisma.user.deleteMany();
 
   // DEMO ONLY: plain-text passwords for local MVP (CT-038 / CT-039)
+  const demoStudent = await prisma.student.create({
+    data: {
+      fullName: 'Alumno demo',
+      email: 'alumno@classtrack.local',
+      legajo: 'DEMO-001',
+    },
+  });
+
   await prisma.user.createMany({
     data: [
       {
@@ -111,6 +121,7 @@ async function main() {
         password: 'demo123',
         displayName: 'Alumno demo',
         role: 'student',
+        studentId: demoStudent.id,
       },
     ],
   });
@@ -121,6 +132,8 @@ async function main() {
       code: payload.course.code,
       isCurrent: payload.course.isCurrent,
       maxAbsencesAllowed: DEFAULT_MAX_ABSENCES_ALLOWED,
+      // Open so demo alumno can practice join/leave (CT-045)
+      groupEnrollmentOpen: true,
       activityTypeDefaults: {
         create: ALL_ACTIVITY_TYPES.map((activityType) => {
           const rule = DEFAULT_ACTIVITY_TYPE_RULES[activityType];
@@ -135,6 +148,8 @@ async function main() {
   });
 
   for (const g of payload.groups) {
+    const memberCount = g.students.length;
+    const capacity = Math.max(4, memberCount);
     const group = await prisma.group.create({
       data: {
         courseId: course.id,
@@ -142,6 +157,7 @@ async function main() {
         name: g.name ?? `Grupo ${g.number}`,
         projectTopic: g.projectTopic ?? null,
         teacherName: g.teacherName ?? null,
+        capacity,
         sprintStatuses: {
           create: [1, 2, 3, 4, 5].map((sprintNumber) => ({
             sprintNumber,

@@ -1,11 +1,18 @@
+import { Type } from 'class-transformer';
 import {
+  ArrayMinSize,
+  IsArray,
   IsBoolean,
   IsEmail,
   IsIn,
+  IsInt,
   IsOptional,
   IsString,
   Matches,
+  Max,
+  Min,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 
 export class DuplicateCourseDto {
@@ -62,5 +69,33 @@ export class BroadcastEmailDto {
   @IsOptional()
   @IsString()
   studentId?: string;
+}
+
+/** One batch when creating empty group shells (CT-045). */
+export class GroupStructureBatchDto {
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(40)
+  count!: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(12)
+  capacity!: number;
+}
+
+export class CreateGroupStructureDto {
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => GroupStructureBatchDto)
+  batches!: GroupStructureBatchDto[];
+}
+
+export class UpdateGroupEnrollmentDto {
+  @IsBoolean()
+  open!: boolean;
 }
 

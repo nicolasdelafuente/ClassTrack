@@ -150,6 +150,60 @@ export class GroupsService {
     };
   }
 
+  /** Teacher override: add student ignoring capacity / enrollment (CT-045). */
+  async addMember(groupId: string, studentId: string) {
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+    });
+    if (!group) {
+      throw new NotFoundException('Grupo no encontrado');
+    }
+
+    const student = await this.prisma.student.findUnique({
+      where: { id: studentId },
+    });
+    if (!student) {
+      throw new NotFoundException('Alumno no encontrado');
+    }
+
+    const existingInCourse = await this.prisma.membership.findFirst({
+      where: {
+        studentId,
+        group: { courseId: group.courseId },
+      },
+      include: { group: { select: { number: true } } },
+    });
+    if (existingInCourse) {
+      throw new BadRequestException(
+        `El alumno ya está en el grupo ${existingInCourse.group.number}`,
+      );
+    }
+
+    await this.prisma.membership.create({
+      data: { groupId, studentId },
+    });
+
+    return this.getById(groupId);
+  }
+
+  /** Teacher override: remove student from group (CT-045). */
+  async removeMember(groupId: string, studentId: string) {
+    const membership = await this.prisma.membership.findUnique({
+      where: {
+        groupId_studentId: { groupId, studentId },
+      },
+    });
+    if (!membership) {
+      throw new NotFoundException('El alumno no está en este grupo');
+    }
+
+    await this.prisma.membership.delete({
+      where: { id: membership.id },
+    });
+
+    return this.getById(groupId);
+  }
+
   private toDetail(
     group: Prisma.GroupGetPayload<{
       include: {
@@ -172,6 +226,7 @@ export class GroupsService {
       number: group.number,
       name: group.name,
       projectTopic: group.projectTopic,
+      capacity: group.capacity,
       teacherName: group.teacherName,
       tutorUserId: group.tutorUserId,
       tutor: group.tutor

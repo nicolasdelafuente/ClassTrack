@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import {
+  AddGroupMemberDto,
   GroupIdParamDto,
+  GroupMemberParamsDto,
   UpdateLinksDto,
   UpdateSprintDto,
   UpdateSprintParamsDto,
@@ -46,5 +56,18 @@ export class GroupsController {
       params.groupId,
       body.tutorUserId === undefined ? null : body.tutorUserId,
     );
+  }
+
+  @Post(':groupId/members')
+  addMember(
+    @Param() params: GroupIdParamDto,
+    @Body() body: AddGroupMemberDto,
+  ) {
+    return this.groupsService.addMember(params.groupId, body.studentId);
+  }
+
+  @Delete(':groupId/members/:studentId')
+  removeMember(@Param() params: GroupMemberParamsDto) {
+    return this.groupsService.removeMember(params.groupId, params.studentId);
   }
 }

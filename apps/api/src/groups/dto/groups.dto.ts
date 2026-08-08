@@ -1,4 +1,14 @@
-import { IsIn, IsInt, IsOptional, IsString, IsUrl, Max, Min, ValidateIf } from 'class-validator';
+import {
+  IsIn,
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Max,
+  Min,
+  MinLength,
+  ValidateIf,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 const SPRINT_STATUSES = ['unknown', 'ok', 'attention', 'critical'] as const;
@@ -47,4 +57,19 @@ export class UpdateSprintParamsDto {
   @Min(1)
   @Max(5)
   sprintNumber!: number;
+}
+
+/** Teacher override: add a student to a group (CT-045). */
+export class AddGroupMemberDto {
+  @IsString()
+  @MinLength(1)
+  studentId!: string;
+}
+
+export class GroupMemberParamsDto {
+  @IsString()
+  groupId!: string;
+
+  @IsString()
+  studentId!: string;
 }
