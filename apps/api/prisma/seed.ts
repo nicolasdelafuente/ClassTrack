@@ -1,4 +1,4 @@
-import { PrismaClient, SprintStatusValue } from '@prisma/client';
+import { PrismaClient, SheetKind, SheetStatus, SprintStatusValue, TaskCategory } from '@prisma/client';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {
@@ -205,6 +205,68 @@ async function main() {
           studentId: demoStudent.id,
         },
       });
+
+      // Sprint 1: start approved + end waiting for teacher review (CT-055).
+      const startSheet = await prisma.sprintSheet.create({
+        data: {
+          groupId: group.id,
+          sprintNumber: 1,
+          kind: SheetKind.start,
+          status: SheetStatus.approved,
+          submittedAt: new Date(),
+          approvedAt: new Date(),
+          tasks: {
+            create: [
+              {
+                category: TaskCategory.frontend,
+                title: 'Pantalla de login responsive',
+                description: 'Formulario email/password usable en celular',
+                sortOrder: 0,
+              },
+              {
+                category: TaskCategory.backend,
+                title: 'Endpoint de autenticación',
+                description: 'POST /auth/login con validación básica',
+                sortOrder: 1,
+              },
+              {
+                category: TaskCategory.testing,
+                title: 'Prueba manual del flujo alumno',
+                sortOrder: 2,
+              },
+            ],
+          },
+        },
+        include: { tasks: true },
+      });
+
+      await prisma.sprintSheet.create({
+        data: {
+          groupId: group.id,
+          sprintNumber: 1,
+          kind: SheetKind.end,
+          status: SheetStatus.in_review,
+          submittedAt: new Date(),
+          tasks: {
+            create: startSheet.tasks.map((t, index) => ({
+              category: t.category,
+              title: t.title,
+              description: t.description,
+              completed: index < 2,
+              incompleteReason:
+                index < 2 ? null : 'Quedó pendiente documentar el caso borde',
+              isExtra: false,
+              sourceTaskId: t.id,
+              sortOrder: index,
+            })),
+          },
+        },
+      });
+
+      await prisma.sprintStatus.updateMany({
+        where: { groupId: group.id, sprintNumber: 1 },
+        data: { status: SprintStatusValue.ok },
+      });
     }
   }
 
@@ -237,6 +299,7 @@ async function main() {
     students: await prisma.student.count(),
     memberships: await prisma.membership.count(),
     sprints: await prisma.sprintStatus.count(),
+    sprintSheets: await prisma.sprintSheet.count(),
     activityTypeDefaults: await prisma.courseActivityTypeDefault.count(),
     classSessions: await prisma.classSession.count(),
     classSessionItems: await prisma.classSessionItem.count(),
@@ -244,6 +307,9 @@ async function main() {
   console.log('Seed OK', counts);
   console.log('Demo docente: docente@classtrack.local / demo123');
   console.log('Demo alumno:  alumno@classtrack.local / demo123');
+  console.log(
+    'Demo fichas: Grupo 1 · Sprint 1 inicio=aprobada · fin=en revisión',
+  );
 }
 
 main()

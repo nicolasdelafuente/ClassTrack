@@ -499,19 +499,28 @@ export function StudentSprintSheetPage() {
                             ) : null}
                             {canEdit &&
                             (activeKind === 'start' || task.isExtra) ? (
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                className="mt-2 text-[12px]"
-                                disabled={busy}
-                                onClick={() =>
-                                  setDraft(
-                                    draft.filter((d) => d.key !== task.key),
-                                  )
-                                }
-                              >
-                                Quitar
-                              </Button>
+                              <div className="mt-3 flex justify-end border-t border-border/80 pt-2">
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  className="min-h-9 text-[12px] text-critical"
+                                  disabled={busy}
+                                  onClick={() => {
+                                    if (
+                                      !window.confirm(
+                                        '¿Eliminar esta tarea de la ficha?',
+                                      )
+                                    ) {
+                                      return
+                                    }
+                                    setDraft(
+                                      draft.filter((d) => d.key !== task.key),
+                                    )
+                                  }}
+                                >
+                                  Eliminar tarea
+                                </Button>
+                              </div>
                             ) : null}
                           </>
                         ) : (
@@ -589,22 +598,28 @@ export function StudentSprintSheetPage() {
             ) : null}
 
             {canEdit ? (
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  disabled={busy}
-                  onClick={() => void handleSave()}
-                >
-                  Guardar
-                </Button>
-                <Button
-                  type="button"
-                  disabled={busy}
-                  onClick={() => void handleSubmit()}
-                >
-                  Enviar a revisión
-                </Button>
+              <div className="flex flex-col gap-2">
+                <Text faint className="text-[12px]">
+                  Si eliminás una tarea, tocá <strong>Guardar</strong> para
+                  confirmar el cambio.
+                </Text>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    disabled={busy}
+                    onClick={() => void handleSave()}
+                  >
+                    Guardar
+                  </Button>
+                  <Button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => void handleSubmit()}
+                  >
+                    Enviar a revisión
+                  </Button>
+                </div>
               </div>
             ) : (
               <Text className="text-[13px] text-fg-muted">
