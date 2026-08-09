@@ -8,6 +8,8 @@ import {
 import { useAuth } from '../auth/AuthContext'
 import { roleLabel } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
+import { Panel } from '../components/atoms/Panel'
+import { ListRow } from '../components/molecules/ListRow'
 import { StateBox } from '../components/molecules/StateBox'
 import { StudentHomeSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
@@ -102,7 +104,7 @@ export function StudentHomePage() {
 
         {state.status === 'ready' ? (
           <>
-            <div className="rounded-lg border border-border bg-surface-1 px-4 py-3 text-left shadow-panel">
+            <Panel className="px-4 py-3 text-left">
               <p className="m-0 text-[13px] font-medium text-fg">
                 {state.group.course.name}
               </p>
@@ -110,13 +112,14 @@ export function StudentHomePage() {
                 Grupo {state.group.number}
                 {state.group.name ? ` · ${state.group.name}` : ''}
               </p>
-            </div>
+            </Panel>
 
             <ul className="m-0 flex list-none flex-col gap-2 p-0">
               {state.overview.sprints.map((s) => (
-                <li
+                <ListRow
                   key={s.sprintNumber}
-                  className="rounded-lg border border-border bg-surface-1 px-3.5 py-3 shadow-panel"
+                  as="li"
+                  className="px-3.5 py-3"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <p className="m-0 text-[15px] font-semibold text-fg">
@@ -133,7 +136,7 @@ export function StudentHomePage() {
                     Inicio: {statusLabel(s.start?.status)} · Fin:{' '}
                     {statusLabel(s.end?.status)}
                   </p>
-                </li>
+                </ListRow>
               ))}
             </ul>
           </>

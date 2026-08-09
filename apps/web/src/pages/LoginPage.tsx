@@ -7,6 +7,7 @@ import { homePathForRole } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
+import { Panel } from '../components/atoms/Panel'
 
 export function LoginPage() {
   const { isAuthenticated, user, login } = useAuth()
@@ -79,47 +80,49 @@ export function LoginPage() {
         </Button>
       </div>
 
-      <form
-        onSubmit={(e) => void onSubmit(e)}
-        className="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 shadow-panel"
-      >
-        <div>
-          <Label htmlFor="login-email">Email</Label>
-          <Input
-            id="login-email"
-            type="email"
-            name="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="docente@classtrack.local"
-          />
-        </div>
-        <div>
-          <Label htmlFor="login-password">Contraseña</Label>
-          <Input
-            id="login-password"
-            type="password"
-            name="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-          />
-        </div>
+      <Panel className="p-5">
+        <form
+          onSubmit={(e) => void onSubmit(e)}
+          className="flex flex-col gap-4"
+        >
+          <div>
+            <Label htmlFor="login-email">Email</Label>
+            <Input
+              id="login-email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="docente@classtrack.local"
+            />
+          </div>
+          <div>
+            <Label htmlFor="login-password">Contraseña</Label>
+            <Input
+              id="login-password"
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+            />
+          </div>
 
-        {error ? (
-          <p className="m-0 text-[13px] text-critical" role="alert">
-            {error}
-          </p>
-        ) : null}
+          {error ? (
+            <p className="m-0 text-[13px] text-critical" role="alert">
+              {error}
+            </p>
+          ) : null}
 
-        <Button type="submit" disabled={submitting} className="mt-1 w-full">
-          {submitting ? 'Entrando…' : 'Entrar'}
-        </Button>
-      </form>
+          <Button type="submit" disabled={submitting} className="mt-1 w-full">
+            {submitting ? 'Entrando…' : 'Entrar'}
+          </Button>
+        </form>
+      </Panel>
 
       <p className="mt-5 text-center text-[13px] text-fg-muted">
         Si te invitaron, usá el link del mail para registrarte.

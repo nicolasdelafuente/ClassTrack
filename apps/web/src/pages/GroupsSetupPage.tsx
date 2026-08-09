@@ -226,9 +226,7 @@ export function GroupsSetupPage() {
         />
 
         {message ? (
-          <p className="m-0 rounded-lg border border-border bg-surface-1 px-3 py-2 text-[13px] text-fg">
-            {message}
-          </p>
+          <Panel className="px-3 py-2 text-[13px] text-fg">{message}</Panel>
         ) : null}
 
         <Panel as="section" className="flex flex-col gap-4 p-4 sm:p-5">
