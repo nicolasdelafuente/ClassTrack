@@ -47,10 +47,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthenticated: user !== null,
     login: (next) => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+      setApiUserId(next.id)
       setUser(next)
     },
     logout: () => {
       localStorage.removeItem(STORAGE_KEY)
+      setApiUserId(null)
       setUser(null)
     },
   }
