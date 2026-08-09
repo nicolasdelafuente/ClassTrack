@@ -2,6 +2,7 @@ import type {
   AttendanceMark,
   AttendanceRoster,
   AuthUser,
+  CourseStudentProfile,
   ClassActivityType,
   Course,
   CourseSchedule,
@@ -168,6 +169,15 @@ export function patchAttendanceMark(
     method: 'PATCH',
     body: JSON.stringify(payload),
   })
+}
+
+export function fetchCourseStudentProfile(
+  courseId: string,
+  studentId: string,
+) {
+  return requestJson<CourseStudentProfile>(
+    `/courses/${courseId}/students/${studentId}`,
+  )
 }
 
 export function fetchCourseSchedule(courseId: string) {

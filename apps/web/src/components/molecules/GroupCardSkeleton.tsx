@@ -5,12 +5,12 @@ type GroupCardSkeletonProps = {
   className?: string
 }
 
-/** Same footprint as GroupCard (header, topic, meta, sprint lights). */
+/** Same footprint as compact GroupCard (header, topic, members summary, meta, sprint lights). */
 export function GroupCardSkeleton({ className }: GroupCardSkeletonProps) {
   return (
     <div
       className={cn(
-        'flex min-h-[160px] flex-col gap-2.5 rounded-xl border border-border bg-surface-1 px-3.5 py-3.5 shadow-panel',
+        'flex min-h-[140px] flex-col gap-2.5 rounded-xl border border-border bg-surface-1 px-3.5 py-3.5 shadow-panel',
         className,
       )}
     >
@@ -24,13 +24,17 @@ export function GroupCardSkeleton({ className }: GroupCardSkeletonProps) {
 
       <SkeletonText lines={2} className="min-h-[2.5em]" />
 
-      <div className="grid grid-cols-3 gap-2">
-        {Array.from({ length: 3 }, (_, i) => (
-          <div key={i} className="space-y-1.5">
-            <Skeleton className="h-3 w-12" />
-            <Skeleton className="h-3.5 w-16" />
-          </div>
-        ))}
+      <Skeleton className="h-3.5 w-28" />
+
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1.5">
+          <Skeleton className="h-3 w-12" />
+          <Skeleton className="h-3.5 w-16" />
+        </div>
+        <div className="space-y-1.5">
+          <Skeleton className="h-3 w-10" />
+          <Skeleton className="h-3.5 w-8" />
+        </div>
       </div>
 
       <div className="mt-auto flex gap-1.5 pt-1">
