@@ -7,17 +7,13 @@ import {
 import { useAuth } from '../auth/AuthContext'
 import { roleLabel } from '../auth/roles'
 import { Panel } from '../components/atoms/Panel'
+import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
 import { ListRow } from '../components/molecules/ListRow'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
 import { StudentHomeSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
-import {
-  SHEET_STATUS_LABELS,
-  type SheetStatus,
-  type SprintSheetOverview,
-  type StudentMyGroup,
-} from '../types'
+import { type SprintSheetOverview, type StudentMyGroup } from '../types'
 
 type LoadState =
   | { status: 'loading' }
@@ -28,10 +24,6 @@ type LoadState =
       overview: SprintSheetOverview
     }
   | { status: 'no_group' }
-
-function statusLabel(s: SheetStatus | undefined) {
-  return s ? SHEET_STATUS_LABELS[s] : 'Sin crear'
-}
 
 /**
  * Student home: group + sprint sheets S1…S5 (CT-046).
@@ -123,9 +115,24 @@ export function StudentHomePage() {
                       Abrir →
                     </span>
                   </div>
-                  <p className="mt-1.5 m-0 text-[12px] text-fg-muted">
-                    Inicio: {statusLabel(s.start?.status)} · Fin:{' '}
-                    {statusLabel(s.end?.status)}
+                  <p className="mt-1.5 m-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-fg-muted">
+                    <span className="inline-flex items-center gap-1.5">
+                      Inicio:{' '}
+                      {s.start?.status ? (
+                        <SheetStatusBadge status={s.start.status} />
+                      ) : (
+                        'Sin crear'
+                      )}
+                    </span>
+                    <span aria-hidden>·</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      Fin:{' '}
+                      {s.end?.status ? (
+                        <SheetStatusBadge status={s.end.status} />
+                      ) : (
+                        'Sin crear'
+                      )}
+                    </span>
                   </p>
                 </ListRow>
               ))}

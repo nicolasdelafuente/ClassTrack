@@ -12,6 +12,7 @@ import {
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { IconLink, IconSignal, IconUsers } from '../components/atoms/icons'
 import { Panel } from '../components/atoms/Panel'
+import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { SprintTimeline } from '../components/molecules/SprintTimeline'
@@ -30,7 +31,6 @@ import {
   sprintProgress,
 } from '../lib/sprintMeta'
 import {
-  SHEET_STATUS_LABELS,
   type GroupDetail,
   type GroupLinks,
   type SheetStatus,
@@ -340,14 +340,19 @@ export function GroupDetailPage() {
                   <span className="font-semibold text-fg">
                     S{chip.sprintNumber}
                   </span>
-                  <span className="text-fg-muted">
-                    {' '}
+                  <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1 text-fg-muted">
                     · Inicio:{' '}
-                    {chip.start
-                      ? SHEET_STATUS_LABELS[chip.start]
-                      : '—'}{' '}
+                    {chip.start ? (
+                      <SheetStatusBadge status={chip.start} />
+                    ) : (
+                      '—'
+                    )}
                     · Fin:{' '}
-                    {chip.end ? SHEET_STATUS_LABELS[chip.end] : '—'}
+                    {chip.end ? (
+                      <SheetStatusBadge status={chip.end} />
+                    ) : (
+                      '—'
+                    )}
                   </span>
                 </li>
               ))}

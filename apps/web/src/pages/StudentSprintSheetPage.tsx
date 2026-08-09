@@ -12,6 +12,7 @@ import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
+import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
 import { Text } from '../components/atoms/Text'
 import { StateBox } from '../components/molecules/StateBox'
 import { ListRow } from '../components/molecules/ListRow'
@@ -603,9 +604,9 @@ export function StudentSprintSheetPage() {
                 </div>
               </div>
             ) : (
-              <Text className="text-[13px] text-fg-muted">
-                Estado: {SHEET_STATUS_LABELS[activeSheet.status]}. No se puede
-                editar hasta que el docente pida cambios (o si ya está
+              <Text className="flex flex-wrap items-center gap-1.5 text-[13px] text-fg-muted">
+                Estado: <SheetStatusBadge status={activeSheet.status} />. No se
+                puede editar hasta que el docente pida cambios (o si ya está
                 aprobada).
               </Text>
             )}

@@ -19,7 +19,8 @@ import { PageHero } from '../components/organisms/PageHero'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { ButtonLink } from '../components/atoms/ButtonLink'
-import { SHEET_STATUS_LABELS, type SprintSheet } from '../types'
+import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
+import { type SprintSheet } from '../types'
 
 /**
  * Teacher review of one sprint sheet (CT-046).
@@ -119,7 +120,12 @@ export function TeacherSprintSheetDetailPage() {
         <PageHero
           eyebrow={groupLabel}
           title={`Sprint ${sheet.sprintNumber} · ${sheet.kind === 'start' ? 'Inicio' : 'Fin'}`}
-          description={SHEET_STATUS_LABELS[sheet.status]}
+          description={
+            sheet.kind === 'start'
+              ? 'Ficha de inicio del sprint'
+              : 'Ficha de fin del sprint'
+          }
+          badge={<SheetStatusBadge status={sheet.status} />}
           actions={
             <ButtonLink
               variant="ghost"
@@ -233,9 +239,9 @@ export function TeacherSprintSheetDetailPage() {
             </Button>
           </Panel>
         ) : (
-          <Text className="text-[13px] text-fg-muted">
-            Esta ficha no está en revisión (estado:{' '}
-            {SHEET_STATUS_LABELS[sheet.status]}).
+          <Text className="flex flex-wrap items-center gap-1.5 text-[13px] text-fg-muted">
+            Esta ficha no está en revisión. Estado:{' '}
+            <SheetStatusBadge status={sheet.status} />.
           </Text>
         )}
       </section>
