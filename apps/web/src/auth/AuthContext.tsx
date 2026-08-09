@@ -31,7 +31,12 @@ function readStoredUser(): AuthUser | null {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(() => readStoredUser())
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    const stored = readStoredUser()
+    // Set header before any child effect fires (avoids 401 on /me/*).
+    setApiUserId(stored?.id ?? null)
+    return stored
+  })
 
   useEffect(() => {
     setApiUserId(user?.id ?? null)
