@@ -22,6 +22,7 @@ import { LinksEditor } from '../components/organisms/LinksEditor'
 import { GroupNotesPanel } from '../components/organisms/GroupNotesPanel'
 import { MembersList } from '../components/organisms/MembersList'
 import { GroupDetailPageSkeleton } from '../components/organisms/PageSkeletons'
+import { HeroActions } from '../components/molecules/HeroActions'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
 import {
@@ -255,45 +256,51 @@ export function GroupDetailPage() {
             },
           ]}
           actions={
-            <>
-              <ButtonLink
-                className="min-h-11 px-4 text-[14px]"
-                to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
-              >
-                Tomar asistencia
-              </ButtonLink>
-              <ButtonLink
-                variant="ghost"
-                className="min-h-11"
-                to={`/courses/${group.courseId}/sprint-sheets?status=in_review`}
-              >
-                Fichas de sprint
-              </ButtonLink>
-              {group.links.trelloUrl ? (
+            <HeroActions
+              primary={
                 <ButtonLink
-                  external
-                  variant="ghost"
-                  className="min-h-11"
-                  href={group.links.trelloUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                  className="min-h-11 px-4 text-[14px]"
+                  to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
                 >
-                  Ver Trello
+                  Tomar asistencia
                 </ButtonLink>
-              ) : null}
-              {group.links.githubUrl ? (
-                <ButtonLink
-                  external
-                  variant="ghost"
-                  className="min-h-11"
-                  href={group.links.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ver GitHub
-                </ButtonLink>
-              ) : null}
-            </>
+              }
+              more={
+                <>
+                  <ButtonLink
+                    variant="ghost"
+                    className="min-h-11"
+                    to={`/courses/${group.courseId}/sprint-sheets?status=in_review`}
+                  >
+                    Fichas de sprint
+                  </ButtonLink>
+                  {group.links.trelloUrl ? (
+                    <ButtonLink
+                      external
+                      variant="ghost"
+                      className="min-h-11"
+                      href={group.links.trelloUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Ver Trello
+                    </ButtonLink>
+                  ) : null}
+                  {group.links.githubUrl ? (
+                    <ButtonLink
+                      external
+                      variant="ghost"
+                      className="min-h-11"
+                      href={group.links.githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Ver GitHub
+                    </ButtonLink>
+                  ) : null}
+                </>
+              }
+            />
           }
           footer={
             summary ? (

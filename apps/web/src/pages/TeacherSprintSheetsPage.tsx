@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { fetchCourseSprintSheets, fetchCurrentBoard } from '../api/client'
+import { Label } from '../components/atoms/Label'
 import { Select } from '../components/atoms/Select'
 import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
 import { Text } from '../components/atoms/Text'
