@@ -9,6 +9,7 @@ import {
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
 import { ButtonLink } from '../components/atoms/ButtonLink'
+import { InlineStatus } from '../components/atoms/InlineStatus'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
@@ -102,6 +103,11 @@ export function StudentSprintSheetPage() {
   )
   const [busy, setBusy] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [savePhase, setSavePhase] = useState<
+    'idle' | 'saving' | 'saved' | 'error'
+  >('idle')
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const [savedLabel, setSavedLabel] = useState('Guardado')
 
   const activeSheet = activeKind === 'start' ? start : end
   const canEdit = activeSheet ? editable(activeSheet.status) : false
@@ -170,13 +176,15 @@ export function StudentSprintSheetPage() {
 
   async function handleCreateStart() {
     setBusy(true)
+    setSaveError(null)
     try {
       const res = await createStartSheet(groupId, sprintNumber)
       setStart(res.sheet)
       setActiveKind('start')
       setDraft([])
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo crear')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo crear')
     } finally {
       setBusy(false)
     }
@@ -184,13 +192,15 @@ export function StudentSprintSheetPage() {
 
   async function handleCreateEnd() {
     setBusy(true)
+    setSaveError(null)
     try {
       const res = await createEndSheet(groupId, sprintNumber)
       setEnd(res.sheet)
       setActiveKind('end')
       setDraft(toDraft(res.sheet.tasks))
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo crear')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo crear')
     } finally {
       setBusy(false)
     }
@@ -216,13 +226,17 @@ export function StudentSprintSheetPage() {
   async function handleSave() {
     if (!activeSheet) return
     setBusy(true)
+    setSaveError(null)
     try {
       const res = await saveSheetTasks(activeSheet.id, tasksPayload())
       if (activeKind === 'start') setStart(res.sheet)
       else setEnd(res.sheet)
       setDraft(toDraft(res.sheet.tasks))
+      setSavedLabel('Guardado')
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo guardar')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo guardar')
     } finally {
       setBusy(false)
     }
@@ -231,18 +245,23 @@ export function StudentSprintSheetPage() {
   async function handleSubmit() {
     if (!activeSheet) return
     setBusy(true)
+    setSaveError(null)
     try {
       await saveSheetTasks(activeSheet.id, tasksPayload())
       const sheet = await submitSheet(activeSheet.id)
       if (sheet.kind === 'start') setStart(sheet)
       else setEnd(sheet)
-      window.alert('Enviada a revisión')
+      setSavedLabel('Enviada a revisión')
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo enviar')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo enviar')
     } finally {
       setBusy(false)
     }
   }
+
+  const inlinePhase = busy ? 'saving' : savePhase
 
   if (loading) {
     return (
@@ -585,7 +604,7 @@ export function StudentSprintSheetPage() {
                   Si eliminás una tarea, tocá <strong>Guardar</strong> para
                   confirmar el cambio.
                 </Text>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <Button
                     type="button"
                     variant="ghost"
@@ -601,6 +620,11 @@ export function StudentSprintSheetPage() {
                   >
                     Enviar a revisión
                   </Button>
+                  <InlineStatus
+                    phase={inlinePhase}
+                    savedLabel={savedLabel}
+                    errorMessage={saveError}
+                  />
                 </div>
               </div>
             ) : (

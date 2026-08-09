@@ -11,6 +11,7 @@ import {
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
 import { ButtonLink } from '../components/atoms/ButtonLink'
+import { InlineStatus } from '../components/atoms/InlineStatus'
 import { Panel } from '../components/atoms/Panel'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
@@ -43,6 +44,10 @@ export function GradesPage({ mode }: GradesPageProps) {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [busyKey, setBusyKey] = useState<string | null>(null)
+  const [savePhase, setSavePhase] = useState<
+    'idle' | 'saving' | 'saved' | 'error'
+  >('idle')
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -71,6 +76,7 @@ export function GradesPage({ mode }: GradesPageProps) {
   ) {
     const key = `${studentId}-mark`
     setBusyKey(key)
+    setSaveError(null)
     try {
       let body: {
         score?: number
@@ -118,8 +124,10 @@ export function GradesPage({ mode }: GradesPageProps) {
           })),
         }
       })
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo guardar')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo guardar')
     } finally {
       setBusyKey(null)
     }
@@ -129,6 +137,7 @@ export function GradesPage({ mode }: GradesPageProps) {
     if (mode !== 'preliminary') return
     const key = `${studentId}-comment`
     setBusyKey(key)
+    setSaveError(null)
     try {
       const updated = await putPreliminaryGrade(courseId, studentId, {
         comment: comment.trim() || null,
@@ -153,8 +162,10 @@ export function GradesPage({ mode }: GradesPageProps) {
           })),
         }
       })
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo guardar')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo guardar')
     } finally {
       setBusyKey(null)
     }
@@ -162,6 +173,7 @@ export function GradesPage({ mode }: GradesPageProps) {
 
   async function handleGroupComment(groupId: string, comment: string) {
     setBusyKey(`group-${groupId}`)
+    setSaveError(null)
     try {
       const res = await patchGroupPreliminaryComment(
         groupId,
@@ -181,12 +193,16 @@ export function GradesPage({ mode }: GradesPageProps) {
           ),
         }
       })
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo guardar')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo guardar')
     } finally {
       setBusyKey(null)
     }
   }
+
+  const inlinePhase = busyKey ? 'saving' : savePhase
 
   const title =
     mode === 'preliminary' ? 'Precalificación' : 'Notas finales'
@@ -221,6 +237,8 @@ export function GradesPage({ mode }: GradesPageProps) {
             </>
           }
         />
+
+        <InlineStatus phase={inlinePhase} errorMessage={saveError} />
 
         {loading ? <GradesPageSkeleton /> : null}
         {error ? <StateBox title="Error" message={error} /> : null}

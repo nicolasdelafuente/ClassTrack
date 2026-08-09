@@ -6,6 +6,7 @@ import {
   requestSheetChanges,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
+import { InlineStatus } from '../components/atoms/InlineStatus'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
@@ -33,6 +34,10 @@ export function TeacherSprintSheetDetailPage() {
   const [comment, setComment] = useState('')
   const [busy, setBusy] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [savePhase, setSavePhase] = useState<
+    'idle' | 'saving' | 'saved' | 'error'
+  >('idle')
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -62,11 +67,14 @@ export function TeacherSprintSheetDetailPage() {
   async function handleApprove() {
     if (!sheet) return
     setBusy(true)
+    setSaveError(null)
     try {
       const updated = await approveSheet(sheet.id)
       setSheet(updated)
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(err instanceof Error ? err.message : 'No se pudo aprobar')
+      setSavePhase('error')
+      setSaveError(err instanceof Error ? err.message : 'No se pudo aprobar')
     } finally {
       setBusy(false)
     }
@@ -75,22 +83,28 @@ export function TeacherSprintSheetDetailPage() {
   async function handleRequestChanges() {
     if (!sheet) return
     if (comment.trim().length < 5) {
-      window.alert('Escribí un comentario de al menos 5 caracteres')
+      setSavePhase('error')
+      setSaveError('Escribí un comentario de al menos 5 caracteres')
       return
     }
     setBusy(true)
+    setSaveError(null)
     try {
       const updated = await requestSheetChanges(sheet.id, comment)
       setSheet(updated)
       setComment('')
+      setSavePhase('saved')
     } catch (err) {
-      window.alert(
+      setSavePhase('error')
+      setSaveError(
         err instanceof Error ? err.message : 'No se pudieron pedir cambios',
       )
     } finally {
       setBusy(false)
     }
   }
+
+  const inlinePhase = busy ? 'saving' : savePhase
 
   if (loading) {
     return (
@@ -207,7 +221,7 @@ export function TeacherSprintSheetDetailPage() {
 
         {inReview ? (
           <Panel className="p-4">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 type="button"
                 disabled={busy}
@@ -215,6 +229,7 @@ export function TeacherSprintSheetDetailPage() {
               >
                 Aprobar
               </Button>
+              <InlineStatus phase={inlinePhase} errorMessage={saveError} />
             </div>
             <Label className="mt-4" htmlFor="changes">
               Pedir cambios (comentario)

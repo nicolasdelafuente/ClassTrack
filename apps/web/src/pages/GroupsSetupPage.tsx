@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   createGroupStructure,
   fetchCurrentBoard,
@@ -37,7 +37,6 @@ const DEFAULT_BATCHES: BatchRow[] = [
 
 export function GroupsSetupPage() {
   const { courseId = '' } = useParams()
-  const navigate = useNavigate()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [batches, setBatches] = useState<BatchRow[]>(DEFAULT_BATCHES)
   const [busy, setBusy] = useState(false)
