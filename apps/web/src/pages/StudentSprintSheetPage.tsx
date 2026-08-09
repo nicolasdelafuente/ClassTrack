@@ -305,9 +305,6 @@ export function StudentSprintSheetPage() {
                 Fin
                 {end ? ` · ${SHEET_STATUS_LABELS[end.status]}` : ''}
               </Button>
-              <ButtonLink variant="ghost" className="min-h-11" to="/alumno">
-                Volver al inicio
-              </ButtonLink>
             </>
           }
         />
