@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   fetchCourseSchedule,
   patchSchedulePolicy,
@@ -37,7 +37,6 @@ function formatDate(iso: string) {
 
 export function SchedulePage() {
   const { courseId = '' } = useParams()
-  const navigate = useNavigate()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [busyId, setBusyId] = useState<string | null>(null)
   const [showPolicy, setShowPolicy] = useState(false)

@@ -19,7 +19,6 @@ import { PageHeroSkeleton } from '../components/molecules/PageHeroSkeleton'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
 import { AppShell } from '../components/templates/AppShell'
-import { cn } from '../lib/cn'
 import type { GroupSummary } from '../types'
 
 type LoadState =
