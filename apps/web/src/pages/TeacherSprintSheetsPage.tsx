@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { fetchCourseSprintSheets, fetchCurrentBoard } from '../api/client'
 import { Select } from '../components/atoms/Select'
+import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
 import { Text } from '../components/atoms/Text'
 import { ListRow } from '../components/molecules/ListRow'
 import { StateBox } from '../components/molecules/StateBox'
@@ -137,12 +138,14 @@ export function TeacherSprintSheetsPage() {
                     {item.sprintNumber} ·{' '}
                     {item.kind === 'start' ? 'Inicio' : 'Fin'}
                   </p>
-                  <p className="mt-0.5 m-0 text-[12px] text-fg-muted">
-                    {SHEET_STATUS_LABELS[item.status]} · {item.taskCount}{' '}
-                    tareas
-                    {item.commentCount
-                      ? ` · ${item.commentCount} comentarios`
-                      : ''}
+                  <p className="mt-0.5 m-0 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[12px] text-fg-muted">
+                    <SheetStatusBadge status={item.status} />
+                    <span>
+                      · {item.taskCount} tareas
+                      {item.commentCount
+                        ? ` · ${item.commentCount} comentarios`
+                        : ''}
+                    </span>
                   </p>
                 </div>
                 <span className="text-[13px] font-medium text-accent">
