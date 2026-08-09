@@ -15,7 +15,6 @@ import { Textarea } from '../atoms/Textarea'
 import { Label } from '../atoms/Label'
 import { Select } from '../atoms/Select'
 import { Text } from '../atoms/Text'
-import { cn } from '../../lib/cn'
 import {
   GROUP_NOTE_TITLE_PRESETS,
   type GroupNote,

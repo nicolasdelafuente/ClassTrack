@@ -7,6 +7,7 @@ import {
   type GroupStructureBatch,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
+import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
@@ -326,16 +327,14 @@ export function GroupsSetupPage() {
                   key={g.id}
                   className="flex items-center justify-between gap-2 rounded-md border border-border bg-surface-1 px-3 py-2 text-[13px]"
                 >
-                  <button
-                    type="button"
-                    className="cursor-pointer border-0 bg-transparent p-0 text-left font-medium text-accent"
-                    onClick={() =>
-                      navigate(`/courses/${course.id}/groups/${g.id}`)
-                    }
+                  <ButtonLink
+                    variant="text"
+                    to={`/courses/${course.id}/groups/${g.id}`}
+                    className="text-left text-[13px]"
                   >
                     G{g.number}
                     {g.name ? ` · ${g.name}` : ''}
-                  </button>
+                  </ButtonLink>
                   <span className="tabular-nums text-fg-muted">
                     {g.memberCount}/{g.capacity}
                   </span>
