@@ -385,6 +385,61 @@ export type StudentMyGroup = {
   } | null
 }
 
+/** Own padrón data (CT-074). */
+export type StudentMeProfile = {
+  student: {
+    id: string
+    legajo: string | null
+    fullName: string
+    email: string | null
+  }
+  account: {
+    id: string
+    email: string
+    displayName: string | null
+  }
+  group: {
+    id: string
+    number: number
+    name: string | null
+    courseId: string
+    course: { id: string; name: string; code: string }
+  } | null
+}
+
+/** Sprint windows from cronograma (CT-073). */
+export type SprintCalendar = {
+  course: { id: string; name: string; code: string }
+  today: string
+  currentSprintNumber: number | null
+  sprints: {
+    sprintNumber: number
+    startsOn: string
+    endsOn: string | null
+  }[]
+}
+
+/** Student view of own group (CT-076 / CT-077). */
+export type StudentGroupDetail = {
+  group: {
+    id: string
+    number: number
+    name: string | null
+    projectTopic: string | null
+    capacity: number
+    courseId: string
+    course: { id: string; name: string; code: string }
+  }
+  members: {
+    id: string
+    fullName: string
+    legajo: string | null
+    email: string | null
+    isMe: boolean
+  }[]
+  sprints: GroupSprint[]
+}
+
 export type CourseSprintSheetSummary = {
   id: string
   kind: SheetKind

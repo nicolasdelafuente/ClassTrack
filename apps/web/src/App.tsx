@@ -18,6 +18,7 @@ import { RegisterPage } from './pages/RegisterPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { ScheduleSessionPage } from './pages/ScheduleSessionPage'
 import { StudentHomePage } from './pages/StudentHomePage'
+import { StudentGroupPage } from './pages/StudentGroupPage'
 import { StudentProfilePage } from './pages/StudentProfilePage'
 import { StudentSprintSheetPage } from './pages/StudentSprintSheetPage'
 import { TeacherSprintSheetDetailPage } from './pages/TeacherSprintSheetDetailPage'
@@ -36,6 +37,16 @@ function App() {
               <RequireAuth>
                 <RequireStudent>
                   <StudentHomePage />
+                </RequireStudent>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/alumno/grupos/:groupId"
+            element={
+              <RequireAuth>
+                <RequireStudent>
+                  <StudentGroupPage />
                 </RequireStudent>
               </RequireAuth>
             }

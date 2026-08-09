@@ -190,3 +190,69 @@ export function parseSeedDate(isoDate: string): Date {
   const [y, m, d] = isoDate.split('-').map(Number)
   return new Date(Date.UTC(y, m - 1, d, 12, 0, 0))
 }
+
+function addUtcDays(isoDate: string, deltaDays: number): string {
+  const d = parseSeedDate(isoDate)
+  d.setUTCDate(d.getUTCDate() + deltaDays)
+  const y = d.getUTCFullYear()
+  const m = String(d.getUTCMonth() + 1).padStart(2, '0')
+  const day = String(d.getUTCDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+/**
+ * Shift DesApp cronograma so "today" falls inside a sprint (CT-079).
+ * Default: land ~7 days after the chosen sprint's planning.
+ */
+export function shiftCronogramaSoTodayInSprint(
+  days: CronogramaSeedDay[],
+  options?: {
+    today?: Date
+    sprintNumber?: number
+    daysAfterPlanning?: number
+  },
+): CronogramaSeedDay[] {
+  const sprintNumber = options?.sprintNumber ?? 2
+  const daysAfterPlanning = options?.daysAfterPlanning ?? 7
+  const today = options?.today ?? new Date()
+  const todayKey = [
+    today.getUTCFullYear(),
+    String(today.getUTCMonth() + 1).padStart(2, '0'),
+    String(today.getUTCDate()).padStart(2, '0'),
+  ].join('-')
+
+  const ordinalHints: Record<number, string[]> = {
+    1: ['1er', '1ro', 'primer'],
+    2: ['2do', 'segundo'],
+    3: ['3er', '3ro', 'tercer'],
+    4: ['4to', 'cuarto'],
+    5: ['5to', 'quinto'],
+  }
+  const hints = ordinalHints[sprintNumber] ?? [`${sprintNumber}`]
+
+  let planningDate: string | null = null
+  for (const day of days) {
+    for (const item of day.items) {
+      if (item.activityType !== ClassActivityType.sprint_planning) continue
+      const title = item.title.toLowerCase()
+      if (hints.some((h) => title.includes(h))) {
+        planningDate = day.date
+        break
+      }
+    }
+    if (planningDate) break
+  }
+  if (!planningDate) return days
+
+  const desiredPlanning = addUtcDays(todayKey, -daysAfterPlanning)
+  const origin = parseSeedDate(planningDate).getTime()
+  const target = parseSeedDate(desiredPlanning).getTime()
+  const deltaDays = Math.round((target - origin) / (24 * 60 * 60 * 1000))
+
+  if (deltaDays === 0) return days
+
+  return days.map((day) => ({
+    ...day,
+    date: addUtcDays(day.date, deltaDays),
+  }))
+}

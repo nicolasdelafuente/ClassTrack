@@ -14,6 +14,27 @@ import { MeService } from './me.service';
 export class MeController {
   constructor(private readonly meService: MeService) {}
 
+  @Get('profile')
+  profile(@Headers('x-user-id') userId: string | undefined) {
+    return this.meService.getProfile(requireUserId(userId));
+  }
+
+  @Get('courses/:courseId/sprint-calendar')
+  sprintCalendar(
+    @Headers('x-user-id') userId: string | undefined,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.meService.getSprintCalendar(requireUserId(userId), courseId);
+  }
+
+  @Get('groups/:groupId')
+  myGroupDetail(
+    @Headers('x-user-id') userId: string | undefined,
+    @Param('groupId') groupId: string,
+  ) {
+    return this.meService.getMyGroupDetail(requireUserId(userId), groupId);
+  }
+
   @Get('courses/:courseId/groups')
   listCourseGroups(
     @Headers('x-user-id') userId: string | undefined,

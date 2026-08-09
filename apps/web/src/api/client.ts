@@ -18,6 +18,9 @@ import type {
   SprintSheet,
   SprintSheetOverview,
   StudentMyGroup,
+  StudentMeProfile,
+  SprintCalendar,
+  StudentGroupDetail,
   CourseSprintSheetSummary,
   TaskCategory,
   GroupNote,
@@ -510,7 +513,21 @@ export function leaveGroupAsStudent(groupId: string, reason: string) {
   })
 }
 
-// ── Sprint sheets (CT-046) ─────────────────────────────────
+// ── Sprint sheets (CT-046) + espacio alumno (CT-E09) ───────
+
+export function fetchMeProfile() {
+  return requestJson<StudentMeProfile>('/me/profile')
+}
+
+export function fetchSprintCalendar(courseId: string) {
+  return requestJson<SprintCalendar>(
+    `/me/courses/${courseId}/sprint-calendar`,
+  )
+}
+
+export function fetchStudentGroupDetail(groupId: string) {
+  return requestJson<StudentGroupDetail>(`/me/groups/${groupId}`)
+}
 
 export function fetchMyGroup(courseId?: string) {
   const q = courseId ? `?courseId=${encodeURIComponent(courseId)}` : ''
