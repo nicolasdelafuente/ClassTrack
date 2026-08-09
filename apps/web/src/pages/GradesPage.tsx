@@ -11,6 +11,7 @@ import {
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
 import { ButtonLink } from '../components/atoms/ButtonLink'
+import { Panel } from '../components/atoms/Panel'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Select } from '../components/atoms/Select'
@@ -230,10 +231,7 @@ export function GradesPage({ mode }: GradesPageProps) {
 
         {!loading && !error
           ? roster?.groups.map((group) => (
-          <section
-            key={group.id}
-            className="rounded-lg border border-border bg-surface-1 p-4 shadow-panel"
-          >
+          <Panel as="section" key={group.id} className="p-4">
             <h2 className="m-0 text-[16px] font-semibold text-fg">
               Grupo {group.number}
               {group.name ? ` · ${group.name}` : ''}
@@ -332,7 +330,7 @@ export function GradesPage({ mode }: GradesPageProps) {
                 </li>
               ))}
             </ul>
-          </section>
+          </Panel>
         ))
           : null}
       </section>

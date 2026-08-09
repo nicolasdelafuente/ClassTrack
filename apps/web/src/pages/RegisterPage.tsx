@@ -6,6 +6,7 @@ import { homePathForRole, roleLabel } from '../auth/roles'
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
+import { Panel } from '../components/atoms/Panel'
 import { AuthFormSkeleton } from '../components/organisms/PageSkeletons'
 import type { UserRole } from '../types'
 
@@ -114,7 +115,7 @@ export function RegisterPage() {
       </div>
 
       {invite.status === 'missing' ? (
-        <div className="rounded-lg border border-border bg-surface-1 p-5 text-center shadow-panel">
+        <Panel className="p-5 text-center">
           <p className="m-0 text-[14px] font-medium text-fg">
             Necesitás una invitación
           </p>
@@ -130,13 +131,13 @@ export function RegisterPage() {
           >
             Ir a iniciar sesión
           </Button>
-        </div>
+        </Panel>
       ) : null}
 
       {invite.status === 'loading' ? <AuthFormSkeleton /> : null}
 
       {invite.status === 'error' ? (
-        <div className="rounded-lg border border-border bg-surface-1 p-5 text-center shadow-panel">
+        <Panel className="p-5 text-center">
           <p className="m-0 text-[14px] font-medium text-critical" role="alert">
             {invite.message}
           </p>
@@ -148,14 +149,12 @@ export function RegisterPage() {
           >
             Ir a iniciar sesión
           </Button>
-        </div>
+        </Panel>
       ) : null}
 
       {invite.status === 'ready' ? (
-        <form
-          onSubmit={onSubmit}
-          className="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 shadow-panel"
-        >
+        <Panel className="p-5">
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <div className="rounded-md border border-border bg-surface-2/80 px-3 py-2 text-[13px]">
             <p className="m-0 text-fg-faint">Vas a registrarte como</p>
             <p className="m-0 mt-0.5 font-semibold text-fg">
@@ -204,7 +203,8 @@ export function RegisterPage() {
           <Button type="submit" disabled={submitting} className="mt-1 w-full">
             {submitting ? 'Creando…' : 'Crear cuenta'}
           </Button>
-        </form>
+          </form>
+        </Panel>
       ) : null}
     </div>
   )

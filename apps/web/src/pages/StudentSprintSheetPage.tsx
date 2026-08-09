@@ -10,8 +10,10 @@ import {
 import { Button } from '../components/atoms/Button'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
+import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
 import { StateBox } from '../components/molecules/StateBox'
+import { ListRow } from '../components/molecules/ListRow'
 import {
   RichTextEditor,
   RichTextView,
@@ -296,7 +298,7 @@ export function StudentSprintSheetPage() {
         </div>
 
         {activeKind === 'start' && !start ? (
-          <div className="rounded-lg border border-border bg-surface-1 p-4">
+          <Panel className="p-4">
             <Text>Todavía no hay ficha de inicio.</Text>
             <Button
               className="mt-3"
@@ -306,11 +308,11 @@ export function StudentSprintSheetPage() {
             >
               Crear ficha de inicio
             </Button>
-          </div>
+          </Panel>
         ) : null}
 
         {activeKind === 'end' && start?.status === 'approved' && !end ? (
-          <div className="rounded-lg border border-border bg-surface-1 p-4">
+          <Panel className="p-4">
             <Text>
               La ficha de fin copia las tareas aprobadas del inicio. Después
               marcás hechas / no hechas y podés agregar extras.
@@ -323,34 +325,36 @@ export function StudentSprintSheetPage() {
             >
               Crear ficha de fin
             </Button>
-          </div>
+          </Panel>
         ) : null}
 
         {activeSheet ? (
           <>
             {activeSheet.comments.length > 0 ? (
-              <div className="rounded-lg border border-border bg-surface-1 p-4">
+              <Panel className="p-4">
                 <p className="m-0 text-[13px] font-semibold text-fg">
                   Comentarios del docente
                 </p>
                 <ul className="mt-2 m-0 flex list-none flex-col gap-2 p-0">
                   {activeSheet.comments.map((c) => (
-                    <li
+                    <ListRow
                       key={c.id}
-                      className="rounded-md border border-border bg-surface-2 px-3 py-2 text-[13px]"
+                      as="li"
+                      tone="soft"
+                      className="px-3 py-2 text-[13px]"
                     >
                       <p className="m-0 text-fg">{c.body}</p>
                       <p className="mt-1 m-0 text-[11px] text-fg-faint">
                         {c.author.displayName || c.author.email} ·{' '}
                         {new Date(c.createdAt).toLocaleString()}
                       </p>
-                    </li>
+                    </ListRow>
                   ))}
                 </ul>
-              </div>
+              </Panel>
             ) : null}
 
-            <section className="rounded-xl border border-border bg-surface-1 p-4 shadow-panel">
+            <Panel as="section" className="p-4">
               <h2 className="m-0 text-[17px] font-semibold text-fg">
                 {activeKind === 'start'
                   ? '¿Qué vamos a hacer en este sprint?'
@@ -364,7 +368,7 @@ export function StudentSprintSheetPage() {
 
               {canEdit &&
               (activeKind === 'start' || activeKind === 'end') ? (
-                <div className="mt-4 flex flex-col gap-2 rounded-lg border border-border bg-surface-2 p-3">
+                <Panel tone="soft" className="mt-4 flex flex-col gap-2 p-3">
                   <Label htmlFor="sheet-task-composer">
                     {activeKind === 'end' ? 'Nueva tarea extra' : 'Nueva tarea'}
                   </Label>
@@ -398,7 +402,7 @@ export function StudentSprintSheetPage() {
                     value={composerCategories}
                     onChange={setComposerCategories}
                   />
-                </div>
+                </Panel>
               ) : null}
 
               {draft.length === 0 ? (
@@ -408,9 +412,12 @@ export function StudentSprintSheetPage() {
               ) : (
                 <ul className="mt-4 m-0 flex list-none flex-col gap-2.5 p-0">
                   {draft.map((task) => (
-                    <li
+                    <ListRow
                       key={task.key}
-                      className="rounded-lg border border-border bg-surface-2 p-3 transition-[border-color,box-shadow,transform] duration-200 ease-out motion-safe:hover:-translate-y-px hover:border-border-strong hover:shadow-lift"
+                      as="li"
+                      tone="soft"
+                      interactive
+                      className="p-3"
                     >
                       {canEdit ? (
                         <div className="flex flex-col gap-2">
@@ -570,11 +577,11 @@ export function StudentSprintSheetPage() {
                           ) : null}
                         </div>
                       )}
-                    </li>
+                    </ListRow>
                   ))}
                 </ul>
               )}
-            </section>
+            </Panel>
 
             {canEdit ? (
               <div className="flex flex-col gap-2">

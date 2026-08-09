@@ -7,9 +7,11 @@ import {
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
 import { Label } from '../components/atoms/Label'
+import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
 import { fieldControlClassName } from '../components/atoms/Input'
 import { StateBox } from '../components/molecules/StateBox'
+import { ListRow } from '../components/molecules/ListRow'
 import { RichTextView } from '../components/molecules/RichTextEditor'
 import { TaskCategoryChips } from '../components/molecules/TaskCategoryChips'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
@@ -129,27 +131,26 @@ export function TeacherSprintSheetDetailPage() {
         </header>
 
         {sheet.comments.length > 0 ? (
-          <div className="rounded-lg border border-border bg-surface-1 p-4">
+          <Panel className="p-4">
             <p className="m-0 text-[13px] font-semibold">Comentarios previos</p>
             <ul className="mt-2 m-0 list-none space-y-2 p-0">
               {sheet.comments.map((c) => (
-                <li
+                <ListRow
                   key={c.id}
-                  className="rounded-md border border-border bg-surface-2 px-3 py-2 text-[13px]"
+                  as="li"
+                  tone="soft"
+                  className="px-3 py-2 text-[13px]"
                 >
                   {c.body}
-                </li>
+                </ListRow>
               ))}
             </ul>
-          </div>
+          </Panel>
         ) : null}
 
         <ul className="m-0 flex list-none flex-col gap-2 p-0">
           {sheet.tasks.map((t) => (
-            <li
-              key={t.id}
-              className="rounded-lg border border-border bg-surface-1 px-3.5 py-3"
-            >
+            <ListRow key={t.id} as="li" className="px-3.5 py-3">
               <div className="flex flex-wrap items-center gap-1.5">
                 <TaskCategoryChips value={t.categories ?? []} />
                 {t.isExtra ? (
@@ -193,12 +194,12 @@ export function TeacherSprintSheetDetailPage() {
                   )}
                 </div>
               ) : null}
-            </li>
+            </ListRow>
           ))}
         </ul>
 
         {inReview ? (
-          <div className="rounded-lg border border-border bg-surface-1 p-4">
+          <Panel className="p-4">
             <div className="flex flex-wrap gap-2">
               <Button
                 type="button"
@@ -229,7 +230,7 @@ export function TeacherSprintSheetDetailPage() {
             >
               Pedir cambios
             </Button>
-          </div>
+          </Panel>
         ) : (
           <Text className="text-[13px] text-fg-muted">
             Esta ficha no está en revisión (estado:{' '}

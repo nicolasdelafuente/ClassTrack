@@ -1,4 +1,5 @@
 import { Panel } from '../atoms/Panel'
+import { ListRow } from '../molecules/ListRow'
 import { Skeleton, SkeletonCircle, SkeletonText } from '../atoms/Skeleton'
 import { GroupCardSkeleton } from '../molecules/GroupCardSkeleton'
 import { PageHeroSkeleton } from '../molecules/PageHeroSkeleton'
@@ -238,10 +239,7 @@ export function SprintSheetsListSkeleton({ rows = 5 }: { rows?: number }) {
       aria-label="Cargando fichas"
     >
       {Array.from({ length: rows }, (_, i) => (
-        <li
-          key={i}
-          className="rounded-lg border border-border bg-surface-1 px-3.5 py-3 shadow-panel"
-        >
+        <ListRow key={i} as="li" className="px-3.5 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex-1 space-y-2">
               <Skeleton className="h-4 w-[70%]" />
@@ -249,7 +247,7 @@ export function SprintSheetsListSkeleton({ rows = 5 }: { rows?: number }) {
             </div>
             <Skeleton className="h-3 w-16 shrink-0" />
           </div>
-        </li>
+        </ListRow>
       ))}
     </ul>
   )
@@ -271,15 +269,12 @@ export function GroupsSetupPageSkeleton() {
       </Panel>
       <ul className="m-0 flex list-none flex-col gap-2 p-0">
         {Array.from({ length: 4 }, (_, i) => (
-          <li
-            key={i}
-            className="rounded-lg border border-border bg-surface-1 px-3.5 py-3"
-          >
+          <ListRow key={i} as="li" className="px-3.5 py-3">
             <div className="flex items-center justify-between gap-3">
               <Skeleton className="h-4 w-32" />
               <Skeleton className="h-9 w-20" />
             </div>
-          </li>
+          </ListRow>
         ))}
       </ul>
     </section>
@@ -295,10 +290,7 @@ export function GradesPageSkeleton({ groups = 3 }: { groups?: number }) {
       aria-label="Cargando notas"
     >
       {Array.from({ length: groups }, (_, g) => (
-        <section
-          key={g}
-          className="rounded-lg border border-border bg-surface-1 p-4 shadow-panel"
-        >
+        <Panel key={g} as="section" className="p-4">
           <Skeleton className="mb-3 h-4 w-40" />
           <Skeleton className="mb-3 h-16 w-full" rounded="md" />
           <ul className="m-0 flex list-none flex-col gap-3 p-0">
@@ -312,7 +304,7 @@ export function GradesPageSkeleton({ groups = 3 }: { groups?: number }) {
               </li>
             ))}
           </ul>
-        </section>
+        </Panel>
       ))}
     </div>
   )
@@ -326,21 +318,18 @@ export function StudentHomeSkeleton({ rows = 5 }: { rows?: number }) {
       aria-busy="true"
       aria-label="Cargando inicio alumno"
     >
-      <div className="rounded-lg border border-border bg-surface-1 px-4 py-3 shadow-panel">
+      <Panel className="px-4 py-3">
         <Skeleton className="h-3.5 w-48" />
         <Skeleton className="mt-2 h-3 w-28" />
-      </div>
+      </Panel>
       <ul className="m-0 flex list-none flex-col gap-2 p-0">
         {Array.from({ length: rows }, (_, i) => (
-          <li
-            key={i}
-            className="rounded-lg border border-border bg-surface-1 px-4 py-3"
-          >
+          <ListRow key={i} as="li" className="px-4 py-3">
             <div className="flex items-center justify-between gap-3">
               <Skeleton className="h-4 w-28" />
               <Skeleton className="h-3 w-20" />
             </div>
-          </li>
+          </ListRow>
         ))}
       </ul>
     </div>
@@ -372,8 +361,8 @@ export function GroupNotesListSkeleton({ rows = 3 }: { rows?: number }) {
 /** Auth/register invite validation. */
 export function AuthFormSkeleton() {
   return (
-    <div
-      className="flex flex-col gap-4 rounded-lg border border-border bg-surface-1 p-5 shadow-panel"
+    <Panel
+      className="flex flex-col gap-4 p-5"
       aria-busy="true"
       aria-label="Cargando formulario"
     >
@@ -390,6 +379,6 @@ export function AuthFormSkeleton() {
         <Skeleton className="h-11 w-full" />
       </div>
       <Skeleton className="h-11 w-full" rounded="md" />
-    </div>
+    </Panel>
   )
 }

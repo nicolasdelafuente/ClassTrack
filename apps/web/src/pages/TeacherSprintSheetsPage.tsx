@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams, useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { fetchCourseSprintSheets, fetchCurrentBoard } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
+import { ListRow } from '../components/molecules/ListRow'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
 import { SprintSheetsListSkeleton } from '../components/organisms/PageSkeletons'
@@ -131,9 +132,9 @@ export function TeacherSprintSheetsPage() {
         <ul className="m-0 flex list-none flex-col gap-2 p-0">
           {items.map((item) => (
             <li key={item.id}>
-              <Link
-                className="flex items-center justify-between gap-3 rounded-lg border border-border bg-surface-1 px-3.5 py-3 text-fg no-underline shadow-panel hover:border-border-strong"
+              <ListRow
                 to={`/courses/${resolvedCourseId}/sprint-sheets/${item.id}`}
+                className="flex items-center justify-between gap-3 px-3.5 py-3 text-fg"
               >
                 <div>
                   <p className="m-0 text-[14px] font-semibold">
@@ -153,7 +154,7 @@ export function TeacherSprintSheetsPage() {
                 <span className="text-[13px] font-medium text-accent">
                   Revisar →
                 </span>
-              </Link>
+              </ListRow>
             </li>
           ))}
         </ul>
