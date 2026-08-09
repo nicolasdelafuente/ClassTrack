@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   createEndSheet,
   createStartSheet,
@@ -8,12 +8,14 @@ import {
   submitSheet,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
+import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
 import { StateBox } from '../components/molecules/StateBox'
 import { ListRow } from '../components/molecules/ListRow'
+import { PageHero } from '../components/organisms/PageHero'
 import {
   RichTextEditor,
   RichTextView,
@@ -258,44 +260,37 @@ export function StudentSprintSheetPage() {
   }
 
   return (
-    <AppShell showBack>
+    <AppShell showBack backTo="/alumno" backLabel="← Mi grupo">
       <section className="mx-auto flex max-w-2xl flex-col gap-4 pb-10">
-        <header>
-          <p className="m-0 text-[12px] font-semibold uppercase tracking-wide text-accent">
-            {groupLabel}
-          </p>
-          <h1 className="mt-2 text-[24px] font-semibold text-fg">
-            Sprint {sprintNumber} — fichas
-          </h1>
-          <p className="mt-1 text-[13px] text-fg-muted">
-            <Link
-              to="/alumno"
-              className="text-accent no-underline hover:underline"
-            >
-              ← Volver
-            </Link>
-          </p>
-        </header>
-
-        <div className="flex flex-wrap gap-2">
-          <Button
-            type="button"
-            variant={activeKind === 'start' ? 'toggleOn' : 'toggle'}
-            onClick={() => selectKind('start')}
-          >
-            Inicio
-            {start ? ` · ${SHEET_STATUS_LABELS[start.status]}` : ''}
-          </Button>
-          <Button
-            type="button"
-            variant={activeKind === 'end' ? 'toggleOn' : 'toggle'}
-            onClick={() => selectKind('end')}
-            disabled={!start || start.status !== 'approved'}
-          >
-            Fin
-            {end ? ` · ${SHEET_STATUS_LABELS[end.status]}` : ''}
-          </Button>
-        </div>
+        <PageHero
+          eyebrow={groupLabel}
+          title={`Sprint ${sprintNumber} — fichas`}
+          description="Completá inicio y fin del sprint. Guardá borrador y enviá a revisión cuando esté lista."
+          actions={
+            <>
+              <Button
+                type="button"
+                variant={activeKind === 'start' ? 'toggleOn' : 'toggle'}
+                onClick={() => selectKind('start')}
+              >
+                Inicio
+                {start ? ` · ${SHEET_STATUS_LABELS[start.status]}` : ''}
+              </Button>
+              <Button
+                type="button"
+                variant={activeKind === 'end' ? 'toggleOn' : 'toggle'}
+                onClick={() => selectKind('end')}
+                disabled={!start || start.status !== 'approved'}
+              >
+                Fin
+                {end ? ` · ${SHEET_STATUS_LABELS[end.status]}` : ''}
+              </Button>
+              <ButtonLink variant="ghost" className="min-h-11" to="/alumno">
+                Volver al inicio
+              </ButtonLink>
+            </>
+          }
+        />
 
         {activeKind === 'start' && !start ? (
           <Panel className="p-4">

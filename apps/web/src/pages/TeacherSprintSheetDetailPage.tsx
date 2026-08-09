@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import {
   approveSheet,
   fetchSheetById,
@@ -15,8 +15,10 @@ import { ListRow } from '../components/molecules/ListRow'
 import { RichTextView } from '../components/molecules/RichTextEditor'
 import { TaskCategoryChips } from '../components/molecules/TaskCategoryChips'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
+import { PageHero } from '../components/organisms/PageHero'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
+import { ButtonLink } from '../components/atoms/ButtonLink'
 import { cn } from '../lib/cn'
 import { SHEET_STATUS_LABELS, type SprintSheet } from '../types'
 
@@ -109,26 +111,26 @@ export function TeacherSprintSheetDetailPage() {
   const inReview = sheet.status === 'in_review'
 
   return (
-    <AppShell showBack>
+    <AppShell
+      showBack
+      backTo={`/courses/${courseId}/sprint-sheets`}
+      backLabel="← Cola de fichas"
+    >
       <section className="mx-auto flex max-w-2xl flex-col gap-4 pb-10">
-        <header>
-          <p className="m-0 text-[12px] font-semibold uppercase tracking-wide text-accent">
-            {groupLabel}
-          </p>
-          <h1 className="mt-2 text-[24px] font-semibold text-fg">
-            Sprint {sheet.sprintNumber} ·{' '}
-            {sheet.kind === 'start' ? 'Inicio' : 'Fin'}
-          </h1>
-          <p className="mt-1 m-0 text-[13px] text-fg-muted">
-            {SHEET_STATUS_LABELS[sheet.status]} ·{' '}
-            <Link
+        <PageHero
+          eyebrow={groupLabel}
+          title={`Sprint ${sheet.sprintNumber} · ${sheet.kind === 'start' ? 'Inicio' : 'Fin'}`}
+          description={SHEET_STATUS_LABELS[sheet.status]}
+          actions={
+            <ButtonLink
+              variant="ghost"
+              className="min-h-11"
               to={`/courses/${courseId}/sprint-sheets`}
-              className="text-accent no-underline hover:underline"
             >
               Volver a la cola
-            </Link>
-          </p>
-        </header>
+            </ButtonLink>
+          }
+        />
 
         {sheet.comments.length > 0 ? (
           <Panel className="p-4">
