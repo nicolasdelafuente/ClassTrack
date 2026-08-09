@@ -77,6 +77,18 @@ Misma UX que [D]; solo cambia el conjunto de alumnos.
 
 ---
 
+## Espacio alumno — Inicio / Mi grupo / Fichas (CT-E09)
+
+Regla de **sprint actual**: [sprint-actual-cronograma.md](../01-producto/sprint-actual-cronograma.md).
+
+**Inicio (`/alumno`):** saludo, datos del padrón (legajo, nombre, mail), bloque “Estás en Sprint N” con fechas, atajos a Mi grupo y fichas del sprint actual, listado de fichas S1…S5.
+
+**Mi grupo:** identidad del grupo, integrantes (compañeros), semáforo de evaluación (solo lectura).
+
+**Ficha de sprint:** inicio/fin (flujos ya existentes); acceso preferente desde el sprint actual del home.
+
+---
+
 ## Flujos resumen
 
 ### Flujo 1 — Panorama de cursada
@@ -87,6 +99,9 @@ Misma UX que [D]; solo cambia el conjunto de alumnos.
 
 ### Flujo 3 — Asistencia en el aula
 `[A] o [B] → [D]` **o** `[C] → [E]` → marcar presentes / participación
+
+### Flujo 4 — Alumno: sprint actual y fichas
+Login alumno → Inicio (sprint por cronograma + datos) → Mi grupo / Ficha inicio o fin
 
 ---
 
