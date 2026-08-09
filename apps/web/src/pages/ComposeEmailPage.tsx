@@ -9,6 +9,7 @@ import {
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
 import { ButtonLink } from '../components/atoms/ButtonLink'
+import { Textarea } from '../components/atoms/Textarea'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
@@ -295,14 +296,13 @@ export function ComposeEmailPage() {
 
             <div>
               <Label htmlFor="mail-body">Mensaje</Label>
-              <textarea
+              <Textarea
                 id="mail-body"
                 required
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
                 rows={10}
                 placeholder="Escribí el mensaje. Los saltos de línea se respetan en el mail."
-                className="w-full min-w-0 rounded-md border border-border-strong bg-surface-1 px-2.5 py-2 text-[13px] text-fg shadow-panel outline-none transition-[border-color,box-shadow] duration-200 placeholder:text-fg-faint hover:border-accent/40 focus:border-accent focus:shadow-[0_0_0_3px_var(--color-accent-soft)]"
               />
             </div>
 

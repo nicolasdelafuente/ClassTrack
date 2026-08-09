@@ -9,7 +9,7 @@ import { Button } from '../components/atoms/Button'
 import { Label } from '../components/atoms/Label'
 import { Panel } from '../components/atoms/Panel'
 import { Text } from '../components/atoms/Text'
-import { fieldControlClassName } from '../components/atoms/Input'
+import { Textarea } from '../components/atoms/Textarea'
 import { StateBox } from '../components/molecules/StateBox'
 import { ListRow } from '../components/molecules/ListRow'
 import { RichTextView } from '../components/molecules/RichTextEditor'
@@ -19,7 +19,6 @@ import { PageHero } from '../components/organisms/PageHero'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { ButtonLink } from '../components/atoms/ButtonLink'
-import { cn } from '../lib/cn'
 import { SHEET_STATUS_LABELS, type SprintSheet } from '../types'
 
 /**
@@ -214,12 +213,12 @@ export function TeacherSprintSheetDetailPage() {
             <Label className="mt-4" htmlFor="changes">
               Pedir cambios (comentario)
             </Label>
-            <textarea
+            <Textarea
               id="changes"
               rows={3}
               value={comment}
               disabled={busy}
-              className={cn(fieldControlClassName, 'min-h-[4rem]')}
+              className="min-h-[4rem]"
               onChange={(e) => setComment(e.target.value)}
               placeholder="Qué tienen que mejorar…"
             />

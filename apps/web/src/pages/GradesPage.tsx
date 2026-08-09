@@ -15,12 +15,11 @@ import { Panel } from '../components/atoms/Panel'
 import { Input } from '../components/atoms/Input'
 import { Label } from '../components/atoms/Label'
 import { Select } from '../components/atoms/Select'
-import { fieldControlClassName } from '../components/atoms/Input'
+import { Textarea } from '../components/atoms/Textarea'
 import { StateBox } from '../components/molecules/StateBox'
 import { PageHero } from '../components/organisms/PageHero'
 import { GradesPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
-import { cn } from '../lib/cn'
 
 type Mode = 'preliminary' | 'final'
 
@@ -239,12 +238,11 @@ export function GradesPage({ mode }: GradesPageProps) {
                 <Label htmlFor={`gcomment-${group.id}`}>
                   Comentario del grupo (opcional)
                 </Label>
-                <textarea
+                <Textarea
                   id={`gcomment-${group.id}`}
                   rows={2}
                   defaultValue={group.preliminaryGroupComment ?? ''}
                   key={`${group.id}-${group.preliminaryGroupComment ?? ''}`}
-                  className={cn(fieldControlClassName, 'min-h-[3rem]')}
                   disabled={busyKey === `group-${group.id}`}
                   onBlur={(e) => {
                     const next = e.target.value

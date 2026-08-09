@@ -10,7 +10,8 @@ import {
 } from '../../api/client'
 import { Button } from '../atoms/Button'
 import { IconNote } from '../atoms/icons'
-import { Input, fieldControlClassName } from '../atoms/Input'
+import { Input } from '../atoms/Input'
+import { Textarea } from '../atoms/Textarea'
 import { Label } from '../atoms/Label'
 import { Select } from '../atoms/Select'
 import { Text } from '../atoms/Text'
@@ -275,14 +276,14 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
         </div>
         <div>
           <Label htmlFor="note-body">Nota</Label>
-          <textarea
+          <Textarea
             id="note-body"
             rows={3}
             value={body}
             disabled={disabled || busy}
             maxLength={5000}
             placeholder="Qué pasó en el seguimiento, acuerdos, pendientes…"
-            className={cn(fieldControlClassName, 'min-h-[5.5rem] resize-y')}
+            className="min-h-[5.5rem]"
             onChange={(e) => setBody(e.target.value)}
           />
         </div>
@@ -342,13 +343,13 @@ export function GroupNotesPanel({ groupId, disabled }: GroupNotesPanelProps) {
                     aria-label="Editar título"
                     onChange={(e) => setEditTitle(e.target.value)}
                   />
-                  <textarea
+                  <Textarea
                     rows={3}
                     value={editBody}
                     disabled={busy}
                     maxLength={5000}
                     aria-label="Editar nota"
-                    className={cn(fieldControlClassName, 'min-h-[5rem] resize-y')}
+                    className="min-h-[5rem]"
                     onChange={(e) => setEditBody(e.target.value)}
                   />
                   {formError ? (
