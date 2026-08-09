@@ -70,48 +70,56 @@ export function TeacherSprintSheetsPage() {
           description="Cola de fichas de inicio y fin enviadas por los grupos."
         />
 
-        <div className="flex flex-wrap gap-3">
-          <Select
-            value={statusFilter}
-            onChange={(e) => {
-              const next = new URLSearchParams(searchParams)
-              if (e.target.value) next.set('status', e.target.value)
-              else next.delete('status')
-              setSearchParams(next)
-            }}
-            className="max-w-[14rem]"
-          >
-            <option value="">Todos los estados</option>
-            {(
-              [
-                'in_review',
-                'needs_changes',
-                'draft',
-                'approved',
-              ] as SheetStatus[]
-            ).map((s) => (
-              <option key={s} value={s}>
-                {SHEET_STATUS_LABELS[s]}
-              </option>
-            ))}
-          </Select>
-          <Select
-            value={sprintFilter}
-            onChange={(e) => {
-              const next = new URLSearchParams(searchParams)
-              if (e.target.value) next.set('sprint', e.target.value)
-              else next.delete('sprint')
-              setSearchParams(next)
-            }}
-            className="max-w-[10rem]"
-          >
-            <option value="">Todos los sprints</option>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <option key={n} value={String(n)}>
-                Sprint {n}
-              </option>
-            ))}
-          </Select>
+        <div className="flex flex-wrap items-end gap-3">
+          <div>
+            <Label htmlFor="sheets-status-filter">Estado</Label>
+            <Select
+              id="sheets-status-filter"
+              value={statusFilter}
+              onChange={(e) => {
+                const next = new URLSearchParams(searchParams)
+                if (e.target.value) next.set('status', e.target.value)
+                else next.delete('status')
+                setSearchParams(next)
+              }}
+              className="mt-1 max-w-[14rem]"
+            >
+              <option value="">Todos los estados</option>
+              {(
+                [
+                  'in_review',
+                  'needs_changes',
+                  'draft',
+                  'approved',
+                ] as SheetStatus[]
+              ).map((s) => (
+                <option key={s} value={s}>
+                  {SHEET_STATUS_LABELS[s]}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="sheets-sprint-filter">Sprint</Label>
+            <Select
+              id="sheets-sprint-filter"
+              value={sprintFilter}
+              onChange={(e) => {
+                const next = new URLSearchParams(searchParams)
+                if (e.target.value) next.set('sprint', e.target.value)
+                else next.delete('sprint')
+                setSearchParams(next)
+              }}
+              className="mt-1 max-w-[10rem]"
+            >
+              <option value="">Todos los sprints</option>
+              {[1, 2, 3, 4, 5].map((n) => (
+                <option key={n} value={String(n)}>
+                  Sprint {n}
+                </option>
+              ))}
+            </Select>
+          </div>
         </div>
 
         {loading ? <SprintSheetsListSkeleton /> : null}
