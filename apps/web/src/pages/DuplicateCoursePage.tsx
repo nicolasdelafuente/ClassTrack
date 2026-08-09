@@ -144,7 +144,7 @@ export function DuplicateCoursePage() {
 
   if (state.status === 'loading') {
     return (
-      <AppShell showBack>
+      <AppShell>
         <div className="flex flex-col gap-4" aria-busy aria-label="Cargando">
           <PageHeroSkeleton compact stats={0} showActions={false} />
           <Panel tone="default" className="space-y-3 p-4 sm:p-5">
@@ -159,7 +159,7 @@ export function DuplicateCoursePage() {
 
   if (state.status === 'error') {
     return (
-      <AppShell showBack>
+      <AppShell>
         <StateBox title="No se puede duplicar" message={state.message} />
       </AppShell>
     )
@@ -170,7 +170,6 @@ export function DuplicateCoursePage() {
 
   return (
     <AppShell
-      showBack
       courseName={schedule.course.name}
       courseCode={schedule.course.code}
     >

@@ -162,7 +162,7 @@ export function SchedulePage() {
 
   if (state.status === 'loading') {
     return (
-      <AppShell showBack>
+      <AppShell>
         <SchedulePageSkeleton />
       </AppShell>
     )
@@ -170,7 +170,7 @@ export function SchedulePage() {
 
   if (state.status === 'error') {
     return (
-      <AppShell showBack>
+      <AppShell>
         <StateBox title="No se pudo abrir el cronograma" message={state.message} />
       </AppShell>
     )
@@ -180,7 +180,6 @@ export function SchedulePage() {
 
   return (
     <AppShell
-      showBack
       courseName={schedule.course.name}
       courseCode={schedule.course.code}
     >

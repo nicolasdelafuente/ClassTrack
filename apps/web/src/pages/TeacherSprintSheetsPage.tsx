@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { fetchCourseSprintSheets, fetchCurrentBoard } from '../api/client'
-import { ButtonLink } from '../components/atoms/ButtonLink'
 import { Select } from '../components/atoms/Select'
 import { Text } from '../components/atoms/Text'
 import { ListRow } from '../components/molecules/ListRow'
@@ -62,17 +61,12 @@ export function TeacherSprintSheetsPage() {
   }, [courseId, statusFilter, sprintFilter])
 
   return (
-    <AppShell showBack courseName={courseName}>
+    <AppShell courseName={courseName}>
       <section className="mx-auto flex max-w-3xl flex-col gap-4">
         <PageHero
           eyebrow="Revisión"
           title="Fichas de sprint"
           description="Cola de fichas de inicio y fin enviadas por los grupos."
-          actions={
-            <ButtonLink variant="ghost" className="min-h-11" to="/">
-              Tablero
-            </ButtonLink>
-          }
         />
 
         <div className="flex flex-wrap gap-3">

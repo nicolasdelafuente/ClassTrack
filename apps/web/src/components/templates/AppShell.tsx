@@ -14,6 +14,10 @@ type AppShellProps = {
   courseName?: string
   courseCode?: string
   children: ReactNode
+  /**
+   * Contextual back only (child → parent), e.g. session → schedule, sheet → queue.
+   * Do not use on sidebar top-level modules (CT-061).
+   */
   showBack?: boolean
   /** Destination for the back link (default: board `/`). */
   backTo?: string

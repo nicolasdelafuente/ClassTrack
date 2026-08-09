@@ -218,9 +218,6 @@ export function GroupsSetupPage() {
               >
                 {enrollmentOpen ? 'Cerrar inscripción' : 'Abrir inscripción'}
               </Button>
-              <ButtonLink variant="ghost" className="min-h-11" to="/">
-                Volver al tablero
-              </ButtonLink>
             </>
           }
         />
