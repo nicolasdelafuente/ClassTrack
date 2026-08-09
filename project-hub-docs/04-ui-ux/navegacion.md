@@ -63,7 +63,9 @@ Solo cuando hay jerarquía hijo → padre:
 
 ## Espacio alumno
 
-- Sin sidebar de cursada: home de fichas + detalle de sprint.
+- Sin sidebar de cursada: **home** (sprint actual + mis datos + atajos) → **Mi grupo** → fichas / recursos.
+- Sprint actual = fechas planning→review del cronograma ([regla](../01-producto/sprint-actual-cronograma.md)); el semáforo es otra señal (evaluación).
+- Rutas: `/alumno` → `/alumno/grupos/:groupId` → `/alumno/grupos/:groupId/sprints/:sprintNumber`.
 - Back contextual a “Mi grupo” / inicio alumno.
 - Salir solo en el chrome (`AppShell`), no duplicado en el body.
 

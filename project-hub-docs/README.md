@@ -12,13 +12,16 @@ Fuente de verdad actualizada: **[06-roadmap/etapas.md](./06-roadmap/etapas.md)**
 | **MVP clásico (CT-E04)** | **Cerrada** | Tablero + detalle + asistencia + cronograma/faltas |
 | Cronograma (CT-E05) | Hecha | Clases, obligatoriedad, libre |
 | Post-MVP / cursada real (CT-E06) | **Cerrada** | Alumno, fichas, notas, seguimiento + fotos |
-| **Mejoras continuas (CT-E07)** | **Activa** | Features e mejoras que vayan surgiendo |
+| Mejoras continuas (CT-E07) | Activa (chicas) | Features e mejoras sueltas |
+| **Espacio alumno (CT-E09)** | **Activa** | Perfil, sprint actual (cronograma), grupo y fichas |
 
 ## Producto
 
 - [01-producto/vision.md](./01-producto/vision.md)
 - [01-producto/problema.md](./01-producto/problema.md)
 - [01-producto/usuarios.md](./01-producto/usuarios.md)
+- [01-producto/workspace-alumno-grupo.md](./01-producto/workspace-alumno-grupo.md)
+- [01-producto/sprint-actual-cronograma.md](./01-producto/sprint-actual-cronograma.md)
 - [06-roadmap/mvp.md](./06-roadmap/mvp.md)
 - [06-roadmap/etapas.md](./06-roadmap/etapas.md)
 
