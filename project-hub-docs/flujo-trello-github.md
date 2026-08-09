@@ -19,7 +19,7 @@ https://trello.com/b/jizP2m9a/classtrack-desapp
 
 ### Etapa activa
 
-Ver [06-roadmap/etapas.md](./06-roadmap/etapas.md). Hoy: **CT-E09 Espacio alumno** (+ CT-E07 para mejoras chicas). No reabrir CT-E04 / CT-E06 / CT-E08.
+Ver [06-roadmap/etapas.md](./06-roadmap/etapas.md). Hoy: **CT-E07 Mejoras continuas**. CT-E09 (espacio alumno) está **hecha**. No reabrir CT-E04 / CT-E06 / CT-E08.
 
 ### Regla Hecho ⇔ main
 
