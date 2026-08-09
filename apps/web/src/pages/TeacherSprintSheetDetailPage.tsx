@@ -140,15 +140,6 @@ export function TeacherSprintSheetDetailPage() {
               : 'Ficha de fin del sprint'
           }
           badge={<SheetStatusBadge status={sheet.status} />}
-          actions={
-            <ButtonLink
-              variant="ghost"
-              className="min-h-11"
-              to={`/courses/${courseId}/sprint-sheets`}
-            >
-              Volver a la cola
-            </ButtonLink>
-          }
         />
 
         {sheet.comments.length > 0 ? (
