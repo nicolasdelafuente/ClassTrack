@@ -1,21 +1,171 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
+import {
+  buildSprintWindows,
+  toSprintCalendarDto,
+} from '../courses/sprint-windows';
 import { PrismaService } from '../prisma/prisma.service';
 
 const MIN_LEAVE_REASON = 5;
 
 /**
- * Student self-service for group enrollment (CT-045).
+ * Student self-service: enrollment (CT-045) + profile / sprint calendar (CT-E09).
  * Identity comes from X-User-Id (MVP; same as client-side auth).
  */
 @Injectable()
 export class MeService {
   constructor(private readonly prisma: PrismaService) {}
+
+  /** Own roster fields from the Excel/padrón (CT-074). */
+  async getProfile(userId: string) {
+    const { user, studentId } = await this.requireStudentUser(userId);
+    const student = await this.prisma.student.findUnique({
+      where: { id: studentId },
+    });
+    if (!student) {
+      throw new NotFoundException('Alumno no encontrado');
+    }
+
+    const membership = await this.prisma.membership.findFirst({
+      where: { studentId },
+      include: {
+        group: {
+          select: {
+            id: true,
+            number: true,
+            name: true,
+            courseId: true,
+            course: { select: { id: true, name: true, code: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    return {
+      student: {
+        id: student.id,
+        legajo: student.legajo,
+        fullName: student.fullName,
+        email: student.email,
+      },
+      account: {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName,
+      },
+      group: membership
+        ? {
+            id: membership.group.id,
+            number: membership.group.number,
+            name: membership.group.name,
+            courseId: membership.group.courseId,
+            course: membership.group.course,
+          }
+        : null,
+    };
+  }
+
+  /** Sprint windows from cronograma (CT-073). */
+  async getSprintCalendar(userId: string, courseId: string) {
+    await this.requireStudentUser(userId);
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const sessions = await this.prisma.classSession.findMany({
+      where: { courseId },
+      orderBy: { date: 'asc' },
+      include: {
+        items: {
+          select: { activityType: true, title: true },
+          orderBy: { sortOrder: 'asc' },
+        },
+      },
+    });
+
+    const windows = buildSprintWindows(
+      sessions.map((s) => ({
+        date: s.date,
+        items: s.items.map((i) => ({
+          activityType: i.activityType,
+          title: i.title,
+        })),
+      })),
+    );
+
+    return {
+      course: { id: course.id, name: course.name, code: course.code },
+      ...toSprintCalendarDto(windows),
+    };
+  }
+
+  /** Group roster + teacher sprint evals (read-only) — CT-076 / CT-077. */
+  async getMyGroupDetail(userId: string, groupId: string) {
+    const { studentId } = await this.requireStudentUser(userId);
+    const membership = await this.prisma.membership.findUnique({
+      where: { groupId_studentId: { groupId, studentId } },
+    });
+    if (!membership) {
+      throw new ForbiddenException('No sos integrante de este grupo');
+    }
+
+    const group = await this.prisma.group.findUnique({
+      where: { id: groupId },
+      include: {
+        course: { select: { id: true, name: true, code: true } },
+        memberships: {
+          include: {
+            student: {
+              select: {
+                id: true,
+                fullName: true,
+                legajo: true,
+                email: true,
+              },
+            },
+          },
+          orderBy: { createdAt: 'asc' },
+        },
+        sprintStatuses: { orderBy: { sprintNumber: 'asc' } },
+      },
+    });
+    if (!group) {
+      throw new NotFoundException('Grupo no encontrado');
+    }
+
+    return {
+      group: {
+        id: group.id,
+        number: group.number,
+        name: group.name,
+        projectTopic: group.projectTopic,
+        capacity: group.capacity,
+        courseId: group.courseId,
+        course: group.course,
+      },
+      members: group.memberships.map((m) => ({
+        id: m.student.id,
+        fullName: m.student.fullName,
+        legajo: m.student.legajo,
+        email: m.student.email,
+        isMe: m.studentId === studentId,
+      })),
+      sprints: group.sprintStatuses.map((s) => ({
+        sprintNumber: s.sprintNumber,
+        status: s.status,
+      })),
+    };
+  }
 
   async listCourseGroups(userId: string, courseId: string) {
     const { studentId } = await this.requireStudentUser(userId);

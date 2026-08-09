@@ -10,6 +10,7 @@ import { deriveSessionFromItems } from '../src/schedule/mandatory-rules';
 import {
   CRONOGRAMA_DESAPP_2026,
   parseSeedDate,
+  shiftCronogramaSoTodayInSprint,
 } from './cronograma-desapp-2026';
 import {
   DEMO_S1_END_OUTCOMES,
@@ -376,8 +377,12 @@ async function main() {
     }
   }
 
-  // Cronograma DesApp 2026 (CT-025) — flags via domain rules (CT-026)
-  for (const day of CRONOGRAMA_DESAPP_2026) {
+  // Cronograma DesApp — fechas corridas para que “hoy” caiga en un sprint (CT-079)
+  const cronograma = shiftCronogramaSoTodayInSprint(CRONOGRAMA_DESAPP_2026, {
+    sprintNumber: 2,
+    daysAfterPlanning: 7,
+  });
+  for (const day of cronograma) {
     const derived = deriveSessionFromItems(day.items);
     await prisma.classSession.create({
       data: {

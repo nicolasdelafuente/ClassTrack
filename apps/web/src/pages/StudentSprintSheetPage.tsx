@@ -279,7 +279,11 @@ export function StudentSprintSheetPage() {
   }
 
   return (
-    <AppShell showBack backTo="/alumno" backLabel="← Mi grupo">
+    <AppShell
+      showBack
+      backTo={groupId ? `/alumno/grupos/${groupId}` : '/alumno'}
+      backLabel="← Mi grupo"
+    >
       <section className="mx-auto flex max-w-2xl flex-col gap-4 pb-10">
         <PageHero
           eyebrow={groupLabel}

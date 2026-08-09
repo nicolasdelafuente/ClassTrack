@@ -48,4 +48,12 @@ Se leen los ítems del cronograma en orden de fecha. El número N sale del títu
 
 ## API (implementación)
 
-Ver tickets CT-073+ : ventanas `startsOn` / `endsOn` + `currentSprintNumber` para la cursada del alumno.
+- `GET /me/courses/:courseId/sprint-calendar` — ventanas `startsOn` / `endsOn` + `currentSprintNumber` (CT-073).
+- Seed demo: `shiftCronogramaSoTodayInSprint` corre el cronograma para que “hoy” caiga ~7 días después del planning del Sprint 2 (CT-079). Tras `pnpm prisma db seed`, el home alumno debería mostrar un sprint actual.
+
+## Cómo probar en local
+
+1. `pnpm --filter api prisma db seed` (o el script de seed del monorepo).
+2. Login como alumno demo.
+3. En `/alumno` debería verse “Estás en Sprint 2” (u otro N si cambiás opciones del shift) con fechas.
+4. Si necesitás el calendario oficial 2026 sin shift, usá `CRONOGRAMA_DESAPP_2026` sin `shiftCronogramaSoTodayInSprint` en el seed.
