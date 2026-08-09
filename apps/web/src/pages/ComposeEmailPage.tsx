@@ -218,24 +218,20 @@ export function ComposeEmailPage() {
                 {AUDIENCE_OPTIONS.map((option) => {
                   const selected = audience === option.value
                   return (
-                    <button
+                    <Button
                       key={option.value}
                       type="button"
+                      variant={selected ? 'toggleOn' : 'toggle'}
                       onClick={() => setAudience(option.value)}
-                      className={cn(
-                        'rounded-md border px-3 py-3 text-left transition-[border-color,background-color] duration-200',
-                        selected
-                          ? 'border-accent bg-accent-soft'
-                          : 'border-border bg-surface hover:border-border-strong',
-                      )}
+                      className="h-auto min-h-0 flex-col items-start gap-1 px-3 py-3 text-left shadow-none"
                     >
                       <span className="block text-[13px] font-semibold text-fg">
                         {option.label}
                       </span>
-                      <span className="mt-1 block text-[11px] text-fg-muted">
+                      <span className="block text-[11px] font-normal text-fg-muted">
                         {option.blurb}
                       </span>
-                    </button>
+                    </Button>
                   )
                 })}
               </div>

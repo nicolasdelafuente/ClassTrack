@@ -207,13 +207,14 @@ export function SchedulePage() {
               >
                 Tomar asistencia
               </ButtonLink>
-              <button
+              <Button
                 type="button"
-                className="min-h-10 cursor-pointer px-1 text-[13px] font-medium text-fg-faint transition-colors hover:text-fg"
+                variant="ghost"
+                className="min-h-10"
                 onClick={() => setShowPolicy((v) => !v)}
               >
                 {showPolicy ? 'Ocultar parametría' : 'Parametría'}
-              </button>
+              </Button>
             </>
           }
         />
@@ -307,15 +308,13 @@ export function SchedulePage() {
             >
               Clases
             </SectionTitle>
-            <Button
+            <ButtonLink
               variant="ghost"
               className="min-h-9 text-[12px]"
-              onClick={() =>
-                navigate(`/courses/${courseId}/schedule/sessions/new`)
-              }
+              to={`/courses/${courseId}/schedule/sessions/new`}
             >
               Nueva clase
-            </Button>
+            </ButtonLink>
           </div>
           <ul className="m-0 list-none p-0">
             {schedule.sessions.map((session) => {
