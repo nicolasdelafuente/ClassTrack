@@ -13,7 +13,7 @@ Fuente de verdad actualizada: **[06-roadmap/etapas.md](./06-roadmap/etapas.md)**
 | Cronograma (CT-E05) | Hecha | Clases, obligatoriedad, libre |
 | Post-MVP / cursada real (CT-E06) | **Cerrada** | Alumno, fichas, notas, seguimiento + fotos |
 | Mejoras continuas (CT-E07) | Activa (chicas) | Features e mejoras sueltas |
-| **Espacio alumno (CT-E09)** | **Activa** | Perfil, sprint actual (cronograma), grupo y fichas |
+| **Espacio alumno (CT-E09)** | **Hecha** | Perfil, sprint actual (cronograma), grupo y fichas |
 
 ## Producto
 

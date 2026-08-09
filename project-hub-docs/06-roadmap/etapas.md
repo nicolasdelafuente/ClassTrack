@@ -10,44 +10,40 @@ Cómo organizamos el desarrollo (visión senior / alumno).
 | **MVP clásico** | **CT-E04** | **Cerrada** | Tablero + detalle grupo + asistencia (+ cronograma/faltas) |
 | **Cronograma** | CT-E05 | Hecho | Clases, obligatoriedad, libre |
 | **Post-MVP / cursada real** | **CT-E06** | **Cerrada** | Alumno, fichas, notas, seguimiento + fotos |
-| **Mejoras continuas** | **CT-E07** | Activa (mejoras chicas) | Features e mejoras que vayan surgiendo |
-| **Espacio alumno** | **CT-E09** | **Activa** | Perfil, sprint actual (cronograma), grupo y fichas |
+| **Mejoras continuas** | **CT-E07** | **Activa** | Features e mejoras que vayan surgiendo |
+| **Espacio alumno** | **CT-E09** | **Hecha** | Perfil, sprint actual (cronograma), grupo y fichas |
 
 ## Producto usable (hito cerrado)
 
 El flujo de **cursada real** ya está en `main` y se considera **finalizado para uso**:
 
 - Docente: tablero, grupos, asistencia, cronograma, fichas, notas, seguimiento con fotos  
-- Alumno: grupo, fichas de sprint  
+- Alumno: home (sprint actual + datos), Mi grupo, fichas de sprint  
 - Auth, invites, mails, tutor, formación de grupos  
 
 **Docker (CT-014)** queda en **Backlog**: es infra, **otro momento**. No bloquea el producto.
 
-## Modo actual — CT-E09 Espacio alumno (+ CT-E07 mejoras chicas)
+## Modo actual — CT-E07 Mejoras continuas
 
-**Épica de producto activa:** [CT-E09](https://trello.com/c/j8OQSn38) — perfil del alumno, sprint actual por cronograma, Mi grupo y fichas.
+[CT-E09](https://trello.com/c/j8OQSn38) quedó **completa** (PRs #71 / #72). El trabajo vuelve a ser **incremental** bajo CT-E07:
 
-Las mejoras sueltas (no de este bloque) siguen yendo a **CT-E07**.
-
-Flujo:
-
-1. Tomar un ticket del checklist de CT-E09 (o crear uno con `**Épica:** CT-E09`)  
-2. Branch → PR → merge a `main` → card a **Hecho** + marcar ítem en el checklist  
-3. Si el checklist de la épica queda 100% → mover CT-E09 a **Hecho**
+1. Aparece una idea / dolor / mejora  
+2. Card con `**Épica:** CT-E07`  
+3. Branch → PR → merge a `main` → card a **Hecho**  
 
 ## Reglas de trabajo
 
-1. **Épica de producto activa:** CT-E09. Mejoras chicas: CT-E07.  
-2. **Toda card nueva** lleva `**Épica:** CT-E09` o `CT-E07` según el tema (salvo infra explícita).  
+1. **Épica activa:** CT-E07 (mejoras chicas). No reabrir E04/E06/E08/E09.  
+2. **Toda card nueva** lleva `**Épica:** CT-E07` (salvo infra explícita o nueva épica grande).  
 3. **Hecho en Trello ⇒ mergeado en `main`**.  
 4. **Backlog** = ideas sin compromiso (incluye Docker).  
-5. No reabrir E04/E06/E08; si hace falta un tema grande nuevo → nueva épica.
+5. Tema grande nuevo → nueva épica.
 
 ## Cierre reciente
 
-1. ~~CT-051 — Mergear PRs post-MVP~~ **hecho**  
-2. ~~CT-049 — Notas de seguimiento~~ **hecho** (PR #48)  
-3. ~~CT-050 — Fotos en notas~~ **hecho** (PR #49)  
+1. ~~CT-E09 Espacio alumno~~ **hecho** (PRs #71, #72)  
+2. ~~CT-051 — Mergear PRs post-MVP~~ **hecho**  
+3. ~~CT-049 / CT-050~~ **hecho**  
 4. CT-014 — Docker → **Backlog / infra**
 
 ## Tablero
