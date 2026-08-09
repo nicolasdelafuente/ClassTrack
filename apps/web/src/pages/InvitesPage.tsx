@@ -108,7 +108,7 @@ export function InvitesPage() {
 
   if (state.status === 'loading') {
     return (
-      <AppShell showBack>
+      <AppShell>
         <div className="flex flex-col gap-4" aria-busy aria-label="Cargando">
           <PageHeroSkeleton compact stats={0} showActions={false} />
           <Panel tone="default" className="h-48 p-4">
@@ -121,7 +121,7 @@ export function InvitesPage() {
 
   if (state.status === 'error') {
     return (
-      <AppShell showBack>
+      <AppShell>
         <StateBox title="No se pudo abrir invitaciones" message={state.message} />
       </AppShell>
     )
@@ -131,7 +131,7 @@ export function InvitesPage() {
   const actionable = candidates.filter((c) => !c.alreadyRegistered)
 
   return (
-    <AppShell showBack>
+    <AppShell>
       <section className="flex flex-col gap-4">
         <PageHero
           compact

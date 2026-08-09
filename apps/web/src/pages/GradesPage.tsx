@@ -197,7 +197,7 @@ export function GradesPage({ mode }: GradesPageProps) {
       : 'Nota final 1–10 o A (ausente) por cada integrante del grupo.'
 
   return (
-    <AppShell showBack>
+    <AppShell>
       <section className="mx-auto flex max-w-3xl flex-col gap-4 pb-10">
         <PageHero
           eyebrow="Evaluación"
@@ -218,9 +218,6 @@ export function GradesPage({ mode }: GradesPageProps) {
                 to={`/courses/${courseId}/grades/final`}
               >
                 Nota final
-              </ButtonLink>
-              <ButtonLink variant="ghost" className="min-h-11" to="/">
-                Tablero
               </ButtonLink>
             </>
           }
