@@ -96,9 +96,11 @@ export function StudentHomePage() {
   }, [load])
 
   const greetingName =
-    state.status === 'ready' || state.status === 'no_group'
-      ? state.profile.student.fullName.split(' ')[0]
-      : user?.displayName?.trim() || ''
+    state.status === 'ready'
+      ? state.data.profile.student.fullName.split(/\s+/)[0]
+      : state.status === 'no_group'
+        ? state.profile.student.fullName.split(/\s+/)[0]
+        : user?.displayName?.trim() || ''
   const title = greetingName ? `Hola, ${greetingName}` : 'Hola'
 
   return (
