@@ -38,3 +38,11 @@ export class CourseIdParamDto {
   @IsString()
   courseId!: string;
 }
+
+export class CourseStudentParamsDto {
+  @IsString()
+  courseId!: string;
+
+  @IsString()
+  studentId!: string;
+}

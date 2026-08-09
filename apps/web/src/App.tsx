@@ -18,6 +18,7 @@ import { RegisterPage } from './pages/RegisterPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { ScheduleSessionPage } from './pages/ScheduleSessionPage'
 import { StudentHomePage } from './pages/StudentHomePage'
+import { StudentProfilePage } from './pages/StudentProfilePage'
 import { StudentSprintSheetPage } from './pages/StudentSprintSheetPage'
 import { TeacherSprintSheetDetailPage } from './pages/TeacherSprintSheetDetailPage'
 import { TeacherSprintSheetsPage } from './pages/TeacherSprintSheetsPage'
@@ -145,6 +146,16 @@ function App() {
               <RequireAuth>
                 <RequireTeacher>
                   <GroupDetailPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/groups/:groupId/students/:studentId"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <StudentProfilePage />
                 </RequireTeacher>
               </RequireAuth>
             }

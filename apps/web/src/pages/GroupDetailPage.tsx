@@ -423,6 +423,7 @@ export function GroupDetailPage() {
             capacity={group.capacity}
             unassigned={unassigned}
             busy={busy}
+            profileBasePath={`/courses/${group.courseId}/groups/${group.id}/students`}
             onAdd={(id) => void handleAddMember(id)}
             onRemove={(id) => void handleRemoveMember(id)}
           />

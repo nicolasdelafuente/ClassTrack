@@ -167,6 +167,52 @@ export type AttendanceRoster = {
   groups: AttendanceGroup[]
 }
 
+/** Teacher view: student profile + attendance history in a course. */
+export type CourseStudentProfile = {
+  student: {
+    id: string
+    fullName: string
+    legajo: string | null
+    email: string | null
+  }
+  account: {
+    displayName: string | null
+    email: string
+  } | null
+  group: {
+    id: string
+    number: number
+    name: string | null
+  }
+  course: {
+    id: string
+    name: string
+    code: string
+    maxAbsencesAllowed: number
+  }
+  attendance: {
+    totalClasses: number
+    present: number
+    absent: number
+    participationCount: number
+    absenceCount: number
+    maxAbsencesAllowed: number
+    isLibre: boolean
+    presentRate: number
+    sessions: CourseStudentAttendanceSession[]
+  }
+}
+
+export type CourseStudentAttendanceSession = {
+  sessionId: string
+  date: string
+  title: string
+  isMandatory: boolean
+  present: boolean
+  participated: boolean
+  recorded: boolean
+}
+
 export type AttendanceMark = {
   studentId: string
   date: string

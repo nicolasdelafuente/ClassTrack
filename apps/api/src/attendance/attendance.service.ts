@@ -143,6 +143,139 @@ export class AttendanceService {
     return counts;
   }
 
+  /**
+   * Student profile for a course + attendance history on sessions that allow list.
+   */
+  async getStudentProfile(courseId: string, studentId: string) {
+    const course = await this.requireCourse(courseId);
+
+    const student = await this.prisma.student.findUnique({
+      where: { id: studentId },
+      include: {
+        user: { select: { displayName: true, email: true } },
+        memberships: {
+          where: { group: { courseId } },
+          include: {
+            group: { select: { id: true, number: true, name: true } },
+          },
+          take: 1,
+        },
+      },
+    });
+
+    if (!student) {
+      throw new NotFoundException('Alumno no encontrado');
+    }
+
+    const membership = student.memberships[0] ?? null;
+    if (!membership) {
+      throw new NotFoundException('El alumno no pertenece a esta cursada');
+    }
+
+    const sessions = await this.prisma.classSession.findMany({
+      where: {
+        courseId,
+        allowsAttendance: true,
+      },
+      orderBy: { date: 'asc' },
+      include: {
+        items: { orderBy: { sortOrder: 'asc' } },
+      },
+    });
+
+    const records =
+      sessions.length > 0
+        ? await this.prisma.attendanceRecord.findMany({
+            where: {
+              courseId,
+              studentId,
+              date: { in: sessions.map((s) => s.date) },
+            },
+          })
+        : [];
+
+    const byDate = new Map(
+      records.map((r) => [
+        toDateOnlyString(r.date),
+        { present: r.present, participated: r.participated },
+      ]),
+    );
+
+    const sessionRows = sessions.map((session) => {
+      const date = toDateOnlyString(session.date);
+      const mark = byDate.get(date);
+      const recorded = mark != null;
+      const present = mark?.present ?? false;
+      const participated = mark?.participated ?? false;
+      const title =
+        session.items[0]?.title ??
+        (session.isMandatory ? 'Clase obligatoria' : 'Clase optativa');
+
+      return {
+        sessionId: session.id,
+        date,
+        title,
+        isMandatory: session.isMandatory,
+        present,
+        participated,
+        recorded,
+      };
+    });
+
+    const totalClasses = sessionRows.length;
+    const presentCount = sessionRows.filter((s) => s.present).length;
+    const absentCount = sessionRows.filter((s) => !s.present).length;
+    const participationCount = sessionRows.filter((s) => s.participated).length;
+    const absenceCounts = await this.countMandatoryAbsences(courseId, [
+      studentId,
+    ]);
+    const absence = buildAbsenceStatus(
+      absenceCounts.get(studentId) ?? 0,
+      course.maxAbsencesAllowed,
+    );
+    const presentRate =
+      totalClasses === 0
+        ? 0
+        : Math.round((presentCount / totalClasses) * 100);
+
+    return {
+      student: {
+        id: student.id,
+        fullName: student.fullName,
+        legajo: student.legajo,
+        email: student.email,
+      },
+      account: student.user
+        ? {
+            displayName: student.user.displayName,
+            email: student.user.email,
+          }
+        : null,
+      group: {
+        id: membership.group.id,
+        number: membership.group.number,
+        name: membership.group.name,
+      },
+      course: {
+        id: course.id,
+        name: course.name,
+        code: course.code,
+        maxAbsencesAllowed: course.maxAbsencesAllowed,
+      },
+      attendance: {
+        totalClasses,
+        present: presentCount,
+        absent: absentCount,
+        participationCount,
+        absenceCount: absence.absenceCount,
+        maxAbsencesAllowed: absence.maxAbsencesAllowed,
+        isLibre: absence.isLibre,
+        presentRate,
+        sessions: sessionRows,
+      },
+    };
+  }
+
   async upsertMark(
     courseId: string,
     body: {

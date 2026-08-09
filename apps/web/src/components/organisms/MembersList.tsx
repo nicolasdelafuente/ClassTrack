@@ -1,26 +1,32 @@
+import { Link } from 'react-router-dom'
 import type { GroupMember, UnassignedStudent } from '../../types'
 import { Avatar } from '../atoms/Avatar'
 import { Button } from '../atoms/Button'
 import { Select } from '../atoms/Select'
 import { Text } from '../atoms/Text'
+import { cn } from '../../lib/cn'
 
 type MembersListProps = {
   members: GroupMember[]
   capacity?: number
   unassigned?: UnassignedStudent[]
   busy?: boolean
+  /** When set, member identity links to the student profile. */
+  profileBasePath?: string
   onAdd?: (studentId: string) => void
   onRemove?: (studentId: string) => void
 }
 
 /**
  * Group roster. Teacher can add (override) or remove members (CT-045).
+ * Identity navigates to student profile when `profileBasePath` is provided.
  */
 export function MembersList({
   members,
   capacity,
   unassigned = [],
   busy = false,
+  profileBasePath,
   onAdd,
   onRemove,
 }: MembersListProps) {
@@ -37,38 +43,69 @@ export function MembersList({
         <Text>Sin integrantes cargados.</Text>
       ) : (
         <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
-          {members.map((member) => (
-            <li
-              key={member.id}
-              className="group flex items-center gap-3 rounded-xl px-2 py-1.5 transition-[background-color,transform] duration-200 ease-out hover:bg-surface-interactive motion-safe:hover:translate-x-0.5"
-            >
-              <Avatar
-                name={member.fullName}
-                size="sm"
-                className="motion-safe:group-hover:scale-105"
-              />
-              <div className="min-w-0 flex-1">
-                <span className="block truncate text-[14px] font-medium text-fg">
-                  {member.fullName}
-                </span>
-                <span className="mt-0.5 block truncate text-[12px] text-fg-faint">
-                  {member.legajo ? `Legajo ${member.legajo}` : 'Sin legajo'}
-                  {member.email ? ` · ${member.email}` : ''}
-                </span>
-              </div>
-              {onRemove ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="shrink-0 px-2 py-1 text-[12px]"
-                  disabled={busy}
-                  onClick={() => onRemove(member.id)}
-                >
-                  Sacar
-                </Button>
-              ) : null}
-            </li>
-          ))}
+          {members.map((member) => {
+            const profileTo = profileBasePath
+              ? `${profileBasePath}/${member.id}`
+              : null
+            const identityClass = cn(
+              'flex min-w-0 flex-1 items-center gap-3 rounded-lg no-underline',
+              profileTo &&
+                'transition-[background-color,transform] duration-200 ease-out hover:bg-surface-interactive motion-safe:hover:translate-x-0.5',
+            )
+
+            const identity = (
+              <>
+                <Avatar
+                  name={member.fullName}
+                  size="sm"
+                  className={
+                    profileTo
+                      ? 'motion-safe:group-hover/member:scale-105'
+                      : undefined
+                  }
+                />
+                <div className="min-w-0 flex-1">
+                  <span className="block truncate text-[14px] font-medium text-fg">
+                    {member.fullName}
+                  </span>
+                  <span className="mt-0.5 block truncate text-[12px] text-fg-faint">
+                    {member.legajo ? `Legajo ${member.legajo}` : 'Sin legajo'}
+                    {member.email ? ` · ${member.email}` : ''}
+                  </span>
+                </div>
+              </>
+            )
+
+            return (
+              <li
+                key={member.id}
+                className="group/member flex items-center gap-2 rounded-xl px-2 py-1.5"
+              >
+                {profileTo ? (
+                  <Link
+                    to={profileTo}
+                    className={identityClass}
+                    aria-label={`Ver perfil de ${member.fullName}`}
+                  >
+                    {identity}
+                  </Link>
+                ) : (
+                  <div className={identityClass}>{identity}</div>
+                )}
+                {onRemove ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="shrink-0 px-2 py-1 text-[12px]"
+                    disabled={busy}
+                    onClick={() => onRemove(member.id)}
+                  >
+                    Sacar
+                  </Button>
+                ) : null}
+              </li>
+            )
+          })}
         </ul>
       )}
 

@@ -78,6 +78,40 @@ export function GroupDetailPageSkeleton() {
   )
 }
 
+/** Student profile: hero + attendance summary + session rows. */
+export function StudentProfilePageSkeleton({ rows = 6 }: { rows?: number }) {
+  return (
+    <section
+      className="flex flex-col gap-4"
+      aria-busy="true"
+      aria-label="Cargando perfil del alumno"
+    >
+      <PageHeroSkeleton compact stats={4} />
+      <Panel as="section" tone="default" className="p-4 sm:p-5">
+        <Skeleton className="mb-3 h-4 w-40" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i} className="space-y-1.5">
+              <Skeleton className="h-3 w-16" />
+              <Skeleton className="h-6 w-12" />
+            </div>
+          ))}
+        </div>
+      </Panel>
+      <Panel as="section" tone="soft" className="p-4 sm:p-5">
+        <Skeleton className="mb-3 h-4 w-36" />
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {Array.from({ length: rows }, (_, i) => (
+            <li key={i}>
+              <Skeleton className="h-14 w-full" rounded="xl" />
+            </li>
+          ))}
+        </ul>
+      </Panel>
+    </section>
+  )
+}
+
 /** Attendance: hero + group blocks with student rows. */
 export function AttendancePageSkeleton({ groups = 3 }: { groups?: number }) {
   return (
