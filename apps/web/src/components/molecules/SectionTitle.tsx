@@ -16,15 +16,17 @@ export function SectionTitle({
 }: SectionTitleProps) {
   return (
     <div className={cn('mb-3', className)}>
-      <h2 className="m-0 flex items-center gap-2 text-[17px] font-semibold tracking-tight text-fg">
+      <h2 className="m-0 flex min-w-0 items-center gap-2 text-[17px] font-semibold tracking-tight text-fg">
         {icon ? (
-          <span className="inline-flex size-7 items-center justify-center rounded-lg bg-surface-2 text-sm" aria-hidden>
+          <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-sm" aria-hidden>
             {icon}
           </span>
         ) : null}
-        {children}
+        <span className="min-w-0 break-words">{children}</span>
       </h2>
-      {hint ? <p className="mt-1 text-[13px] text-fg-faint">{hint}</p> : null}
+      {hint ? (
+        <p className="mt-1 text-[13px] text-pretty text-fg-faint">{hint}</p>
+      ) : null}
     </div>
   )
 }

@@ -64,7 +64,7 @@ export function TeacherSprintSheetsPage() {
 
   return (
     <AppShell courseName={courseName}>
-      <section className="mx-auto flex max-w-3xl flex-col gap-4">
+      <section className="flex flex-col gap-4">
         <PageHero
           eyebrow="Revisión"
           title="Fichas de sprint"

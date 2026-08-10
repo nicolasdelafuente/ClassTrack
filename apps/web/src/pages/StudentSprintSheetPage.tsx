@@ -24,6 +24,7 @@ import {
 } from '../components/molecules/RichTextEditor'
 import { TaskCategoryChips } from '../components/molecules/TaskCategoryChips'
 import { TaskTrelloLinks } from '../components/molecules/TaskTrelloLinks'
+import { SheetExportActions } from '../components/molecules/SheetExportActions'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import {
@@ -284,7 +285,7 @@ export function StudentSprintSheetPage() {
       backTo={groupId ? `/alumno/grupos/${groupId}` : '/alumno'}
       backLabel="← Mi grupo"
     >
-      <section className="mx-auto flex max-w-2xl flex-col gap-4 pb-10">
+      <section className="flex flex-col gap-4 pb-10">
         <PageHero
           eyebrow={groupLabel}
           title={`Sprint ${sprintNumber} — fichas`}
@@ -308,6 +309,12 @@ export function StudentSprintSheetPage() {
                 Fin
                 {end ? ` · ${SHEET_STATUS_LABELS[end.status]}` : ''}
               </Button>
+              {activeSheet ? (
+                <SheetExportActions
+                  sheet={activeSheet}
+                  groupLabel={groupLabel}
+                />
+              ) : null}
             </>
           }
         />

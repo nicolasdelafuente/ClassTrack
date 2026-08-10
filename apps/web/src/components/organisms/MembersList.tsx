@@ -132,7 +132,7 @@ export function MembersList({
             >
               <Select
                 name="studentId"
-                className="min-w-[12rem] flex-1"
+                className="min-w-0 w-full flex-1 sm:min-w-[12rem]"
                 disabled={busy}
                 defaultValue=""
               >

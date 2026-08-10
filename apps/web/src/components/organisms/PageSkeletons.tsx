@@ -235,7 +235,7 @@ export function ScheduleSessionPageSkeleton() {
 export function SprintSheetPageSkeleton({ rows = 4 }: { rows?: number }) {
   return (
     <section
-      className="mx-auto flex max-w-2xl flex-col gap-4 pb-10"
+      className="flex flex-col gap-4 pb-10"
       aria-busy="true"
       aria-label="Cargando ficha"
     >
@@ -291,7 +291,7 @@ export function SprintSheetsListSkeleton({ rows = 5 }: { rows?: number }) {
 export function GroupsSetupPageSkeleton() {
   return (
     <section
-      className="mx-auto flex max-w-2xl flex-col gap-4"
+      className="flex flex-col gap-4"
       aria-busy="true"
       aria-label="Cargando grupos"
     >
@@ -344,28 +344,46 @@ export function GradesPageSkeleton({ groups = 3 }: { groups?: number }) {
   )
 }
 
-/** Student home: group card + sprint list. */
-export function StudentHomeSkeleton({ rows = 5 }: { rows?: number }) {
+/** Student home: sprint + attendance panels (identity lives in PageHero). */
+export function StudentHomeSkeleton() {
   return (
     <div
       className="flex flex-col gap-3"
       aria-busy="true"
       aria-label="Cargando inicio alumno"
     >
-      <Panel className="px-4 py-3">
-        <Skeleton className="h-3.5 w-48" />
-        <Skeleton className="mt-2 h-3 w-28" />
+      <Panel tone="elevated" className="space-y-3 p-4">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-5 w-[55%]" />
+        <Skeleton className="h-3 w-40" />
+        <div className="rounded-xl border border-border bg-surface-1 px-3.5 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-3 w-14 shrink-0" />
+          </div>
+          <Skeleton className="mt-2 h-3 w-[50%]" />
+        </div>
+        <Skeleton className="h-11 w-32" rounded="md" />
       </Panel>
-      <ul className="m-0 flex list-none flex-col gap-2 p-0">
-        {Array.from({ length: rows }, (_, i) => (
-          <ListRow key={i} as="li" className="px-4 py-3">
-            <div className="flex items-center justify-between gap-3">
-              <Skeleton className="h-4 w-28" />
-              <Skeleton className="h-3 w-20" />
+      <Panel tone="default" className="space-y-3 p-4">
+        <Skeleton className="h-4 w-28" />
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i}>
+              <Skeleton className="h-2.5 w-14" />
+              <Skeleton className="mt-1 h-4 w-8" />
             </div>
-          </ListRow>
-        ))}
-      </ul>
+          ))}
+        </div>
+        <div className="space-y-1.5 border-t border-border/80 pt-3">
+          {Array.from({ length: 3 }, (_, i) => (
+            <div key={i} className="flex items-center justify-between gap-2 py-1">
+              <Skeleton className="h-3.5 w-24" />
+              <Skeleton className="h-5 w-16" rounded="md" />
+            </div>
+          ))}
+        </div>
+      </Panel>
     </div>
   )
 }

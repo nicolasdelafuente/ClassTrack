@@ -221,11 +221,11 @@ export function GroupDetailPage() {
       courseName={group.course.name}
       courseCode={group.course.code}
     >
-      <article className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+      <article className="grid min-w-0 w-full gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
         <PageHero
-          className="lg:col-span-2"
+          className="min-w-0 lg:col-span-2"
           eyebrow="Workspace del grupo"
-          title={title}
+          title={<span className="break-words text-balance">{title}</span>}
           description={group.projectTopic?.trim() || 'Sin tema cargado'}
           badge={
             summary ? (
@@ -257,9 +257,10 @@ export function GroupDetailPage() {
           ]}
           actions={
             <HeroActions
+              className="min-w-0"
               primary={
                 <ButtonLink
-                  className="min-h-11 px-4 text-[14px]"
+                  className="min-h-11 w-full px-4 text-[14px] sm:w-auto"
                   to={`/courses/${group.courseId}/attendance?groupId=${group.id}`}
                 >
                   Tomar asistencia
@@ -269,7 +270,7 @@ export function GroupDetailPage() {
                 <>
                   <ButtonLink
                     variant="ghost"
-                    className="min-h-11"
+                    className="min-h-11 w-full sm:w-auto"
                     to={`/courses/${group.courseId}/sprint-sheets?status=in_review`}
                   >
                     Fichas de sprint
@@ -278,7 +279,7 @@ export function GroupDetailPage() {
                     <ButtonLink
                       external
                       variant="ghost"
-                      className="min-h-11"
+                      className="min-h-11 w-full sm:w-auto"
                       href={group.links.trelloUrl}
                       target="_blank"
                       rel="noreferrer"
@@ -290,7 +291,7 @@ export function GroupDetailPage() {
                     <ButtonLink
                       external
                       variant="ghost"
-                      className="min-h-11"
+                      className="min-h-11 w-full sm:w-auto"
                       href={group.links.githubUrl}
                       target="_blank"
                       rel="noreferrer"
@@ -304,10 +305,12 @@ export function GroupDetailPage() {
           }
           footer={
             summary ? (
-              <div>
+              <div className="min-w-0">
                 <div className="mb-1.5 flex items-center justify-between gap-2 text-[12px] font-medium text-fg-faint">
-                  <span>Progreso de sprints (Ok)</span>
-                  <span className="tabular-nums text-fg">
+                  <span className="min-w-0 truncate">
+                    Progreso de sprints (Ok)
+                  </span>
+                  <span className="shrink-0 tabular-nums text-fg">
                     {summary.progress.ok}/{summary.progress.total}
                   </span>
                 </div>
@@ -333,41 +336,52 @@ export function GroupDetailPage() {
           <Panel
             as="section"
             tone="soft"
-            className="p-4 sm:p-5 lg:col-span-2"
+            className="min-w-0 p-4 sm:p-5 lg:col-span-2"
           >
             <SectionTitle hint="Estado de fichas inicio / fin por sprint">
               Fichas de sprint
             </SectionTitle>
-            <ul className="m-0 mt-2 flex list-none flex-wrap gap-2 p-0">
+            <ul className="m-0 mt-2 flex list-none flex-col gap-2 p-0 sm:flex-row sm:flex-wrap">
               {sheetChips.map((chip) => (
                 <li
                   key={chip.sprintNumber}
-                  className="rounded-md border border-border bg-surface-1 px-2.5 py-1.5 text-[12px]"
+                  className="min-w-0 rounded-md border border-border bg-surface-1 px-2.5 py-2 text-[12px] sm:max-w-full"
                 >
-                  <span className="font-semibold text-fg">
-                    S{chip.sprintNumber}
-                  </span>
-                  <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1 text-fg-muted">
-                    · Inicio:{' '}
-                    {chip.start ? (
-                      <SheetStatusBadge status={chip.start} />
-                    ) : (
-                      '—'
-                    )}
-                    · Fin:{' '}
-                    {chip.end ? (
-                      <SheetStatusBadge status={chip.end} />
-                    ) : (
-                      '—'
-                    )}
-                  </span>
+                  <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5">
+                    <span className="font-semibold text-fg">
+                      S{chip.sprintNumber}
+                    </span>
+                    <span className="inline-flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 text-fg-muted">
+                      <span className="inline-flex items-center gap-1">
+                        Inicio:{' '}
+                        {chip.start ? (
+                          <SheetStatusBadge status={chip.start} />
+                        ) : (
+                          '—'
+                        )}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        Fin:{' '}
+                        {chip.end ? (
+                          <SheetStatusBadge status={chip.end} />
+                        ) : (
+                          '—'
+                        )}
+                      </span>
+                    </span>
+                  </div>
                 </li>
               ))}
             </ul>
           </Panel>
         ) : null}
 
-        <Panel as="section" tone="default" stagger={2} className="p-4 sm:p-5">
+        <Panel
+          as="section"
+          tone="default"
+          stagger={2}
+          className="min-w-0 p-4 sm:p-5"
+        >
           <SectionTitle
             hint="Asigná tu tutoría o la de otro docente registrado."
           >
@@ -392,7 +406,12 @@ export function GroupDetailPage() {
           />
         </Panel>
 
-        <Panel as="section" tone="default" stagger={2} className="p-4 sm:p-5">
+        <Panel
+          as="section"
+          tone="default"
+          stagger={2}
+          className="min-w-0 overflow-x-auto p-4 sm:p-5"
+        >
           <SectionTitle
             icon={<IconSignal className="text-fg-muted" />}
             hint="Timeline de sprints — tocá un nodo para cambiar el estado."
@@ -410,7 +429,7 @@ export function GroupDetailPage() {
           as="section"
           tone="default"
           stagger={3}
-          className="p-4 sm:p-5 lg:row-span-2"
+          className="min-w-0 p-4 sm:p-5 lg:row-span-2"
         >
           <SectionTitle
             icon={<IconUsers className="text-fg-muted" />}
@@ -429,7 +448,12 @@ export function GroupDetailPage() {
           />
         </Panel>
 
-        <Panel as="section" tone="soft" stagger={4} className="p-4 sm:p-5">
+        <Panel
+          as="section"
+          tone="soft"
+          stagger={4}
+          className="min-w-0 p-4 sm:p-5"
+        >
           <SectionTitle
             icon={<IconLink className="text-fg-muted" />}
             hint="Recursos del equipo"
@@ -447,7 +471,7 @@ export function GroupDetailPage() {
           as="section"
           tone="default"
           stagger={4}
-          className="p-4 sm:p-5 lg:col-span-2"
+          className="min-w-0 p-4 sm:p-5 lg:col-span-2"
         >
           <GroupNotesPanel groupId={group.id} disabled={busy} />
         </Panel>

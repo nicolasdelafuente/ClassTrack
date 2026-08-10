@@ -20,6 +20,7 @@ import { PageHero } from '../components/organisms/PageHero'
 import { SprintSheetPageSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
 import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
+import { SheetExportActions } from '../components/molecules/SheetExportActions'
 import { type SprintSheet } from '../types'
 
 /**
@@ -129,7 +130,7 @@ export function TeacherSprintSheetDetailPage() {
       backTo={`/courses/${courseId}/sprint-sheets`}
       backLabel="← Cola de fichas"
     >
-      <section className="mx-auto flex max-w-2xl flex-col gap-4 pb-10">
+      <section className="flex flex-col gap-4 pb-10">
         <PageHero
           eyebrow={groupLabel}
           title={`Sprint ${sheet.sprintNumber} · ${sheet.kind === 'start' ? 'Inicio' : 'Fin'}`}
@@ -139,6 +140,9 @@ export function TeacherSprintSheetDetailPage() {
               : 'Ficha de fin del sprint'
           }
           badge={<SheetStatusBadge status={sheet.status} />}
+          actions={
+            <SheetExportActions sheet={sheet} groupLabel={groupLabel} />
+          }
         />
 
         {sheet.comments.length > 0 ? (

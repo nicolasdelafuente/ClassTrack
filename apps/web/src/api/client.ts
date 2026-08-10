@@ -525,6 +525,12 @@ export function fetchSprintCalendar(courseId: string) {
   )
 }
 
+export function fetchMyAttendance(courseId: string) {
+  return requestJson<CourseStudentProfile>(
+    `/me/courses/${courseId}/attendance`,
+  )
+}
+
 export function fetchStudentGroupDetail(groupId: string) {
   return requestJson<StudentGroupDetail>(`/me/groups/${groupId}`)
 }

@@ -175,47 +175,66 @@ export function StudentProfilePage() {
           </SectionTitle>
           {attendance.sessions.length === 0 ? (
             <Text className="mt-2">
-              Todavía no hay clases con asistencia en esta cursada.
+              Todavía no hay clases en el cronograma de esta cursada.
             </Text>
           ) : (
             <ul className="m-0 mt-3 flex list-none flex-col gap-2 p-0">
-              {attendance.sessions.map((session) => (
-                <li key={session.sessionId}>
-                  <ListRow
-                    as="div"
-                    tone="default"
-                    interactive={false}
-                    className="flex flex-col gap-2 px-3.5 py-3 sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div className="min-w-0">
-                      <p className="m-0 text-[14px] font-medium text-fg">
-                        {formatDateDisplay(session.date)}
-                        <span className="font-normal text-fg-muted">
-                          {' · '}
+              {attendance.sessions.map((session) => {
+                const isHoliday = !session.allowsAttendance
+                return (
+                  <li key={session.sessionId}>
+                    <ListRow
+                      as="div"
+                      tone="default"
+                      interactive={false}
+                      className="flex flex-col gap-2 px-3.5 py-3 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="min-w-0">
+                        <p className="m-0 text-[14px] font-medium text-fg">
+                          {formatDateDisplay(session.date)}
+                        </p>
+                        <p className="mt-0.5 m-0 text-[13px] text-pretty text-fg-muted">
                           {session.title}
-                        </span>
-                      </p>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                        <MandatoryChip mandatory={session.isMandatory} />
-                        {!session.recorded ? (
-                          <span className="text-[12px] text-fg-faint">
-                            Lista no tomada
-                          </span>
-                        ) : null}
+                        </p>
+                        <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                          {isHoliday ? (
+                            <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-surface-2 px-2.5 text-[11px] font-semibold leading-none text-fg-muted">
+                              Feriado
+                            </span>
+                          ) : (
+                            <MandatoryChip mandatory={session.isMandatory} />
+                          )}
+                          {!isHoliday && !session.recorded ? (
+                            <span className="text-[12px] text-fg-faint">
+                              Lista no tomada
+                            </span>
+                          ) : null}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <StatusBadge
-                        status={session.present ? 'ok' : 'critical'}
-                        label={session.present ? 'Presente' : 'Ausente'}
-                      />
-                      {session.participated ? (
-                        <StatusBadge status="attention" label="Participó" />
-                      ) : null}
-                    </div>
-                  </ListRow>
-                </li>
-              ))}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {isHoliday ? (
+                          <span className="text-[12px] font-medium text-fg-faint">
+                            Sin lista
+                          </span>
+                        ) : (
+                          <>
+                            <StatusBadge
+                              status={session.present ? 'ok' : 'critical'}
+                              label={session.present ? 'Presente' : 'Ausente'}
+                            />
+                            {session.participated ? (
+                              <StatusBadge
+                                status="attention"
+                                label="Participó"
+                              />
+                            ) : null}
+                          </>
+                        )}
+                      </div>
+                    </ListRow>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </Panel>

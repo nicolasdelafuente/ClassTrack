@@ -1,0 +1,63 @@
+---
+description: Ancho de contenido unificado — PageContainer / max-w-content
+globs: apps/web/**/*.{tsx,ts,css}
+alwaysApply: false
+---
+
+# Layout — ancho de contenido (ClassTrack)
+
+## Fuente de verdad
+
+| Qué | Valor |
+|-----|--------|
+| Componente | `PageContainer` (`apps/web/src/components/templates/PageContainer.tsx`) |
+| Token | `--max-width-content: 1120px` → utilidad Tailwind `max-w-content` |
+| Gutters | `pageGutterClassName` = `px-4 md:px-6` (aplicados en `AppShell`) |
+| Quién lo aplica | **`AppShell`** envuelve header + main en `PageContainer` |
+
+Referencia histórica: layout docente del tablero (mismo 1120px).
+
+## Regla
+
+**Todas las páginas de producto** deben usar el ancho que define `AppShell` + `PageContainer`.
+
+**No** agregar en páginas:
+
+- `max-w-lg` / `max-w-xl` / `max-w-2xl` / `max-w-3xl` / `max-w-[…px]` como **container de página**
+- `width: 80%` u otros anchos arbitrarios de layout
+- un segundo `mx-auto max-w-*` que estreche el main
+
+Las páginas solo apilan contenido, p. ej. `className="flex flex-col gap-4"`.
+
+## Excepciones válidas (documentar en el PR)
+
+| Caso | Ejemplo | Por qué |
+|------|---------|---------|
+| Auth centrado | Login/Register `max-w-md` | Formulario de identidad, fuera de `AppShell` |
+| Medida de texto | `PageHero` description `max-w-2xl` | Legibilidad de párrafo, no layout de página |
+| Controles | filtros `max-w-[14rem]` | Ancho de input/select |
+| Alertas | `StateBox` `max-w-lg` | Panel de mensaje, no página |
+| Assets | skeleton `max-w-sm` en media | Proporción de media |
+
+## Incorrecto
+
+```tsx
+// ❌ Cada página inventa su ancho
+<section className="mx-auto max-w-lg …">
+```
+
+## Correcto
+
+```tsx
+<AppShell>
+  <section className="flex flex-col gap-4">
+    {/* el ancho lo pone AppShell → PageContainer */}
+  </section>
+</AppShell>
+```
+
+## Responsive
+
+- Desktop: contenido centrado, tope `max-w-content`
+- Mobile: `w-full` + gutters `px-4`; sin overflow horizontal
+- No inventar otro max-width “solo para mobile”
