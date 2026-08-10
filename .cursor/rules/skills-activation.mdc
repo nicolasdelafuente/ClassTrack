@@ -12,6 +12,7 @@ Las skills en `.agents/skills/` **no cuentan** si no se leen. Antes de implement
 | Si trabajás en… | Leé primero |
 |-----------------|-------------|
 | UI / CSS / componentes / Tailwind | **`classtrack-ui`** (primero), luego `tailwind-design-system`, `atomic-design-fundamentals`, `web-design-guidelines` |
+| Ancho / layout de página / `max-w-*` | Rule **`layout-content-width`** + `PageContainer` |
 | React (hooks, fetch, rendimiento) | `vercel-react-best-practices` |
 | NestJS / `apps/api` | `nestjs-best-practices`, `security-and-hardening` |
 | Prisma / schema / seed / DB | `prisma-database-setup` (+ `prisma-postgres` si hay Postgres) |

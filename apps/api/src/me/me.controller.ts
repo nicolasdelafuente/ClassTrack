@@ -27,6 +27,14 @@ export class MeController {
     return this.meService.getSprintCalendar(requireUserId(userId), courseId);
   }
 
+  @Get('courses/:courseId/attendance')
+  myAttendance(
+    @Headers('x-user-id') userId: string | undefined,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.meService.getMyAttendance(requireUserId(userId), courseId);
+  }
+
   @Get('groups/:groupId')
   myGroupDetail(
     @Headers('x-user-id') userId: string | undefined,

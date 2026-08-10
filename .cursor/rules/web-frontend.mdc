@@ -22,4 +22,5 @@ Antes de editar, leé:
 - `cn()` en `src/lib/cn.ts`.
 - Campos editables: fondo **blanco** (`surface-1`) + borde visible; gris solo si `disabled` (`.cursor/rules` / `Input` + `Select`).
 - **Sin modales** salvo confirm/alerta → pantalla nueva o UI inline (`.cursor/rules/no-modales.mdc`).
+- **Ancho de página:** `AppShell` → `PageContainer` (`max-w-content` = 1120px). No `max-w-*` de página sueltos → `.cursor/rules/layout-content-width.mdc`.
 - Doc: `project-hub-docs/04-ui-ux/direccion-visual-2026.md`.

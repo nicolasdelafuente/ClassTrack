@@ -195,7 +195,7 @@ export function GroupsSetupPage() {
 
   return (
     <AppShell showBack courseName={course.name} courseCode={course.code}>
-      <section className="mx-auto flex max-w-2xl flex-col gap-4">
+      <section className="flex flex-col gap-4">
         <PageHero
           eyebrow="Formación de equipos"
           title="Armar grupos"

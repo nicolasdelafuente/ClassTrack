@@ -173,23 +173,24 @@ export class AttendanceService {
     }
 
     const sessions = await this.prisma.classSession.findMany({
-      where: {
-        courseId,
-        allowsAttendance: true,
-      },
+      where: { courseId },
       orderBy: { date: 'asc' },
       include: {
         items: { orderBy: { sortOrder: 'asc' } },
       },
     });
 
+    const attendanceDates = sessions
+      .filter((s) => s.allowsAttendance)
+      .map((s) => s.date);
+
     const records =
-      sessions.length > 0
+      attendanceDates.length > 0
         ? await this.prisma.attendanceRecord.findMany({
             where: {
               courseId,
               studentId,
-              date: { in: sessions.map((s) => s.date) },
+              date: { in: attendanceDates },
             },
           })
         : [];
@@ -203,29 +204,40 @@ export class AttendanceService {
 
     const sessionRows = sessions.map((session) => {
       const date = toDateOnlyString(session.date);
-      const mark = byDate.get(date);
+      const mark = session.allowsAttendance ? byDate.get(date) : undefined;
       const recorded = mark != null;
       const present = mark?.present ?? false;
       const participated = mark?.participated ?? false;
+      const primary = session.items[0];
       const title =
-        session.items[0]?.title ??
-        (session.isMandatory ? 'Clase obligatoria' : 'Clase optativa');
+        primary?.title ??
+        (!session.allowsAttendance
+          ? 'Feriado'
+          : session.isMandatory
+            ? 'Clase obligatoria'
+            : 'Clase optativa');
 
       return {
         sessionId: session.id,
         date,
         title,
         isMandatory: session.isMandatory,
+        allowsAttendance: session.allowsAttendance,
+        activityType: primary?.activityType ?? null,
         present,
         participated,
         recorded,
       };
     });
 
-    const totalClasses = sessionRows.length;
-    const presentCount = sessionRows.filter((s) => s.present).length;
-    const absentCount = sessionRows.filter((s) => !s.present).length;
-    const participationCount = sessionRows.filter((s) => s.participated).length;
+    // Stats only over days where a roster exists (excludes feriados).
+    const rosterSessions = sessionRows.filter((s) => s.allowsAttendance);
+    const totalClasses = rosterSessions.length;
+    const presentCount = rosterSessions.filter((s) => s.present).length;
+    const absentCount = rosterSessions.filter((s) => !s.present).length;
+    const participationCount = rosterSessions.filter(
+      (s) => s.participated,
+    ).length;
     const absenceCounts = await this.countMandatoryAbsences(courseId, [
       studentId,
     ]);

@@ -55,7 +55,7 @@ export function PageHero({
           ) : null}
           <h1
             className={cn(
-              'mt-0.5 font-bold tracking-tight text-fg',
+              'mt-0.5 break-words text-balance font-bold tracking-tight text-fg',
               compact
                 ? 'text-[24px] sm:text-[28px]'
                 : 'text-[28px] sm:text-[32px]',

@@ -8,6 +8,7 @@ import { Button } from '../atoms/Button'
 import { IconMenu } from '../atoms/icons'
 import { CourseSidebar } from '../organisms/CourseSidebar'
 import { cn } from '../../lib/cn'
+import { PageContainer, pageGutterClassName } from './PageContainer'
 
 type AppShellProps = {
   courseId?: string
@@ -101,12 +102,7 @@ export function AppShell({
   }
 
   return (
-    <div
-      className={cn(
-        'min-h-screen w-full',
-        showSidebar ? 'md:flex' : 'mx-auto max-w-[1120px] px-4',
-      )}
-    >
+    <div className={cn('min-h-screen w-full', showSidebar && 'md:flex')}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-[13px] focus:font-medium focus:text-white"
@@ -149,14 +145,8 @@ export function AppShell({
         </div>
       ) : null}
 
-      <div
-        className={cn(
-          'min-w-0 flex-1',
-          showSidebar && 'px-4 md:px-6',
-          !showSidebar && 'pb-12',
-        )}
-      >
-        <div className={cn(showSidebar && 'mx-auto w-full max-w-[1120px] pb-12')}>
+      <div className={cn('min-w-0 flex-1', pageGutterClassName)}>
+        <PageContainer className="pb-12">
           <header className="sticky top-0 z-20 flex min-h-[56px] flex-wrap items-center justify-between gap-2 border-b border-border/80 bg-surface/80 py-2.5 backdrop-blur-md transition-[background-color,border-color] duration-200">
             <div className="flex items-center gap-2">
               {showSidebar ? (
@@ -187,15 +177,17 @@ export function AppShell({
                 </span>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
               {(courseName || courseCode) && (
-                <p className="m-0 flex flex-wrap items-center gap-2 text-[13px]">
+                <p className="m-0 flex min-w-0 max-w-full flex-wrap items-center gap-2 text-[13px]">
                   {courseName ? (
-                    <span className="font-medium text-fg">{courseName}</span>
+                    <span className="min-w-0 truncate font-medium text-fg">
+                      {courseName}
+                    </span>
                   ) : null}
                   {courseCode ? (
                     <span
-                      className="rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-xs tabular-nums text-fg-faint shadow-panel"
+                      className="shrink-0 rounded-full border border-border bg-surface-1 px-2.5 py-0.5 text-xs tabular-nums text-fg-faint shadow-panel"
                       translate="no"
                     >
                       {courseCode}
@@ -204,12 +196,14 @@ export function AppShell({
                 </p>
               )}
               {isAuthenticated && user ? (
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
                   <span className="hidden items-center gap-1.5 text-[12px] text-fg-faint sm:inline-flex">
                     <span className="rounded-full border border-border bg-surface-1 px-2 py-0.5 text-[11px] font-medium text-fg-muted">
                       {roleLabel(user.role)}
                     </span>
-                    <span>{user.displayName || user.email}</span>
+                    <span className="max-w-[10rem] truncate">
+                      {user.displayName || user.email}
+                    </span>
                   </span>
                   {isDemoTeacher ? (
                     <Button
@@ -252,7 +246,7 @@ export function AppShell({
           >
             {children}
           </main>
-        </div>
+        </PageContainer>
       </div>
     </div>
   )

@@ -208,6 +208,9 @@ export type CourseStudentAttendanceSession = {
   date: string
   title: string
   isMandatory: boolean
+  /** False on feriado / days without roster. */
+  allowsAttendance: boolean
+  activityType: ClassActivityType | null
   present: boolean
   participated: boolean
   recorded: boolean
@@ -380,6 +383,7 @@ export type StudentMyGroup = {
     id: string
     number: number
     name: string | null
+    projectTopic: string | null
     courseId: string
     course: { id: string; name: string; code: string }
   } | null

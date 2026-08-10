@@ -213,7 +213,7 @@ export function GradesPage({ mode }: GradesPageProps) {
 
   return (
     <AppShell>
-      <section className="mx-auto flex max-w-3xl flex-col gap-4 pb-10">
+      <section className="flex flex-col gap-4 pb-10">
         <PageHero
           eyebrow="Evaluación"
           title={title}

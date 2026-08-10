@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
+import { AttendanceService } from '../attendance/attendance.service';
 import {
   buildSprintWindows,
   toSprintCalendarDto,
@@ -20,7 +21,10 @@ const MIN_LEAVE_REASON = 5;
  */
 @Injectable()
 export class MeService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly attendance: AttendanceService,
+  ) {}
 
   /** Own roster fields from the Excel/padrón (CT-074). */
   async getProfile(userId: string) {
@@ -70,6 +74,22 @@ export class MeService {
           }
         : null,
     };
+  }
+
+  /**
+   * Own attendance summary for a course (student self-service).
+   * Reuses teacher profile payload but only for the authenticated student.
+   */
+  async getMyAttendance(userId: string, courseId: string) {
+    const { studentId } = await this.requireStudentUser(userId);
+    const membership = await this.prisma.membership.findFirst({
+      where: { studentId, group: { courseId } },
+      select: { id: true },
+    });
+    if (!membership) {
+      throw new ForbiddenException('No estás inscripto en esta cursada');
+    }
+    return this.attendance.getStudentProfile(courseId, studentId);
   }
 
   /** Sprint windows from cronograma (CT-073). */

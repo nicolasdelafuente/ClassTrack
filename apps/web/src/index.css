@@ -36,6 +36,11 @@
   --shadow-panel: 0 1px 2px rgba(26, 26, 24, 0.04), 0 4px 16px rgba(26, 26, 24, 0.05);
   --shadow-lift: 0 2px 4px rgba(26, 26, 24, 0.05), 0 10px 28px rgba(26, 26, 24, 0.08);
 
+  /* Layout — single content width (teacher AppShell reference: 1120px) */
+  --max-width-content: 1120px;
+  --spacing-page-x: 1rem; /* 16px → px-4 */
+  --spacing-page-x-md: 1.5rem; /* 24px → md:px-6 */
+
   --animate-fade-up: fade-up 300ms ease-out both;
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
   --animate-skeleton: skeleton-pulse 1.5s ease-in-out infinite;

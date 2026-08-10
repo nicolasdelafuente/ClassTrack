@@ -26,7 +26,7 @@ export function MetaStats({ items, className }: MetaStatsProps) {
           <dt className="sr-only">{item.label}</dt>
           <dd className="m-0">
             <span className="font-medium text-fg-faint">{item.label} · </span>
-            <span className="font-semibold text-fg">{item.value}</span>
+            <span className="font-semibold break-words text-fg">{item.value}</span>
           </dd>
         </div>
       ))}

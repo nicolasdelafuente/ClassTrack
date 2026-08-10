@@ -69,12 +69,19 @@ References for *feel* (not pixel copy): Notion, Claude, Dropbox — **app chrome
 
 | Pattern | Guidance |
 |---------|----------|
-| Page | Light canvas; max-width; shared `PageHero` |
+| Page | Light canvas; **one** content width via `AppShell` → `PageContainer` (`max-w-content` = 1120px). No page-level `max-w-lg` / `max-w-2xl` shells |
 | Panel | Vary `tone`; soft shadow; rounded ~12px (`rounded-xl`) |
 | Rows / cards | Hover: `translateY(-2px)` + shadow-lift + border-strong ≤ 200ms |
 | Buttons | Primary or ghost; hover lift; press scale ≤ 0.98 |
 | Status | `StatusBadge` shared; soft critical pulse optional |
 | Empty / loading | Calm copy + `aria-live` |
+
+### Content width (layout)
+
+- Token: `--max-width-content` / utility `max-w-content` in `index.css`
+- Component: `PageContainer` + gutters `pageGutterClassName` (`px-4 md:px-6`)
+- Rule: `.cursor/rules/layout-content-width.mdc`
+- Inner measure (forms, prose) may be narrower **inside** the page; the **page shell** must not.
 
 ## Motion budget (allowed)
 
