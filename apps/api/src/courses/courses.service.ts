@@ -90,7 +90,10 @@ export class CoursesService {
       })),
       links: g.links
         ? {
-            githubUrl: g.links.githubUrl,
+            githubWorkspaceUrl: g.links.githubWorkspaceUrl,
+            githubRepos: Array.isArray(g.links.githubRepos)
+              ? g.links.githubRepos
+              : [],
             trelloUrl: g.links.trelloUrl,
             driveUrl: g.links.driveUrl,
           }
@@ -548,6 +551,8 @@ export class CoursesService {
       role: invite.role,
       inviteUrl,
       emailed: mailResult.emailed,
+      redirected: mailResult.redirected ?? false,
+      appEnv: mailResult.appEnv ?? null,
       expiresAt: invite.expiresAt.toISOString(),
     };
   }
@@ -620,11 +625,20 @@ export class CoursesService {
 
     return {
       total: recipients.length,
-      sent: mailResult.emailed ? recipients.length : 0,
+      sent: mailResult.emailed
+        ? mailResult.redirected
+          ? 1
+          : recipients.length
+        : 0,
       failed: mailResult.emailed ? 0 : recipients.length,
       emailed: mailResult.emailed,
       reason: mailResult.reason ?? null,
-      recipientsPreview: recipients.slice(0, 8).map((r) => r.email),
+      appEnv: mailResult.appEnv ?? null,
+      redirected: mailResult.redirected ?? false,
+      intendedRecipients: mailResult.intendedRecipients ?? recipients.map((r) => r.email),
+      recipientsPreview: (
+        mailResult.intendedRecipients ?? recipients.map((r) => r.email)
+      ).slice(0, 8),
     };
   }
 

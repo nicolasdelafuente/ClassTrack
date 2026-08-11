@@ -76,7 +76,8 @@ export class GroupsService {
   async updateLinks(
     groupId: string,
     body: {
-      githubUrl?: string | null;
+      githubWorkspaceUrl?: string | null;
+      githubRepos?: Array<{ url?: string; branch?: string | null; branches?: string[] }> | null;
       trelloUrl?: string | null;
       driveUrl?: string | null;
     },
@@ -87,7 +88,8 @@ export class GroupsService {
     }
 
     const data = {
-      githubUrl: normalizeUrl(body.githubUrl),
+      githubWorkspaceUrl: normalizeUrl(body.githubWorkspaceUrl),
+      githubRepos: normalizeRepos(body.githubRepos),
       trelloUrl: normalizeUrl(body.trelloUrl),
       driveUrl: normalizeUrl(body.driveUrl),
     };
@@ -98,11 +100,7 @@ export class GroupsService {
       update: data,
     });
 
-    return {
-      githubUrl: links.githubUrl,
-      trelloUrl: links.trelloUrl,
-      driveUrl: links.driveUrl,
-    };
+    return toLinksDto(links);
   }
 
   /** Assign tutor (teacher User) or clear tutoría (CT-044). */
@@ -247,18 +245,75 @@ export class GroupsService {
         email: m.student.email,
       })),
       links: group.links
-        ? {
-            githubUrl: group.links.githubUrl,
-            trelloUrl: group.links.trelloUrl,
-            driveUrl: group.links.driveUrl,
-          }
-        : { githubUrl: null, trelloUrl: null, driveUrl: null },
+        ? toLinksDto(group.links)
+        : {
+            githubWorkspaceUrl: null,
+            githubRepos: [],
+            trelloUrl: null,
+            driveUrl: null,
+          },
     };
   }
+}
+
+function toLinksDto(links: {
+  githubWorkspaceUrl: string | null;
+  githubRepos: unknown;
+  trelloUrl: string | null;
+  driveUrl: string | null;
+}) {
+  return {
+    githubWorkspaceUrl: links.githubWorkspaceUrl,
+    githubRepos: normalizeRepos(links.githubRepos),
+    trelloUrl: links.trelloUrl,
+    driveUrl: links.driveUrl,
+  };
 }
 
 function normalizeUrl(value: string | null | undefined): string | null {
   if (value === undefined || value === null) return null;
   const trimmed = value.trim();
   return trimmed.length === 0 ? null : trimmed;
+}
+
+function normalizeBranch(value: unknown): string | null {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed.length === 0 ? null : trimmed;
+  }
+  // Legacy: first entry from branches[]
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      if (typeof item !== 'string') continue;
+      const trimmed = item.trim();
+      if (trimmed) return trimmed;
+    }
+  }
+  return null;
+}
+
+function normalizeRepos(
+  value: unknown,
+): Array<{ url: string; branch: string | null }> {
+  if (!Array.isArray(value)) return [];
+  const out: Array<{ url: string; branch: string | null }> = [];
+  const seenUrls = new Set<string>();
+  for (const item of value) {
+    if (!item || typeof item !== 'object') continue;
+    const raw = item as {
+      url?: unknown;
+      branch?: unknown;
+      branches?: unknown;
+    };
+    const url = typeof raw.url === 'string' ? raw.url.trim() : '';
+    if (!url || seenUrls.has(url.toLowerCase())) continue;
+    seenUrls.add(url.toLowerCase());
+    out.push({
+      url,
+      branch: normalizeBranch(
+        raw.branch !== undefined ? raw.branch : raw.branches,
+      ),
+    });
+  }
+  return out;
 }

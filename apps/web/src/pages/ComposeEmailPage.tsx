@@ -148,7 +148,9 @@ export function ComposeEmailPage() {
       })
       if (result.emailed) {
         setResultMessage(
-          `Enviado a ${result.sent} destinatario${result.sent === 1 ? '' : 's'}.`,
+          result.redirected
+            ? `Envío OK en modo ${result.appEnv ?? 'no-prod'}: el mail se redirigió a tu casilla de pruebas (había ${result.total} destinatario${result.total === 1 ? '' : 's'} previstos).`
+            : `Enviado a ${result.sent} destinatario${result.sent === 1 ? '' : 's'}.`,
         )
       } else {
         setResultMessage(

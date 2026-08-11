@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsIn,
   IsInt,
   IsOptional,
@@ -8,6 +9,7 @@ import {
   Min,
   MinLength,
   ValidateIf,
+  ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -18,11 +20,27 @@ export class UpdateSprintDto {
   status!: (typeof SPRINT_STATUSES)[number];
 }
 
+export class GithubRepoLinkDto {
+  @IsUrl({ require_protocol: true })
+  url!: string;
+
+  @ValidateIf((_, v) => v !== null && v !== undefined && String(v).trim() !== '')
+  @IsString()
+  @IsOptional()
+  branch?: string | null;
+}
+
 export class UpdateLinksDto {
   @ValidateIf((_, v) => v !== null && v !== undefined && String(v).trim() !== '')
   @IsUrl({ require_protocol: true })
   @IsOptional()
-  githubUrl?: string | null;
+  githubWorkspaceUrl?: string | null;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => GithubRepoLinkDto)
+  githubRepos?: GithubRepoLinkDto[] | null;
 
   @ValidateIf((_, v) => v !== null && v !== undefined && String(v).trim() !== '')
   @IsUrl({ require_protocol: true })

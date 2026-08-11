@@ -25,8 +25,15 @@ export type GroupSprint = {
   status: SprintStatus
 }
 
+export type GithubRepoLink = {
+  url: string
+  /** Single branch to evaluate for this repo. */
+  branch: string | null
+}
+
 export type GroupLinks = {
-  githubUrl: string | null
+  githubWorkspaceUrl: string | null
+  githubRepos: GithubRepoLink[]
   trelloUrl: string | null
   driveUrl: string | null
 }
@@ -442,6 +449,7 @@ export type StudentGroupDetail = {
     isMe: boolean
   }[]
   sprints: GroupSprint[]
+  links: GroupLinks
 }
 
 export type CourseSprintSheetSummary = {

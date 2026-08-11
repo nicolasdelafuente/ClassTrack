@@ -21,6 +21,7 @@ import { StudentHomePage } from './pages/StudentHomePage'
 import { StudentGroupPage } from './pages/StudentGroupPage'
 import { StudentProfilePage } from './pages/StudentProfilePage'
 import { StudentSprintSheetPage } from './pages/StudentSprintSheetPage'
+import { TeacherGroupSprintPage } from './pages/TeacherGroupSprintPage'
 import { TeacherSprintSheetDetailPage } from './pages/TeacherSprintSheetDetailPage'
 import { TeacherSprintSheetsPage } from './pages/TeacherSprintSheetsPage'
 
@@ -157,6 +158,16 @@ function App() {
               <RequireAuth>
                 <RequireTeacher>
                   <GroupDetailPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/groups/:groupId/sprints/:sprintNumber"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <TeacherGroupSprintPage />
                 </RequireTeacher>
               </RequireAuth>
             }

@@ -148,7 +148,9 @@ export function InvitesPage() {
           >
             <p className="m-0 text-[14px] font-semibold text-fg">
               {lastInvite.emailed
-                ? 'Mail enviado'
+                ? lastInvite.redirected
+                  ? 'Mail enviado (redirigido a casilla de pruebas)'
+                  : 'Mail enviado'
                 : 'Invitación creada (modo local)'}
             </p>
             <p className="mt-1 text-[13px] text-fg-muted">

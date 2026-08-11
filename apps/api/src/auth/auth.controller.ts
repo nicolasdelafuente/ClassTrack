@@ -11,6 +11,11 @@ export class AuthController {
     return this.authService.listTeachers();
   }
 
+  @Get('login-hints')
+  loginHints() {
+    return this.authService.loginHints();
+  }
+
   @Get('invites/:token')
   getInvite(@Param('token') token: string) {
     return this.authService.getInvitePreview(token);

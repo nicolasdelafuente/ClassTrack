@@ -7,7 +7,10 @@ import {
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { normalizeEmail } from '../config/app-env';
 import { LoginDto, RegisterDto, UserRoleValue } from './dto/auth.dto';
+
+export { normalizeEmail } from '../config/app-env';
 
 /** Public shape returned to the client (never includes password). */
 export type AuthUserResponse = {
@@ -92,6 +95,29 @@ export class AuthService {
     return teachers;
   }
 
+  /**
+   * Local seed helpers for the login screen (emails + shared password).
+   * DEMO ONLY — do not expose in production.
+   */
+  async loginHints() {
+    const teachers = await this.prisma.user.findMany({
+      where: { role: UserRole.teacher },
+      orderBy: [{ displayName: 'asc' }, { email: 'asc' }],
+      take: 5,
+      select: { email: true, displayName: true, role: true },
+    });
+    const students = await this.prisma.user.findMany({
+      where: { role: UserRole.student },
+      orderBy: { email: 'asc' },
+      take: 6,
+      select: { email: true, displayName: true, role: true },
+    });
+    return {
+      password: 'demo123',
+      accounts: [...teachers, ...students],
+    };
+  }
+
   private async findValidInvite(token: string) {
     const trimmed = token?.trim();
     if (!trimmed) {
@@ -115,10 +141,6 @@ export class AuthService {
     }
     return invite;
   }
-}
-
-export function normalizeEmail(email: string): string {
-  return email.trim().toLowerCase();
 }
 
 function toAuthUser(user: {

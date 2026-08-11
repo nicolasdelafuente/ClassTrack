@@ -78,6 +78,66 @@ export function GroupDetailPageSkeleton() {
   )
 }
 
+/** Student “Mi grupo”: hero + semáforo + recursos + compañeros (columna única). */
+export function StudentGroupPageSkeleton() {
+  return (
+    <article
+      className="flex flex-col gap-4 pb-10"
+      aria-busy="true"
+      aria-label="Cargando grupo"
+    >
+      <PageHeroSkeleton compact stats={0} />
+
+      <Panel as="section" tone="default" className="p-4">
+        <Skeleton className="mb-3 h-4 w-40" />
+        <div className="flex justify-between gap-2 pt-2">
+          {Array.from({ length: 5 }, (_, i) => (
+            <div key={i} className="flex flex-1 flex-col items-center gap-2">
+              <SkeletonCircle size={28} />
+              <Skeleton className="h-3 w-8" />
+            </div>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel as="section" tone="soft" className="p-4">
+        <Skeleton className="mb-3 h-4 w-44" />
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 3 }, (_, i) => (
+            <div
+              key={i}
+              className="rounded-xl border border-border bg-surface-1 px-3 py-3"
+            >
+              <div className="flex items-center gap-3">
+                <SkeletonCircle size={36} />
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <Skeleton className="h-3.5 w-24" />
+                  <Skeleton className="h-3 w-[55%]" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel as="section" tone="soft" className="p-4">
+        <Skeleton className="mb-3 h-4 w-28" />
+        <ul className="m-0 flex list-none flex-col gap-2 p-0">
+          {Array.from({ length: 4 }, (_, i) => (
+            <li key={i} className="flex items-center gap-3 px-2 py-1.5">
+              <SkeletonCircle size={32} />
+              <div className="min-w-0 flex-1 space-y-1.5">
+                <Skeleton className="h-3.5 w-[60%]" />
+                <Skeleton className="h-3 w-[35%]" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Panel>
+    </article>
+  )
+}
+
 /** Student profile: hero + attendance summary + session rows. */
 export function StudentProfilePageSkeleton({ rows = 6 }: { rows?: number }) {
   return (

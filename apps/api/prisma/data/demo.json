@@ -390,5 +390,5005 @@
         "folderName": "DesApp 2026c2 - Grupo 10"
       }
     }
+  ],
+  "attendance": [
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0601@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0901@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0101@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0801@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0102@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0701@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0103@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0802@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0501@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0201@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0602@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0301@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0803@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0302@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0702@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0104@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0202@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0203@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0603@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0604@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0105@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0401@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0804@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0502@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0703@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0902@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0503@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0402@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0403@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0704@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0303@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1001@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1002@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0304@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0305@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0903@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1003@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0204@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1004@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0904@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno1005@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0404@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0405@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0805@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0504@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0505@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0605@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0905@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-04-09",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-04-16",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-04-23",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-04-30",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-05-07",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-05-14",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-05-21",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-05-28",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-06-04",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-06-11",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-06-18",
+      "present": true,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-06-25",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-07-02",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-07-09",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-07-16",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-07-23",
+      "present": false,
+      "participated": false
+    },
+    {
+      "email": "alumno0205@demo.classtrack.local",
+      "date": "2026-07-30",
+      "present": false,
+      "participated": false
+    }
   ]
 }
