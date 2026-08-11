@@ -12,6 +12,7 @@ Cómo organizamos el desarrollo (visión senior / alumno).
 | **Post-MVP / cursada real** | **CT-E06** | **Cerrada** | Alumno, fichas, notas, seguimiento + fotos |
 | **Mejoras continuas** | **CT-E07** | **Activa** | Features e mejoras que vayan surgiendo |
 | **Espacio alumno** | **CT-E09** | **Hecha** | Perfil, sprint actual (cronograma), grupo y fichas |
+| **Observabilidad (logs archivo)** | **CT-E10** | **Hecha** | Persistencia JSONL + rotación (CT-081/082) |
 
 ## Producto usable (hito cerrado)
 
