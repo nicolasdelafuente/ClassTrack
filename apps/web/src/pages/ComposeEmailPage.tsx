@@ -6,6 +6,7 @@ import {
   sendCourseEmail,
   type EmailAudience,
   type EmailRecipient,
+  type SentEmailCategory,
 } from '../api/client'
 import { Button } from '../components/atoms/Button'
 import { ButtonLink } from '../components/atoms/ButtonLink'
@@ -60,6 +61,7 @@ export function ComposeEmailPage() {
   const [audience, setAudience] = useState<EmailAudience>('all')
   const [groupId, setGroupId] = useState('')
   const [studentId, setStudentId] = useState('')
+  const [category, setCategory] = useState<SentEmailCategory>('other')
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
   const [previewTotal, setPreviewTotal] = useState<number | null>(null)
@@ -145,6 +147,7 @@ export function ComposeEmailPage() {
         audience,
         groupId: audience === 'group' ? groupId : undefined,
         studentId: audience === 'student' ? studentId : undefined,
+        category,
       })
       if (result.emailed) {
         setResultMessage(
@@ -154,7 +157,7 @@ export function ComposeEmailPage() {
         )
       } else {
         setResultMessage(
-          `Se armaron ${result.total} destinatarios, pero Mailjet no está configurado (o falló el envío). Revisá MAILJET_* en el .env de la API.`,
+          `Se armaron ${result.total} destinatarios, pero Mailjet no está configurado (o falló el envío). Revisá MAILJET_* en el .env de la API. El intento quedó en el registro de emails.`,
         )
       }
     } catch (err) {
@@ -204,6 +207,14 @@ export function ComposeEmailPage() {
           eyebrow="Comunicación"
           title="Escribir mail"
           description="Redactá un mensaje y mandalo a toda la cursada, un grupo o un alumno. Usa la plantilla HTML de ClassTrack."
+          actions={
+            <ButtonLink
+              to={`/courses/${courseId}/emails`}
+              variant="ghost"
+            >
+              Ver enviados
+            </ButtonLink>
+          }
         />
 
         <form
@@ -279,6 +290,24 @@ export function ComposeEmailPage() {
                 </Select>
               </div>
             ) : null}
+
+            <div>
+              <Label htmlFor="mail-category">Categoría</Label>
+              <Select
+                id="mail-category"
+                value={category}
+                onChange={(e) =>
+                  setCategory(e.target.value as SentEmailCategory)
+                }
+              >
+                <option value="other">Otro / aviso general</option>
+                <option value="sprint">Sprint</option>
+                <option value="invite">Invitación</option>
+              </Select>
+              <p className="mt-1.5 m-0 text-[12px] text-fg-faint">
+                Sirve para filtrar el registro de emails enviados.
+              </p>
+            </div>
 
             <div>
               <Label htmlFor="mail-subject">Asunto</Label>

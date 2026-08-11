@@ -17,6 +17,8 @@ import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { SchedulePage } from './pages/SchedulePage'
 import { ScheduleSessionPage } from './pages/ScheduleSessionPage'
+import { SentEmailDetailPage } from './pages/SentEmailDetailPage'
+import { SentEmailsPage } from './pages/SentEmailsPage'
 import { StudentHomePage } from './pages/StudentHomePage'
 import { StudentGroupPage } from './pages/StudentGroupPage'
 import { StudentProfilePage } from './pages/StudentProfilePage'
@@ -138,6 +140,26 @@ function App() {
               <RequireAuth>
                 <RequireTeacher>
                   <ComposeEmailPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/emails"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <SentEmailsPage />
+                </RequireTeacher>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/courses/:courseId/emails/:emailId"
+            element={
+              <RequireAuth>
+                <RequireTeacher>
+                  <SentEmailDetailPage />
                 </RequireTeacher>
               </RequireAuth>
             }

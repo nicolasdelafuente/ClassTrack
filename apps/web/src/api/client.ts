@@ -454,8 +454,35 @@ export type BroadcastEmailResult = {
   reason: string | null
   appEnv?: string | null
   redirected?: boolean
+  sentEmailId?: string | null
   intendedRecipients?: string[]
   recipientsPreview: string[]
+}
+
+export type SentEmailCategory = 'invite' | 'sprint' | 'other'
+
+export type SentEmailSummary = {
+  id: string
+  category: SentEmailCategory
+  subject: string
+  recipientCount: number
+  recipientsPreview: string[]
+  emailed: boolean
+  reason: string | null
+  redirected: boolean
+  createdAt: string
+  sentBy: {
+    id: string
+    email: string
+    displayName: string | null
+    label: string
+  } | null
+}
+
+export type SentEmailDetail = SentEmailSummary & {
+  bodyHtml: string
+  bodyText: string | null
+  recipients: string[]
 }
 
 export function sendCourseEmail(
@@ -466,6 +493,7 @@ export function sendCourseEmail(
     audience: EmailAudience
     groupId?: string
     studentId?: string
+    category?: SentEmailCategory
   },
 ) {
   return requestJson<BroadcastEmailResult>(
@@ -474,6 +502,24 @@ export function sendCourseEmail(
       method: 'POST',
       body: JSON.stringify(body),
     },
+  )
+}
+
+export function fetchSentEmails(
+  courseId: string,
+  category?: SentEmailCategory | 'all',
+) {
+  const q = new URLSearchParams()
+  if (category && category !== 'all') q.set('category', category)
+  const suffix = q.toString() ? `?${q.toString()}` : ''
+  return requestJson<{ total: number; emails: SentEmailSummary[] }>(
+    `/courses/${courseId}/emails${suffix}`,
+  )
+}
+
+export function fetchSentEmail(courseId: string, emailId: string) {
+  return requestJson<SentEmailDetail>(
+    `/courses/${courseId}/emails/${emailId}`,
   )
 }
 

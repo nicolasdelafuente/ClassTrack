@@ -69,6 +69,11 @@ export class BroadcastEmailDto {
   @IsOptional()
   @IsString()
   studentId?: string;
+
+  /** Audit category (CT-080). Default: other. */
+  @IsOptional()
+  @IsIn(['invite', 'sprint', 'other'])
+  category?: 'invite' | 'sprint' | 'other';
 }
 
 /** One batch when creating empty group shells (CT-045). */

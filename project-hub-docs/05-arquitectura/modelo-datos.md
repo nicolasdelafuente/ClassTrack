@@ -61,6 +61,22 @@ Elegimos stack concreto al armar el esqueleto. El modelo conceptual no cambia.
 - `participated` (boolean)
 - unique (`course_id`, `student_id`, `date`)
 
+### `sent_emails` (CT-080)
+Registro de emails salientes (invitaciones + broadcast).
+- `id` (pk)
+- `course_id` (fk → courses, nullable)
+- `category` (`invite` | `sprint` | `other`)
+- `subject` (text)
+- `body_html` (text) — cuerpo enviado / would-send
+- `body_text` (text, nullable)
+- `sent_by_user_id` (fk → users, nullable)
+- `recipients_json` (JSON array de emails)
+- `recipient_count` (int)
+- `emailed` (boolean) — si Mailjet aceptó el envío
+- `reason` (text, nullable) — fallo / no configurado
+- `redirected` (boolean)
+- `created_at` (datetime)
+
 ## Seed (demo)
 
 Fuente original: `DesAPP-PPS 2026-c1- Asistencia.xlsx` (solo import local, no versionar).

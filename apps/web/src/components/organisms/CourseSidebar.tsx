@@ -36,6 +36,11 @@ function isActivePath(pathname: string, courseId: string, kind: string) {
       return pathname.includes('/grades/')
     case 'invites':
       return pathname.includes('/invites')
+    case 'emails':
+      return (
+        pathname.includes(`/courses/${courseId}/emails`) ||
+        pathname.includes('/compose-email')
+      )
     case 'duplicate':
       return pathname.includes('/duplicate')
     default:
@@ -51,6 +56,7 @@ export function CourseSidebar({ courseId, mode, onNavigate }: CourseSidebarProps
   const { pathname } = useLocation()
   const configOpenDefault =
     isActivePath(pathname, courseId, 'invites') ||
+    isActivePath(pathname, courseId, 'emails') ||
     isActivePath(pathname, courseId, 'duplicate')
   const [configOpen, setConfigOpen] = useState(configOpenDefault)
 
@@ -104,6 +110,7 @@ export function CourseSidebar({ courseId, mode, onNavigate }: CourseSidebarProps
 
   const configActive =
     isActivePath(pathname, courseId, 'invites') ||
+    isActivePath(pathname, courseId, 'emails') ||
     isActivePath(pathname, courseId, 'duplicate')
 
   return (
@@ -182,6 +189,18 @@ export function CourseSidebar({ courseId, mode, onNavigate }: CourseSidebarProps
             >
               <span className={mode === 'rail' ? labelClass : undefined}>
                 Invitar
+              </span>
+            </Link>
+            <Link
+              to={`/courses/${courseId}/emails`}
+              className={cn(
+                linkClass(isActivePath(pathname, courseId, 'emails')),
+                'min-h-10 pl-10',
+              )}
+              onClick={onNavigate}
+            >
+              <span className={mode === 'rail' ? labelClass : undefined}>
+                Emails enviados
               </span>
             </Link>
             <Link

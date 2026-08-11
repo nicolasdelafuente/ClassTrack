@@ -38,6 +38,7 @@ model User {
   sheetComments SprintSheetComment[]
   groupNotes  GroupNote[]
   noteAttachments GroupNoteAttachment[]
+  sentEmails  SentEmail[] @relation("SentEmailsBy")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -83,6 +84,7 @@ model Course {
   invites              Invite[]
   preliminaryGrades    PreliminaryGrade[]
   finalGrades          FinalGrade[]
+  sentEmails           SentEmail[]
   createdAt            DateTime                     @default(now()) @map("created_at")
   updatedAt            DateTime                     @updatedAt @map("updated_at")
 
@@ -424,4 +426,36 @@ model GroupNoteAttachment {
 
   @@index([noteId])
   @@map("group_note_attachments")
+}
+
+/// Outbound email audit log (CT-080): subject, body, sender, category, recipients.
+enum SentEmailCategory {
+  invite
+  sprint
+  other
+}
+
+model SentEmail {
+  id              String            @id @default(cuid())
+  courseId        String?           @map("course_id")
+  course          Course?           @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  category        SentEmailCategory
+  subject         String
+  /// Full HTML body as sent (or would-send when Mailjet is off).
+  bodyHtml        String            @map("body_html")
+  bodyText        String?           @map("body_text")
+  sentByUserId    String?           @map("sent_by_user_id")
+  sentBy          User?             @relation("SentEmailsBy", fields: [sentByUserId], references: [id], onDelete: SetNull)
+  /// JSON string array of intended recipient emails.
+  recipientsJson  String            @map("recipients_json")
+  recipientCount  Int               @map("recipient_count")
+  emailed         Boolean           @default(false)
+  reason          String?
+  redirected      Boolean           @default(false)
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  @@index([courseId, createdAt])
+  @@index([category])
+  @@index([sentByUserId])
+  @@map("sent_emails")
 }

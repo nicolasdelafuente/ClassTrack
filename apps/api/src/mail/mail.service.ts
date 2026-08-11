@@ -1,9 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { SentEmailCategory } from '@prisma/client';
 import {
   getAppEnv,
   prepareMailRecipients,
   type AppEnv,
 } from '../config/app-env';
+import { PrismaService } from '../prisma/prisma.service';
 import {
   escapeHtml,
   renderEmailLayout,
@@ -15,6 +17,8 @@ export type SendInviteEmailInput = {
   roleLabel: string;
   inviteUrl: string;
   courseName?: string | null;
+  courseId?: string | null;
+  sentByUserId?: string | null;
 };
 
 export type SendEmailResult = {
@@ -26,6 +30,8 @@ export type SendEmailResult = {
   redirected?: boolean;
   /** Intended recipients before redirect / after dedupe. */
   intendedRecipients?: string[];
+  /** Persisted audit row id when logging succeeded (CT-080). */
+  sentEmailId?: string;
 };
 
 export type MailRecipient = {
@@ -33,12 +39,22 @@ export type MailRecipient = {
   name?: string | null;
 };
 
+export type SentEmailLogMeta = {
+  category: SentEmailCategory;
+  courseId?: string | null;
+  sentByUserId?: string | null;
+};
+
 export type SendHtmlEmailInput = {
   to: MailRecipient[];
   subject: string;
   html: string;
   text: string;
+  /** Audit metadata — always written to `sent_emails` (CT-080). */
+  log?: SentEmailLogMeta;
 };
+
+const MAX_BODY_CHARS = 200_000;
 
 /**
  * Mailjet transactional sender (CT-042 / CT-043).
@@ -46,10 +62,13 @@ export type SendHtmlEmailInput = {
  *
  * All outbound mail goes through {@link prepareMailRecipients}:
  * validate → dedupe → redirect to MAIL_REDIRECT_TO when APP_ENV ≠ production.
+ * Every attempt is recorded in `sent_emails` when `log` is provided (CT-080).
  */
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
+
+  constructor(private readonly prisma: PrismaService) {}
 
   isConfigured(): boolean {
     return Boolean(
@@ -97,6 +116,11 @@ export class MailService {
       subject: 'Invitación a ClassTrack',
       html,
       text: `Te invitaron a ClassTrack como ${input.roleLabel}. Completá el registro: ${input.inviteUrl}`,
+      log: {
+        category: SentEmailCategory.invite,
+        courseId: input.courseId ?? null,
+        sentByUserId: input.sentByUserId ?? null,
+      },
     });
   }
 
@@ -109,13 +133,13 @@ export class MailService {
     const prepared = prepareMailRecipients(input.to);
 
     if (prepared.to.length === 0) {
-      return {
+      return this.finishSend(input, prepared.intended, {
         emailed: false,
         reason: 'no_recipients',
         appEnv,
         redirected: prepared.redirected,
         intendedRecipients: prepared.intended,
-      };
+      });
     }
 
     let subject = input.subject;
@@ -137,13 +161,17 @@ export class MailService {
       this.logger.warn(
         `Mailjet not configured — would send "${subject}" to ${prepared.to.map((r) => r.email).join(', ')} (intended: ${prepared.intended.join(', ') || '—'})`,
       );
-      return {
-        emailed: false,
-        reason: 'mailjet_not_configured',
-        appEnv,
-        redirected: prepared.redirected,
-        intendedRecipients: prepared.intended,
-      };
+      return this.finishSend(
+        { ...input, subject, html, text },
+        prepared.intended,
+        {
+          emailed: false,
+          reason: 'mailjet_not_configured',
+          appEnv,
+          redirected: prepared.redirected,
+          intendedRecipients: prepared.intended,
+        },
+      );
     }
 
     const apiKey = process.env.MAILJET_API_KEY!.trim();
@@ -196,20 +224,74 @@ export class MailService {
     }
 
     if (!anyOk) {
-      return {
-        emailed: false,
-        reason: lastReason ?? 'mailjet_failed',
+      return this.finishSend(
+        { ...input, subject, html, text },
+        prepared.intended,
+        {
+          emailed: false,
+          reason: lastReason ?? 'mailjet_failed',
+          appEnv,
+          redirected: prepared.redirected,
+          intendedRecipients: prepared.intended,
+        },
+      );
+    }
+
+    return this.finishSend(
+      { ...input, subject, html, text },
+      prepared.intended,
+      {
+        emailed: true,
         appEnv,
         redirected: prepared.redirected,
         intendedRecipients: prepared.intended,
-      };
+      },
+    );
+  }
+
+  private async finishSend(
+    input: SendHtmlEmailInput,
+    intendedRecipients: string[],
+    result: SendEmailResult,
+  ): Promise<SendEmailResult> {
+    if (!input.log) {
+      return result;
     }
 
-    return {
-      emailed: true,
-      appEnv,
-      redirected: prepared.redirected,
-      intendedRecipients: prepared.intended,
-    };
+    try {
+      const bodyHtml = truncate(input.html, MAX_BODY_CHARS);
+      const bodyText = input.text
+        ? truncate(input.text, MAX_BODY_CHARS)
+        : null;
+      const recipients = intendedRecipients.length
+        ? intendedRecipients
+        : input.to.map((r) => r.email).filter(Boolean);
+
+      const row = await this.prisma.sentEmail.create({
+        data: {
+          courseId: input.log.courseId ?? null,
+          category: input.log.category,
+          subject: truncate(input.subject, 500),
+          bodyHtml,
+          bodyText,
+          sentByUserId: input.log.sentByUserId ?? null,
+          recipientsJson: JSON.stringify(recipients),
+          recipientCount: recipients.length,
+          emailed: result.emailed,
+          reason: result.reason ?? null,
+          redirected: Boolean(result.redirected),
+        },
+        select: { id: true },
+      });
+      return { ...result, sentEmailId: row.id };
+    } catch (err) {
+      this.logger.error('Failed to persist sent email log', err);
+      return result;
+    }
   }
+}
+
+function truncate(value: string, max: number): string {
+  if (value.length <= max) return value;
+  return `${value.slice(0, max)}…`;
 }

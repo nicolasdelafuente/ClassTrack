@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Param,
   Patch,
   Post,
@@ -47,8 +48,9 @@ export class CoursesController {
   createInvite(
     @Param('courseId') courseId: string,
     @Body() dto: CreateInviteDto,
+    @Headers('x-user-id') userId?: string,
   ) {
-    return this.coursesService.createInvite(courseId, dto);
+    return this.coursesService.createInvite(courseId, dto, userId);
   }
 
   @Get(':courseId/email-recipients')
@@ -72,8 +74,25 @@ export class CoursesController {
   broadcastEmail(
     @Param('courseId') courseId: string,
     @Body() dto: BroadcastEmailDto,
+    @Headers('x-user-id') userId?: string,
   ) {
-    return this.coursesService.broadcastEmail(courseId, dto);
+    return this.coursesService.broadcastEmail(courseId, dto, userId);
+  }
+
+  @Get(':courseId/emails')
+  listSentEmails(
+    @Param('courseId') courseId: string,
+    @Query('category') category?: string,
+  ) {
+    return this.coursesService.listSentEmails(courseId, category);
+  }
+
+  @Get(':courseId/emails/:emailId')
+  getSentEmail(
+    @Param('courseId') courseId: string,
+    @Param('emailId') emailId: string,
+  ) {
+    return this.coursesService.getSentEmail(courseId, emailId);
   }
 
   @Get(':courseId/groups')

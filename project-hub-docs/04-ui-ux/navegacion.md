@@ -29,7 +29,7 @@ Rail en desktop (íconos, se expande al hover) y menú drawer en mobile:
 - Tablero de grupos
 - Fichas de sprint
 - Notas y calificaciones
-- Configuración → Invitar, Duplicar cursada
+- Configuración → Invitar, Emails enviados, Duplicar cursada
 
 Los módulos top-level del sidebar **no** llevan `← Tablero` en el header.
 

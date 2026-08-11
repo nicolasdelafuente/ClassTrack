@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { randomBytes } from 'node:crypto';
-import { SprintStatusValue, UserRole } from '@prisma/client';
+import { SentEmailCategory, SprintStatusValue, UserRole } from '@prisma/client';
 import {
   parseDateOnly,
   toDateOnlyString,
@@ -13,13 +13,24 @@ import {
 import { normalizeEmail } from '../auth/auth.service';
 import { MailService } from '../mail/mail.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateInviteDto, DuplicateCourseDto, BroadcastEmailDto, CreateGroupStructureDto } from './dto/courses.dto';
+import {
+  CreateInviteDto,
+  DuplicateCourseDto,
+  BroadcastEmailDto,
+  CreateGroupStructureDto,
+} from './dto/courses.dto';
 import {
   plainTextToHtml,
   renderEmailLayout,
 } from '../mail/email-layout';
 
 const INVITE_TTL_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
+
+const SENT_EMAIL_CATEGORIES = new Set<string>([
+  SentEmailCategory.invite,
+  SentEmailCategory.sprint,
+  SentEmailCategory.other,
+]);
 
 @Injectable()
 export class CoursesService {
@@ -457,7 +468,11 @@ export class CoursesService {
     });
   }
 
-  async createInvite(courseId: string, dto: CreateInviteDto) {
+  async createInvite(
+    courseId: string,
+    dto: CreateInviteDto,
+    sentByUserId?: string,
+  ) {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
     });
@@ -527,6 +542,7 @@ export class CoursesService {
         role,
         courseId,
         studentId,
+        invitedByUserId: sentByUserId?.trim() || null,
         expiresAt: new Date(Date.now() + INVITE_TTL_MS),
       },
     });
@@ -543,6 +559,8 @@ export class CoursesService {
       roleLabel,
       inviteUrl,
       courseName: course.name,
+      courseId,
+      sentByUserId: sentByUserId?.trim() || null,
     });
 
     return {
@@ -553,6 +571,7 @@ export class CoursesService {
       emailed: mailResult.emailed,
       redirected: mailResult.redirected ?? false,
       appEnv: mailResult.appEnv ?? null,
+      sentEmailId: mailResult.sentEmailId ?? null,
       expiresAt: invite.expiresAt.toISOString(),
     };
   }
@@ -582,7 +601,11 @@ export class CoursesService {
   }
 
   /** Teacher broadcast email to all / group / student (CT-043). */
-  async broadcastEmail(courseId: string, dto: BroadcastEmailDto) {
+  async broadcastEmail(
+    courseId: string,
+    dto: BroadcastEmailDto,
+    sentByUserId?: string,
+  ) {
     const course = await this.prisma.course.findUnique({
       where: { id: courseId },
     });
@@ -594,6 +617,11 @@ export class CoursesService {
     const body = dto.body.trim();
     if (!subject || !body) {
       throw new BadRequestException('Asunto y mensaje son obligatorios');
+    }
+
+    const category = dto.category ?? SentEmailCategory.other;
+    if (!SENT_EMAIL_CATEGORIES.has(category)) {
+      throw new BadRequestException('Categoría de email inválida');
     }
 
     const recipients = await this.resolveEmailRecipients(
@@ -621,6 +649,11 @@ export class CoursesService {
       subject: `[ClassTrack] ${subject}`,
       html,
       text: `${subject}\n\n${body}\n\n— ${course.name}`,
+      log: {
+        category,
+        courseId,
+        sentByUserId: sentByUserId?.trim() || null,
+      },
     });
 
     return {
@@ -635,10 +668,128 @@ export class CoursesService {
       reason: mailResult.reason ?? null,
       appEnv: mailResult.appEnv ?? null,
       redirected: mailResult.redirected ?? false,
-      intendedRecipients: mailResult.intendedRecipients ?? recipients.map((r) => r.email),
+      sentEmailId: mailResult.sentEmailId ?? null,
+      intendedRecipients:
+        mailResult.intendedRecipients ?? recipients.map((r) => r.email),
       recipientsPreview: (
         mailResult.intendedRecipients ?? recipients.map((r) => r.email)
       ).slice(0, 8),
+    };
+  }
+
+  /** Audit list of outbound emails for a course (CT-080). */
+  async listSentEmails(
+    courseId: string,
+    category?: string,
+  ) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+      select: { id: true },
+    });
+    if (!course) {
+      throw new NotFoundException('Cursada no encontrada');
+    }
+
+    const cat =
+      category && SENT_EMAIL_CATEGORIES.has(category)
+        ? (category as SentEmailCategory)
+        : undefined;
+
+    const rows = await this.prisma.sentEmail.findMany({
+      where: {
+        courseId,
+        ...(cat ? { category: cat } : {}),
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 200,
+      include: {
+        sentBy: {
+          select: { id: true, email: true, displayName: true },
+        },
+      },
+    });
+
+    return {
+      total: rows.length,
+      emails: rows.map((row) => this.toSentEmailSummary(row)),
+    };
+  }
+
+  async getSentEmail(courseId: string, emailId: string) {
+    const row = await this.prisma.sentEmail.findFirst({
+      where: { id: emailId, courseId },
+      include: {
+        sentBy: {
+          select: { id: true, email: true, displayName: true },
+        },
+      },
+    });
+    if (!row) {
+      throw new NotFoundException('Email no encontrado');
+    }
+    return this.toSentEmailDetail(row);
+  }
+
+  private toSentEmailSummary(row: {
+    id: string;
+    category: SentEmailCategory;
+    subject: string;
+    recipientCount: number;
+    recipientsJson: string;
+    emailed: boolean;
+    reason: string | null;
+    redirected: boolean;
+    createdAt: Date;
+    sentBy: {
+      id: string;
+      email: string;
+      displayName: string | null;
+    } | null;
+  }) {
+    return {
+      id: row.id,
+      category: row.category,
+      subject: row.subject,
+      recipientCount: row.recipientCount,
+      recipientsPreview: parseRecipientsJson(row.recipientsJson).slice(0, 5),
+      emailed: row.emailed,
+      reason: row.reason,
+      redirected: row.redirected,
+      createdAt: row.createdAt.toISOString(),
+      sentBy: row.sentBy
+        ? {
+            id: row.sentBy.id,
+            email: row.sentBy.email,
+            displayName: row.sentBy.displayName,
+            label: row.sentBy.displayName?.trim() || row.sentBy.email,
+          }
+        : null,
+    };
+  }
+
+  private toSentEmailDetail(row: {
+    id: string;
+    category: SentEmailCategory;
+    subject: string;
+    bodyHtml: string;
+    bodyText: string | null;
+    recipientCount: number;
+    recipientsJson: string;
+    emailed: boolean;
+    reason: string | null;
+    redirected: boolean;
+    createdAt: Date;
+    sentBy: {
+      id: string;
+      email: string;
+      displayName: string | null;
+    } | null;
+  }) {
+    return {
+      ...this.toSentEmailSummary(row),
+      bodyHtml: row.bodyHtml,
+      bodyText: row.bodyText,
+      recipients: parseRecipientsJson(row.recipientsJson),
     };
   }
 
@@ -748,6 +899,16 @@ export class CoursesService {
       }
     }
     return [...byEmail.values()];
+  }
+}
+
+function parseRecipientsJson(raw: string): string[] {
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((x): x is string => typeof x === 'string');
+  } catch {
+    return [];
   }
 }
 
