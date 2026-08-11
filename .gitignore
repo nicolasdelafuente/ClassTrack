@@ -21,6 +21,7 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+apps/api/logs/
 
 # Data with PII (no subir padrones / Excel de alumnos)
 *.xlsx

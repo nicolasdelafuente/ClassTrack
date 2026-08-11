@@ -14,9 +14,11 @@ import { MeModule } from './me/me.module';
 import { SprintSheetsModule } from './sprint-sheets/sprint-sheets.module';
 import { GradesModule } from './grades/grades.module';
 import { GroupNotesModule } from './group-notes/group-notes.module';
+import { ObservabilityModule } from './observability/observability.module';
 
 @Module({
   imports: [
+    ObservabilityModule,
     ThrottlerModule.forRoot([
       {
         ttl: 60_000,
