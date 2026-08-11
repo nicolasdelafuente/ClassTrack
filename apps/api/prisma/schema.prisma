@@ -177,11 +177,14 @@ model SprintStatus {
 }
 
 model GroupLinks {
-  groupId   String  @id @map("group_id")
-  group     Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  githubUrl String? @map("github_url")
-  trelloUrl String? @map("trello_url")
-  driveUrl  String? @map("drive_url")
+  groupId            String  @id @map("group_id")
+  group              Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  /// GitHub org / team workspace URL (optional).
+  githubWorkspaceUrl String? @map("github_workspace_url")
+  /// Repos to evaluate: JSON [{ url: string, branch: string | null }].
+  githubRepos         Json    @default("[]") @map("github_repos")
+  trelloUrl          String? @map("trello_url")
+  driveUrl           String? @map("drive_url")
 
   @@map("group_links")
 }

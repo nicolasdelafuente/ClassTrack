@@ -1,5 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
+  getAppEnv,
+  prepareMailRecipients,
+  type AppEnv,
+} from '../config/app-env';
+import {
   escapeHtml,
   renderEmailLayout,
 } from './email-layout';
@@ -15,6 +20,12 @@ export type SendInviteEmailInput = {
 export type SendEmailResult = {
   emailed: boolean;
   reason?: string;
+  /** Env used for this send (handy for UI / debugging). */
+  appEnv?: AppEnv;
+  /** True when recipients were redirected to MAIL_REDIRECT_TO. */
+  redirected?: boolean;
+  /** Intended recipients before redirect / after dedupe. */
+  intendedRecipients?: string[];
 };
 
 export type MailRecipient = {
@@ -32,6 +43,9 @@ export type SendHtmlEmailInput = {
 /**
  * Mailjet transactional sender (CT-042 / CT-043).
  * If API keys are missing, returns emailed=false so the UI can show a copy link / local mode.
+ *
+ * All outbound mail goes through {@link prepareMailRecipients}:
+ * validate → dedupe → redirect to MAIL_REDIRECT_TO when APP_ENV ≠ production.
  */
 @Injectable()
 export class MailService {
@@ -91,15 +105,45 @@ export class MailService {
    * Mailjet accepts up to 50 Messages per request — we chunk.
    */
   async sendHtmlEmail(input: SendHtmlEmailInput): Promise<SendEmailResult> {
-    if (input.to.length === 0) {
-      return { emailed: false, reason: 'no_recipients' };
+    const appEnv = getAppEnv();
+    const prepared = prepareMailRecipients(input.to);
+
+    if (prepared.to.length === 0) {
+      return {
+        emailed: false,
+        reason: 'no_recipients',
+        appEnv,
+        redirected: prepared.redirected,
+        intendedRecipients: prepared.intended,
+      };
+    }
+
+    let subject = input.subject;
+    let text = input.text;
+    let html = input.html;
+
+    if (prepared.redirected) {
+      const intendedList = prepared.intended.join(', ');
+      this.logger.warn(
+        `Mail redirect (${appEnv}): intended [${intendedList}] → ${prepared.to[0].email}`,
+      );
+      subject = `[${appEnv}] ${input.subject}`;
+      const redirectNote = `\n\n[ClassTrack ${appEnv}] Destinatarios originales: ${intendedList}`;
+      text = `${input.text}${redirectNote}`;
+      html = `${input.html}<p style="margin:24px 0 0;padding-top:12px;border-top:1px solid #e8e6df;color:#8a877c;font-size:12px;">[${escapeHtml(appEnv)}] Destinatarios originales: ${escapeHtml(intendedList)}</p>`;
     }
 
     if (!this.isConfigured()) {
       this.logger.warn(
-        `Mailjet not configured — would send "${input.subject}" to ${input.to.length} recipient(s)`,
+        `Mailjet not configured — would send "${subject}" to ${prepared.to.map((r) => r.email).join(', ')} (intended: ${prepared.intended.join(', ') || '—'})`,
       );
-      return { emailed: false, reason: 'mailjet_not_configured' };
+      return {
+        emailed: false,
+        reason: 'mailjet_not_configured',
+        appEnv,
+        redirected: prepared.redirected,
+        intendedRecipients: prepared.intended,
+      };
     }
 
     const apiKey = process.env.MAILJET_API_KEY!.trim();
@@ -112,8 +156,8 @@ export class MailService {
     let anyOk = false;
     let lastReason: string | undefined;
 
-    for (let i = 0; i < input.to.length; i += chunkSize) {
-      const chunk = input.to.slice(i, i + chunkSize);
+    for (let i = 0; i < prepared.to.length; i += chunkSize) {
+      const chunk = prepared.to.slice(i, i + chunkSize);
       const body = {
         Messages: chunk.map((r) => ({
           From: { Email: fromEmail, Name: fromName },
@@ -123,9 +167,9 @@ export class MailService {
               Name: r.name?.trim() || r.email,
             },
           ],
-          Subject: input.subject,
-          HTMLPart: input.html,
-          TextPart: input.text,
+          Subject: subject,
+          HTMLPart: html,
+          TextPart: text,
         })),
       };
 
@@ -139,8 +183,8 @@ export class MailService {
           body: JSON.stringify(body),
         });
         if (!res.ok) {
-          const text = await res.text();
-          this.logger.error(`Mailjet error ${res.status}: ${text}`);
+          const errText = await res.text();
+          this.logger.error(`Mailjet error ${res.status}: ${errText}`);
           lastReason = `mailjet_http_${res.status}`;
         } else {
           anyOk = true;
@@ -152,8 +196,20 @@ export class MailService {
     }
 
     if (!anyOk) {
-      return { emailed: false, reason: lastReason ?? 'mailjet_failed' };
+      return {
+        emailed: false,
+        reason: lastReason ?? 'mailjet_failed',
+        appEnv,
+        redirected: prepared.redirected,
+        intendedRecipients: prepared.intended,
+      };
     }
-    return { emailed: true };
+
+    return {
+      emailed: true,
+      appEnv,
+      redirected: prepared.redirected,
+      intendedRecipients: prepared.intended,
+    };
   }
 }

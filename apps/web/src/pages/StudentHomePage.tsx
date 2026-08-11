@@ -6,6 +6,7 @@ import {
   fetchMyGroup,
   fetchSprintCalendar,
   fetchStudentSprintOverview,
+  patchMeProfile,
 } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { roleLabel } from '../auth/roles'
@@ -19,6 +20,7 @@ import { formatDateDisplay } from '../components/molecules/DatePicker'
 import { ListRow } from '../components/molecules/ListRow'
 import { SectionTitle } from '../components/molecules/SectionTitle'
 import { StateBox } from '../components/molecules/StateBox'
+import { StudentEmailEditor } from '../components/molecules/StudentEmailEditor'
 import { PageHero } from '../components/organisms/PageHero'
 import { StudentHomeSkeleton } from '../components/organisms/PageSkeletons'
 import { AppShell } from '../components/templates/AppShell'
@@ -83,10 +85,12 @@ function mandatoryAttendanceSummary(
   return { mandatory, present, absent, total, presentRate }
 }
 
-function contactLine(student: StudentMeProfile['student']) {
-  return [student.legajo ? `Legajo ${student.legajo}` : null, student.email]
-    .filter(Boolean)
-    .join(' · ')
+function profileEmail(profile: StudentMeProfile) {
+  return (
+    profile.account.email?.trim() ||
+    profile.student.email?.trim() ||
+    ''
+  )
 }
 
 /**
@@ -94,7 +98,7 @@ function contactLine(student: StudentMeProfile['student']) {
  * Sheet history lives on the group detail page.
  */
 export function StudentHomePage() {
-  const { user } = useAuth()
+  const { user, login } = useAuth()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
 
   const load = useCallback(async () => {
@@ -138,12 +142,36 @@ export function StudentHomePage() {
     void load()
   }, [load])
 
-  const student =
+  async function handleSaveEmail(email: string) {
+    const updated = await patchMeProfile({ email })
+    setState((prev) => {
+      if (prev.status === 'ready') {
+        return {
+          ...prev,
+          data: { ...prev.data, profile: updated },
+        }
+      }
+      if (prev.status === 'no_group') {
+        return { ...prev, profile: updated }
+      }
+      return prev
+    })
+    if (user) {
+      login({
+        ...user,
+        email: updated.account.email,
+      })
+    }
+  }
+
+  const profile =
     state.status === 'ready'
-      ? state.data.profile.student
+      ? state.data.profile
       : state.status === 'no_group'
-        ? state.profile.student
+        ? state.profile
         : null
+
+  const student = profile?.student ?? null
 
   const fullName =
     student?.fullName?.trim() ||
@@ -155,19 +183,14 @@ export function StudentHomePage() {
     'Hola'
   )
 
-  const heroDescription = (
-    <>
-      {student && contactLine(student) ? (
-        <p className="m-0 text-[12px] font-medium text-fg-faint sm:text-[13px]">
-          {contactLine(student)}
-        </p>
-      ) : null}
-      <p className="mt-1.5 m-0 text-[14px] text-fg-muted sm:text-[15px]">
-        Tu sprint según el cronograma, el tema de tu grupo y un resumen de
-        asistencia.
-      </p>
-    </>
-  )
+  const heroDescription = profile ? (
+    <StudentEmailEditor
+      variant="meta"
+      legajo={profile.student.legajo}
+      email={profileEmail(profile)}
+      onSave={handleSaveEmail}
+    />
+  ) : null
 
   const heroStats =
     state.status === 'ready'

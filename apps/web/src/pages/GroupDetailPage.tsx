@@ -1,21 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   addGroupMember,
   fetchGroupDetail,
   fetchGroupSprintSheets,
   fetchUnassignedStudents,
   patchGroupLinks,
-  patchGroupSprint,
   removeGroupMember,
 } from '../api/client'
 import { ButtonLink } from '../components/atoms/ButtonLink'
 import { IconLink, IconSignal, IconUsers } from '../components/atoms/icons'
 import { Panel } from '../components/atoms/Panel'
-import { SheetStatusBadge } from '../components/atoms/SheetStatusBadge'
 import { StatusBadge } from '../components/atoms/StatusBadge'
 import { SectionTitle } from '../components/molecules/SectionTitle'
-import { SprintTimeline } from '../components/molecules/SprintTimeline'
+import {
+  SprintTimeline,
+  type SprintSheetSummary,
+} from '../components/molecules/SprintTimeline'
 import { StateBox } from '../components/molecules/StateBox'
 import { TutorAssigner } from '../components/molecules/TutorAssigner'
 import { LinksEditor } from '../components/organisms/LinksEditor'
@@ -34,8 +35,6 @@ import {
 import {
   type GroupDetail,
   type GroupLinks,
-  type SheetStatus,
-  type SprintStatus,
   type UnassignedStudent,
 } from '../types'
 
@@ -44,18 +43,15 @@ type LoadState =
   | { status: 'error'; message: string }
   | { status: 'ready'; group: GroupDetail }
 
-type SheetChip = {
-  sprintNumber: number
-  start: SheetStatus | null
-  end: SheetStatus | null
-}
-
 export function GroupDetailPage() {
   const { groupId } = useParams()
+  const navigate = useNavigate()
   const [state, setState] = useState<LoadState>({ status: 'loading' })
   const [busy, setBusy] = useState(false)
   const [unassigned, setUnassigned] = useState<UnassignedStudent[]>([])
-  const [sheetChips, setSheetChips] = useState<SheetChip[]>([])
+  const [sheetSummaries, setSheetSummaries] = useState<
+    Record<number, SprintSheetSummary>
+  >({})
 
   useEffect(() => {
     if (!groupId) {
@@ -77,20 +73,21 @@ export function GroupDetailPage() {
           if (!cancelled) setUnassigned([])
         }
 
-        const chips: SheetChip[] = []
-        for (const n of [1, 2, 3, 4, 5]) {
-          try {
-            const sheets = await fetchGroupSprintSheets(groupId!, n)
-            chips.push({
-              sprintNumber: n,
-              start: sheets.start?.status ?? null,
-              end: sheets.end?.status ?? null,
-            })
-          } catch {
-            chips.push({ sprintNumber: n, start: null, end: null })
-          }
-        }
-        if (!cancelled) setSheetChips(chips)
+        const summaries: Record<number, SprintSheetSummary> = {}
+        await Promise.all(
+          [1, 2, 3, 4, 5].map(async (n) => {
+            try {
+              const sheets = await fetchGroupSprintSheets(groupId!, n)
+              summaries[n] = {
+                start: sheets.start?.status ?? null,
+                end: sheets.end?.status ?? null,
+              }
+            } catch {
+              summaries[n] = { start: null, end: null }
+            }
+          }),
+        )
+        if (!cancelled) setSheetSummaries(summaries)
       } catch (err) {
         if (!cancelled) {
           setState({
@@ -113,29 +110,6 @@ export function GroupDetailPage() {
       setUnassigned(await fetchUnassignedStudents(courseId))
     } catch {
       setUnassigned([])
-    }
-  }
-
-  async function handleCycleSprint(sprintNumber: number, next: SprintStatus) {
-    if (!groupId || state.status !== 'ready') return
-    setBusy(true)
-    try {
-      const updated = await patchGroupSprint(groupId, sprintNumber, next)
-      setState({
-        status: 'ready',
-        group: {
-          ...state.group,
-          sprints: state.group.sprints.map((s) =>
-            s.sprintNumber === updated.sprintNumber ? updated : s,
-          ),
-        },
-      })
-    } catch (err) {
-      window.alert(
-        err instanceof Error ? err.message : 'No se pudo actualizar el sprint',
-      )
-    } finally {
-      setBusy(false)
     }
   }
 
@@ -287,12 +261,16 @@ export function GroupDetailPage() {
                       Ver Trello
                     </ButtonLink>
                   ) : null}
-                  {group.links.githubUrl ? (
+                  {group.links.githubWorkspaceUrl ||
+                  group.links.githubRepos[0]?.url ? (
                     <ButtonLink
                       external
                       variant="ghost"
                       className="min-h-11 w-full sm:w-auto"
-                      href={group.links.githubUrl}
+                      href={
+                        group.links.githubWorkspaceUrl ||
+                        group.links.githubRepos[0]!.url
+                      }
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -332,49 +310,30 @@ export function GroupDetailPage() {
           }
         />
 
-        {sheetChips.length > 0 ? (
-          <Panel
-            as="section"
-            tone="soft"
-            className="min-w-0 p-4 sm:p-5 lg:col-span-2"
+        <Panel
+          as="section"
+          tone="default"
+          stagger={2}
+          className="min-w-0 p-4 sm:p-5 lg:col-span-2"
+        >
+          <SectionTitle
+            icon={<IconSignal className="text-fg-muted" />}
+            hint="Tocá un sprint para calificarlo y abrir sus fichas de inicio / fin."
           >
-            <SectionTitle hint="Estado de fichas inicio / fin por sprint">
-              Fichas de sprint
-            </SectionTitle>
-            <ul className="m-0 mt-2 flex list-none flex-col gap-2 p-0 sm:flex-row sm:flex-wrap">
-              {sheetChips.map((chip) => (
-                <li
-                  key={chip.sprintNumber}
-                  className="min-w-0 rounded-md border border-border bg-surface-1 px-2.5 py-2 text-[12px] sm:max-w-full"
-                >
-                  <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5">
-                    <span className="font-semibold text-fg">
-                      S{chip.sprintNumber}
-                    </span>
-                    <span className="inline-flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1 text-fg-muted">
-                      <span className="inline-flex items-center gap-1">
-                        Inicio:{' '}
-                        {chip.start ? (
-                          <SheetStatusBadge status={chip.start} />
-                        ) : (
-                          '—'
-                        )}
-                      </span>
-                      <span className="inline-flex items-center gap-1">
-                        Fin:{' '}
-                        {chip.end ? (
-                          <SheetStatusBadge status={chip.end} />
-                        ) : (
-                          '—'
-                        )}
-                      </span>
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-        ) : null}
+            Semáforo
+          </SectionTitle>
+          <div className="min-w-0">
+            <SprintTimeline
+              sprints={group.sprints}
+              sheetSummaries={sheetSummaries}
+              onSelect={(n) =>
+                navigate(
+                  `/courses/${group.courseId}/groups/${group.id}/sprints/${n}`,
+                )
+              }
+            />
+          </div>
+        </Panel>
 
         <Panel
           as="section"
@@ -409,25 +368,6 @@ export function GroupDetailPage() {
         <Panel
           as="section"
           tone="default"
-          stagger={2}
-          className="min-w-0 overflow-x-auto p-4 sm:p-5"
-        >
-          <SectionTitle
-            icon={<IconSignal className="text-fg-muted" />}
-            hint="Timeline de sprints — tocá un nodo para cambiar el estado."
-          >
-            Semáforo
-          </SectionTitle>
-          <SprintTimeline
-            sprints={group.sprints}
-            disabled={busy}
-            onCycle={(n, next) => void handleCycleSprint(n, next)}
-          />
-        </Panel>
-
-        <Panel
-          as="section"
-          tone="default"
           stagger={3}
           className="min-w-0 p-4 sm:p-5 lg:row-span-2"
         >
@@ -456,7 +396,7 @@ export function GroupDetailPage() {
         >
           <SectionTitle
             icon={<IconLink className="text-fg-muted" />}
-            hint="Recursos del equipo"
+            hint="Espacio GitHub, repos (una rama c/u), Trello y Drive. Los alumnos también pueden editarlos."
           >
             Recursos
           </SectionTitle>

@@ -126,6 +126,13 @@ export function patchGroupLinks(groupId: string, links: GroupLinks) {
   })
 }
 
+export function patchMyGroupLinks(groupId: string, links: GroupLinks) {
+  return requestJson<GroupLinks>(`/me/groups/${groupId}/links`, {
+    method: 'PATCH',
+    body: JSON.stringify(links),
+  })
+}
+
 export type TeacherOption = {
   id: string
   email: string
@@ -348,6 +355,22 @@ export function loginUser(body: { email: string; password: string }) {
   })
 }
 
+export type LoginHintAccount = {
+  email: string
+  displayName: string | null
+  role: 'teacher' | 'student'
+}
+
+export type LoginHints = {
+  password: string
+  accounts: LoginHintAccount[]
+}
+
+/** Sample seed accounts for the login screen (local MVP). */
+export function fetchLoginHints() {
+  return requestJson<LoginHints>('/auth/login-hints')
+}
+
 export type InvitePreview = {
   email: string
   role: 'teacher' | 'student'
@@ -383,6 +406,8 @@ export type CreateInviteResult = {
   role: 'teacher' | 'student'
   inviteUrl: string
   emailed: boolean
+  redirected?: boolean
+  appEnv?: string | null
   expiresAt: string
 }
 
@@ -427,6 +452,9 @@ export type BroadcastEmailResult = {
   failed: number
   emailed: boolean
   reason: string | null
+  appEnv?: string | null
+  redirected?: boolean
+  intendedRecipients?: string[]
   recipientsPreview: string[]
 }
 
@@ -517,6 +545,13 @@ export function leaveGroupAsStudent(groupId: string, reason: string) {
 
 export function fetchMeProfile() {
   return requestJson<StudentMeProfile>('/me/profile')
+}
+
+export function patchMeProfile(body: { email: string }) {
+  return requestJson<StudentMeProfile>('/me/profile', {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  })
 }
 
 export function fetchSprintCalendar(courseId: string) {

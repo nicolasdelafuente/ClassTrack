@@ -32,9 +32,19 @@ type SeedGroup = {
   students: SeedStudent[];
   links?: {
     githubUrl?: string | null;
+    githubWorkspaceUrl?: string | null;
+    githubRepos?: Array<{ url: string; branch?: string | null }> | null;
     trelloUrl?: string | null;
     driveUrl?: string | null;
   };
+};
+
+type SeedAttendance = {
+  email: string;
+  /** YYYY-MM-DD */
+  date: string;
+  present: boolean;
+  participated?: boolean;
 };
 
 type SeedPayload = {
@@ -44,9 +54,67 @@ type SeedPayload = {
     isCurrent: boolean;
   };
   groups: SeedGroup[];
+  attendance?: SeedAttendance[];
 };
 
 const prisma = new PrismaClient();
+
+/** Shared plain-text password for all seeded accounts (local MVP only). */
+const SEED_PASSWORD = 'demo123';
+
+/**
+ * Workspace = org/team link. Repo = org/repo (+ one branch).
+ * Legacy `githubUrl` alone: org-only → workspace; org/repo → workspace + repo@main.
+ */
+function seedGithubLinks(links?: SeedGroup['links']): {
+  githubWorkspaceUrl: string | null;
+  githubRepos: Array<{ url: string; branch: string | null }>;
+} {
+  if (links?.githubWorkspaceUrl || links?.githubRepos?.length) {
+    return {
+      githubWorkspaceUrl: links.githubWorkspaceUrl?.trim() || null,
+      githubRepos: (links.githubRepos ?? [])
+        .map((r) => ({
+          url: r.url.trim(),
+          branch: r.branch?.trim() || null,
+        }))
+        .filter((r) => r.url),
+    };
+  }
+
+  const raw = links?.githubUrl?.trim() || null;
+  if (!raw) {
+    return { githubWorkspaceUrl: null, githubRepos: [] };
+  }
+
+  try {
+    const u = new URL(raw);
+    const parts = u.pathname
+      .replace(/^\/+|\/+$/g, '')
+      .split('/')
+      .filter(Boolean);
+    if (parts.length >= 2) {
+      return {
+        githubWorkspaceUrl: `${u.origin}/${parts[0]}`,
+        githubRepos: [{ url: raw, branch: 'main' }],
+      };
+    }
+    return { githubWorkspaceUrl: raw, githubRepos: [] };
+  } catch {
+    return { githubWorkspaceUrl: raw, githubRepos: [] };
+  }
+}
+
+function teacherEmailFromName(name: string): string {
+  const slug = name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '.')
+    .replace(/^\.+|\.+$/g, '');
+  return `${slug || 'docente'}@classtrack.local`;
+}
 
 /** Demo variety so the board is readable (not all gray). */
 function demoSprintStatus(
@@ -63,31 +131,38 @@ function demoSprintStatus(
   return SprintStatusValue.ok;
 }
 
-function loadPayload(): { payload: SeedPayload; source: string } {
+function loadPayload(): {
+  payload: SeedPayload;
+  source: string;
+  fromExcel: boolean;
+} {
   const dataDir = path.join(__dirname, 'data');
-  const fromExcel = path.join(dataDir, 'from-excel.json');
+  const fromExcelPath = path.join(dataDir, 'from-excel.json');
   const demo = path.join(dataDir, 'demo.json');
 
-  const preferExcel = process.env.SEED_FROM_EXCEL === '1' || process.env.SEED_FROM_EXCEL === 'true';
+  const preferExcel =
+    process.env.SEED_FROM_EXCEL === '1' ||
+    process.env.SEED_FROM_EXCEL === 'true';
   const chosen =
-    preferExcel && fs.existsSync(fromExcel)
-      ? fromExcel
+    preferExcel && fs.existsSync(fromExcelPath)
+      ? fromExcelPath
       : fs.existsSync(demo)
         ? demo
-        : fromExcel;
+        : fromExcelPath;
 
   if (!fs.existsSync(chosen)) {
     throw new Error(
-      `No seed file found. Run: python prisma/scripts/extract-excel.py\nLooked for: ${demo} or ${fromExcel}`,
+      `No seed file found. Run: python prisma/scripts/extract-excel.py\nLooked for: ${demo} or ${fromExcelPath}`,
     );
   }
 
   const payload = JSON.parse(fs.readFileSync(chosen, 'utf8')) as SeedPayload;
-  return { payload, source: chosen };
+  const fromExcel = path.basename(chosen) === 'from-excel.json';
+  return { payload, source: chosen, fromExcel };
 }
 
 async function main() {
-  const { payload, source } = loadPayload();
+  const { payload, source, fromExcel } = loadPayload();
   console.log(`Seeding from ${source}`);
 
   // Clean demo tables (order matters for FKs)
@@ -113,35 +188,55 @@ async function main() {
   await prisma.course.deleteMany();
 
   // DEMO ONLY: plain-text passwords for local MVP (CT-038 / CT-039)
-  const demoStudent = await prisma.student.create({
-    data: {
-      fullName: 'Alumno demo',
-      email: 'alumno@classtrack.local',
-      legajo: 'DEMO-001',
-    },
-  });
+  const teacherByKey = new Map<
+    string,
+    { id: string; email: string; displayName: string }
+  >();
 
-  await prisma.user.createMany({
-    data: [
-      {
-        email: 'docente@classtrack.local',
-        password: 'demo123',
-        displayName: 'Docente demo',
+  const teacherNames = [
+    ...new Set(
+      payload.groups
+        .map((g) => g.teacherName?.trim())
+        .filter((n): n is string => Boolean(n)),
+    ),
+  ];
+
+  for (const name of teacherNames) {
+    const email = teacherEmailFromName(name);
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: SEED_PASSWORD,
+        displayName: name,
         role: 'teacher',
       },
-      {
-        email: 'alumno@classtrack.local',
-        password: 'demo123',
-        displayName: 'Alumno demo',
-        role: 'student',
-        studentId: demoStudent.id,
-      },
-    ],
-  });
+    });
+    teacherByKey.set(name.toLowerCase(), {
+      id: user.id,
+      email: user.email,
+      displayName: name,
+    });
+  }
 
-  const teacher = await prisma.user.findUniqueOrThrow({
-    where: { email: 'docente@classtrack.local' },
-  });
+  // Fallback teacher if Excel has no names
+  if (teacherByKey.size === 0) {
+    const user = await prisma.user.create({
+      data: {
+        email: 'docente@classtrack.local',
+        password: SEED_PASSWORD,
+        displayName: 'Docente',
+        role: 'teacher',
+      },
+    });
+    teacherByKey.set('docente', {
+      id: user.id,
+      email: user.email,
+      displayName: 'Docente',
+    });
+  }
+
+  const defaultTeacher = [...teacherByKey.values()][0];
+  const studentIdByEmail = new Map<string, string>();
 
   const course = await prisma.course.create({
     data: {
@@ -149,7 +244,6 @@ async function main() {
       code: payload.course.code,
       isCurrent: payload.course.isCurrent,
       maxAbsencesAllowed: DEFAULT_MAX_ABSENCES_ALLOWED,
-      // Open so demo alumno can practice join/leave (CT-045)
       groupEnrollmentOpen: true,
       activityTypeDefaults: {
         create: ALL_ACTIVITY_TYPES.map((activityType) => {
@@ -165,15 +259,19 @@ async function main() {
   });
 
   for (const g of payload.groups) {
-    const memberCount = g.students.length + (g.number === 1 ? 1 : 0);
+    const memberCount = g.students.length;
     const capacity = Math.max(4, memberCount);
+    const tutorKey = g.teacherName?.trim().toLowerCase() ?? '';
+    const tutor = teacherByKey.get(tutorKey) ?? defaultTeacher;
+
     const group = await prisma.group.create({
       data: {
         courseId: course.id,
         number: g.number,
         name: g.name ?? `Grupo ${g.number}`,
         projectTopic: g.projectTopic ?? null,
-        teacherName: g.teacherName ?? null,
+        teacherName: g.teacherName ?? tutor.displayName,
+        tutorUserId: tutor.id,
         capacity,
         sprintStatuses: {
           create: [1, 2, 3, 4, 5].map((sprintNumber) => ({
@@ -182,11 +280,15 @@ async function main() {
           })),
         },
         links: {
-          create: {
-            githubUrl: g.links?.githubUrl ?? null,
-            trelloUrl: g.links?.trelloUrl ?? null,
-            driveUrl: g.links?.driveUrl ?? null,
-          },
+          create: (() => {
+            const github = seedGithubLinks(g.links);
+            return {
+              githubWorkspaceUrl: github.githubWorkspaceUrl,
+              githubRepos: github.githubRepos,
+              trelloUrl: g.links?.trelloUrl ?? null,
+              driveUrl: g.links?.driveUrl ?? null,
+            };
+          })(),
         },
       },
     });
@@ -205,19 +307,27 @@ async function main() {
           studentId: student.id,
         },
       });
+
+      const email = s.email?.trim().toLowerCase();
+      if (email && email.includes('@')) {
+        studentIdByEmail.set(email, student.id);
+        await prisma.user.create({
+          data: {
+            email,
+            password: SEED_PASSWORD,
+            displayName: s.fullName,
+            role: 'student',
+            studentId: student.id,
+          },
+        });
+      }
     }
 
-    // Put demo alumno in group 1 so student login has a real workspace (CT-054).
+    // Sample fichas for group 1 (CT-056 + CT-058):
+    // S1 start approved · S1 end approved · S2 start in review
     if (g.number === 1) {
-      await prisma.membership.create({
-        data: {
-          groupId: group.id,
-          studentId: demoStudent.id,
-        },
-      });
+      const sheetAuthorId = tutor.id;
 
-      // Demo fichas for group 1 (CT-056 + CT-058):
-      // S1 start approved · S1 end approved · S2 start in review
       const startSheet = await prisma.sprintSheet.create({
         data: {
           groupId: group.id,
@@ -238,7 +348,7 @@ async function main() {
           comments: {
             create: [
               {
-                authorUserId: teacher.id,
+                authorUserId: sheetAuthorId,
                 body: 'Bien el nivel de detalle. Acuerden el endpoint de perfil para el próximo sprint y no dejen el Trello a medias.',
                 createdAt: new Date('2026-03-12T21:05:00.000Z'),
               },
@@ -338,7 +448,7 @@ async function main() {
           comments: {
             create: [
               {
-                authorUserId: teacher.id,
+                authorUserId: sheetAuthorId,
                 body: 'Ok el cierre: se entiende qué quedó pendiente y por qué. Las extras suman. Aprobado.',
                 createdAt: new Date('2026-03-19T20:40:00.000Z'),
               },
@@ -377,11 +487,14 @@ async function main() {
     }
   }
 
-  // Cronograma DesApp — fechas corridas para que “hoy” caiga en un sprint (CT-079)
-  const cronograma = shiftCronogramaSoTodayInSprint(CRONOGRAMA_DESAPP_2026, {
-    sprintNumber: 2,
-    daysAfterPlanning: 7,
-  });
+  // Real Excel presentismo uses official DesApp dates — do not shift.
+  // Demo seed still shifts so "today" lands mid-sprint (CT-079).
+  const cronograma = fromExcel
+    ? CRONOGRAMA_DESAPP_2026
+    : shiftCronogramaSoTodayInSprint(CRONOGRAMA_DESAPP_2026, {
+        sprintNumber: 2,
+        daysAfterPlanning: 7,
+      });
   for (const day of cronograma) {
     const derived = deriveSessionFromItems(day.items);
     await prisma.classSession.create({
@@ -403,6 +516,40 @@ async function main() {
     });
   }
 
+  const attendanceDays = await prisma.classSession.findMany({
+    where: { courseId: course.id, allowsAttendance: true },
+    select: { date: true },
+  });
+  const attendanceDateKeys = new Set(
+    attendanceDays.map((s) => s.date.toISOString().slice(0, 10)),
+  );
+
+  let attendanceCreated = 0;
+  let attendanceSkipped = 0;
+  for (const mark of payload.attendance ?? []) {
+    const email = mark.email.trim().toLowerCase();
+    const studentId = studentIdByEmail.get(email);
+    if (!studentId) {
+      attendanceSkipped += 1;
+      continue;
+    }
+    if (!attendanceDateKeys.has(mark.date)) {
+      attendanceSkipped += 1;
+      continue;
+    }
+    await prisma.attendanceRecord.create({
+      data: {
+        courseId: course.id,
+        studentId,
+        date: parseSeedDate(mark.date),
+        present: Boolean(mark.present),
+        participated: Boolean(mark.participated),
+      },
+    });
+    attendanceCreated += 1;
+  }
+
+  const teachers = [...teacherByKey.values()];
   const counts = {
     users: await prisma.user.count(),
     courses: await prisma.course.count(),
@@ -411,15 +558,22 @@ async function main() {
     memberships: await prisma.membership.count(),
     sprints: await prisma.sprintStatus.count(),
     sprintSheets: await prisma.sprintSheet.count(),
+    attendanceRecords: await prisma.attendanceRecord.count(),
     activityTypeDefaults: await prisma.courseActivityTypeDefault.count(),
     classSessions: await prisma.classSession.count(),
     classSessionItems: await prisma.classSessionItem.count(),
   };
   console.log('Seed OK', counts);
-  console.log('Demo docente: docente@classtrack.local / demo123');
-  console.log('Demo alumno:  alumno@classtrack.local / demo123');
+  console.log(`Password for all seeded accounts: ${SEED_PASSWORD}`);
   console.log(
-    'Demo fichas: G1 · S1 inicio+fin extensas (aprobadas) · S2 inicio extensa (en revisión)',
+    'Teachers:',
+    teachers.map((t) => t.email).join(', '),
+  );
+  console.log(
+    `Attendance seeded: ${attendanceCreated} (skipped ${attendanceSkipped})`,
+  );
+  console.log(
+    'Sample fichas: G1 · S1 inicio+fin (aprobadas) · S2 inicio (en revisión)',
   );
 }
 

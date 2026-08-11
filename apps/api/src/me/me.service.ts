@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -7,10 +8,12 @@ import {
 } from '@nestjs/common';
 import { UserRole } from '@prisma/client';
 import { AttendanceService } from '../attendance/attendance.service';
+import { normalizeEmail } from '../auth/auth.service';
 import {
   buildSprintWindows,
   toSprintCalendarDto,
 } from '../courses/sprint-windows';
+import { GroupsService } from '../groups/groups.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 const MIN_LEAVE_REASON = 5;
@@ -24,6 +27,7 @@ export class MeService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly attendance: AttendanceService,
+    private readonly groups: GroupsService,
   ) {}
 
   /** Own roster fields from the Excel/padrón (CT-074). */
@@ -74,6 +78,41 @@ export class MeService {
           }
         : null,
     };
+  }
+
+  /**
+   * Update login + notification email together.
+   * Auth uses X-User-Id, so the session stays valid; next login uses the new email.
+   */
+  async updateProfile(userId: string, body: { email: string }) {
+    const { user, studentId } = await this.requireStudentUser(userId);
+    const email = normalizeEmail(body.email);
+    if (!email) {
+      throw new BadRequestException('Ingresá un email válido');
+    }
+
+    if (email !== user.email) {
+      const taken = await this.prisma.user.findUnique({
+        where: { email },
+        select: { id: true },
+      });
+      if (taken && taken.id !== user.id) {
+        throw new ConflictException('Ese email ya está en uso por otra cuenta');
+      }
+    }
+
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: user.id },
+        data: { email },
+      }),
+      this.prisma.student.update({
+        where: { id: studentId },
+        data: { email },
+      }),
+    ]);
+
+    return this.getProfile(userId);
   }
 
   /**
@@ -157,6 +196,7 @@ export class MeService {
           orderBy: { createdAt: 'asc' },
         },
         sprintStatuses: { orderBy: { sprintNumber: 'asc' } },
+        links: true,
       },
     });
     if (!group) {
@@ -184,7 +224,43 @@ export class MeService {
         sprintNumber: s.sprintNumber,
         status: s.status,
       })),
+      links: group.links
+        ? {
+            githubWorkspaceUrl: group.links.githubWorkspaceUrl,
+            githubRepos: Array.isArray(group.links.githubRepos)
+              ? group.links.githubRepos
+              : [],
+            trelloUrl: group.links.trelloUrl,
+            driveUrl: group.links.driveUrl,
+          }
+        : {
+            githubWorkspaceUrl: null,
+            githubRepos: [],
+            trelloUrl: null,
+            driveUrl: null,
+          },
     };
+  }
+
+  /** Any member may update group resources during the course. */
+  async updateMyGroupLinks(
+    userId: string,
+    groupId: string,
+    body: {
+      githubWorkspaceUrl?: string | null;
+      githubRepos?: Array<{ url?: string; branch?: string | null; branches?: string[] }> | null;
+      trelloUrl?: string | null;
+      driveUrl?: string | null;
+    },
+  ) {
+    const { studentId } = await this.requireStudentUser(userId);
+    const membership = await this.prisma.membership.findUnique({
+      where: { groupId_studentId: { groupId, studentId } },
+    });
+    if (!membership) {
+      throw new ForbiddenException('No sos integrante de este grupo');
+    }
+    return this.groups.updateLinks(groupId, body);
   }
 
   async listCourseGroups(userId: string, courseId: string) {

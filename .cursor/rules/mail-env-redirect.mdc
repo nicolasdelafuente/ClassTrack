@@ -1,0 +1,18 @@
+---
+description: Outbound mail — APP_ENV redirect, dedupe, validate
+globs: apps/api/src/mail/**/*,apps/api/src/config/app-env.ts
+alwaysApply: false
+---
+
+# Mail outbound (ClassTrack)
+
+Antes de enviar **cualquier** lista de destinatarios:
+
+1. Usar `prepareMailRecipients` de `apps/api/src/config/app-env.ts` (o `MailService.sendHtmlEmail`, que ya lo aplica).
+2. **Validar** emails (descartar inválidos).
+3. **Deduplicar** (case-insensitive).
+4. Si `APP_ENV` ≠ `production`, **redirigir** todos a `MAIL_REDIRECT_TO` (default `ni.delafuente@gmail.com`). No mandar mails reales de alumnos/docentes en develop/testing.
+
+Valores de `APP_ENV`: `production` | `testing` | `develop`.
+
+No inventar otro flujo de envío que bypaseé `MailService` / `prepareMailRecipients`.

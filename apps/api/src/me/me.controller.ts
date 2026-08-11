@@ -4,10 +4,12 @@ import {
   Get,
   Headers,
   Param,
+  Patch,
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { LeaveGroupDto } from './dto/me.dto';
+import { UpdateLinksDto } from '../groups/dto/groups.dto';
+import { LeaveGroupDto, UpdateMeProfileDto } from './dto/me.dto';
 import { MeService } from './me.service';
 
 @Controller('me')
@@ -17,6 +19,14 @@ export class MeController {
   @Get('profile')
   profile(@Headers('x-user-id') userId: string | undefined) {
     return this.meService.getProfile(requireUserId(userId));
+  }
+
+  @Patch('profile')
+  updateProfile(
+    @Headers('x-user-id') userId: string | undefined,
+    @Body() body: UpdateMeProfileDto,
+  ) {
+    return this.meService.updateProfile(requireUserId(userId), body);
   }
 
   @Get('courses/:courseId/sprint-calendar')
@@ -41,6 +51,19 @@ export class MeController {
     @Param('groupId') groupId: string,
   ) {
     return this.meService.getMyGroupDetail(requireUserId(userId), groupId);
+  }
+
+  @Patch('groups/:groupId/links')
+  updateMyGroupLinks(
+    @Headers('x-user-id') userId: string | undefined,
+    @Param('groupId') groupId: string,
+    @Body() body: UpdateLinksDto,
+  ) {
+    return this.meService.updateMyGroupLinks(
+      requireUserId(userId),
+      groupId,
+      body,
+    );
   }
 
   @Get('courses/:courseId/groups')

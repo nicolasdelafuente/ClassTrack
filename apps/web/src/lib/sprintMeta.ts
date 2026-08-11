@@ -23,13 +23,17 @@ export function sprintProgress(sprints: GroupSprint[]) {
 }
 
 export function linkedCount(links: {
-  githubUrl: string | null
+  githubWorkspaceUrl?: string | null
+  githubRepos?: { url: string }[] | null
   trelloUrl: string | null
   driveUrl: string | null
 } | null | undefined) {
   if (!links) return 0
-  return [links.githubUrl, links.trelloUrl, links.driveUrl].filter(Boolean)
-    .length
+  const hasGithub =
+    Boolean(links.githubWorkspaceUrl?.trim()) ||
+    (Array.isArray(links.githubRepos) &&
+      links.githubRepos.some((r) => r.url?.trim()))
+  return [hasGithub, links.trelloUrl, links.driveUrl].filter(Boolean).length
 }
 
 export function statusLabel(status: SprintStatus) {
